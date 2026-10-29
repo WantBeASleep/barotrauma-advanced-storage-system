@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Меню хранилища — общий макет</title><style>
+  :root { color-scheme: dark; font-family: Arial, sans-serif; color: #e0e5df; background: #141a1d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 28px 20px 40px; }
+  main { max-width: 640px; margin: auto; }
+  h1 { font-size: 20px; font-weight: 500; margin: 0 0 8px; }
+  .intro, .example-label { color: #aab5b7; font-size: 13px; line-height: 1.5; }
+  .intro { margin: 0 0 26px; }
+  .example { margin: 0 0 22px; }
+  .example-label { margin: 0 0 7px; }
+  .item-row { display: grid; grid-template-columns: 100px minmax(0, 1fr) auto; grid-template-areas: "icon info actions" "icon slots take"; grid-template-rows: 44px 54px; height: 120px; align-items: start; gap: 4px 12px; padding: 8px; background: #222c30; border: 1px solid #667578; border-radius: 0; }
+  .item-info { grid-area: info; min-width: 0; padding-top: 0; }
+  .item-name { margin: 0; font-size: 16px; line-height: 1.3; font-weight: 500; overflow-wrap: anywhere; }
+  .item-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 3px; font-size: 13px; line-height: 1.4; }
+  .item-meta:empty { display: none; }
+  .quality { color: var(--quality-color); }
+  .condition { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .good { --quality-color: #90ee90; }
+  .excellent { --quality-color: #add8e6; }
+  .item-icon { grid-area: icon; align-self: center; position: relative; display: grid; place-items: center; width: 100px; height: 100px; border: 1px solid #66777a; background: #182125; }
+  .good .item-icon, .excellent .item-icon { border-color: var(--quality-color); box-shadow: inset 0 0 14px color-mix(in srgb, var(--quality-color) 20%, transparent); }
+  /* Original Content/Items/InventoryIconAtlas.png, 1024 x 1024; rectangles from Item XML. */
+  .sprite { --scale: 1; display: block; flex: none; width: calc(64px * var(--scale)); height: calc(64px * var(--scale)); background-image: url('../item-row/assets/InventoryIconAtlas.png'); background-repeat: no-repeat; background-size: calc(1024px * var(--scale)) calc(1024px * var(--scale)); background-position: calc(var(--x) * var(--scale)) calc(var(--y) * var(--scale)); }
+  .item-icon .sprite { --scale: 1.375; }
+  .aluminium { --x: -448px; --y: -192px; } /* Materials/materials.xml */
+  .plasmacutter { --x: -704px; --y: 0px; } /* Tools/tools.xml */
+  .oxygentank { --x: -896px; --y: 0px; } /* Tools/tools.xml */
+  .smg { --x: -832px; --y: -830px; } /* Weapons/weapons.xml */
+  .smgmagazine { --x: -960px; --y: -960px; } /* Weapons/weapons.xml */
+  .stock { position: absolute; right: 2px; bottom: 2px; max-width: calc(100% - 4px); padding: 1px 4px; border-radius: 2px; background: #11191ee8; color: #fff; font-size: 13px; line-height: 1.3; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .quick-actions { grid-area: actions; display: flex; justify-content: end; flex-wrap: wrap; gap: 6px; max-width: 132px; justify-self: end; }
+  button, input { font: inherit; color: inherit; border: 1px solid #84908e; background: #2b373a; border-radius: 2px; }
+  button { min-height: 34px; padding: 5px 13px; cursor: pointer; }
+  button:hover { background: #3a4849; }
+  button:focus-visible, input:focus-visible { outline: 2px solid #b6d2d9; outline-offset: 3px; }
+  .favorite { width: 34px; height: 34px; padding: 0; font-size: 22px; line-height: 1; }
+  .favorite[aria-pressed="true"] { color: #f1d377; }
+  .item-row:has(.favorite[aria-pressed="true"]) { background: #493f28; border-color: #a18a51; }
+  .inserted-items { grid-area: slots; display: flex; gap: 6px; align-self: center; overflow-x: auto; min-width: 0; padding-bottom: 2px; scrollbar-width: thin; }
+  .inserted-item { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border: 1px solid #637377; background: #182125; }
+  .inserted-item .sprite { --scale: .625; }
+  .take-controls { grid-area: take; display: flex; align-items: center; justify-self: end; align-self: center; gap: 8px; margin: 0; }
+  .quantity { width: 52px; min-width: 0; height: 36px; padding: 4px; text-align: center; font-variant-numeric: tabular-nums; }
+  .quantity[aria-invalid="true"] { border-color: #f56969; }
+  .take { min-width: 72px; height: 36px; }
+  .status { min-height: 20px; color: #b7c6bf; font-size: 13px; line-height: 1.5; margin: 10px 0 0; }
+  @media (max-width: 510px) {
+    body { padding: 20px 12px; }
+    .item-row { height: 204px; grid-template-columns: 76px minmax(0, 1fr) 34px; grid-template-areas: "icon info actions" "icon slots slots" "icon take take"; grid-template-rows: minmax(0, 1fr) 54px 36px; column-gap: 10px; }
+    .item-icon { width: 76px; height: 76px; }
+    .item-icon .sprite { --scale: 1; }
+
+
+    .item-meta { gap: 4px 8px; }
+    .quick-actions { max-width: 34px; }
+  }
+  .fuelrod { --x: -576px; --y: -64px; }
+  .batterycell { --x: -832px; --y: 0px; }
+  .weldingfueltank { --x: -960px; --y: 0px; }
+  /* Exosuit.png: InventoryIcon rectangle 384,384,128,128 in a 512 x 512 atlas. */
+  .exosuit { background-image: url('../item-row/assets/Exosuit.png'); background-size: calc(256px * var(--scale)) calc(256px * var(--scale)); --x: -192px; --y: -192px; }
+  .inserted-items { overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-color: #819597 #182125; padding-bottom: 2px; }
+  .inserted-items:focus-visible { outline: 2px solid #b6d2d9; outline-offset: 3px; }
+  .inserted-items::-webkit-scrollbar { height: 8px; }
+  .inserted-items::-webkit-scrollbar-track { background: #182125; }
+  .inserted-items::-webkit-scrollbar-thumb { background: #819597; border-radius: 4px; }
+
+
+  body { padding: 32px 20px; }
+  main { max-width: 680px; }
+  .intro { margin-bottom: 20px; }
+  .storage-menu { border: 1px solid #667578; background: #192226; box-shadow: 0 12px 36px #0004; }
+  .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px; border-bottom: 1px solid #45575b; background: #263236; }
+  .toolbar button { font-size: 13px; }
+  .toolbar .filters-settings { display: grid; place-items: center; width: 52px; height: 34px; padding: 2px 4px; flex: none; --filter-color: #8a9699; }
+  .filters-settings svg { width: 42px; height: 28px; }
+  .filters-settings[data-mode="allow"] { --filter-color: #8fc6a2; }
+  .filters-settings[data-mode="deny"] { --filter-color: #d58c75; }
+  .filter-symbol { color: var(--filter-color); }
+  .filter-arrow { fill: #58666a; }
+  .filters-settings[data-inherited="true"] .filter-arrow-up,
+  .filters-settings[data-propagating="true"] .filter-arrow-down { fill: #e8ddbe; }
+  .filter-inherited-note { color: #e8cf81; font-size: 13px; line-height: 1.5; margin: 0 0 14px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .toolbar .favorites-settings { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; flex: none; font-size: 22px; line-height: 1; color: #f1d377; }
+  button:disabled { cursor: default; color: #aab6b7; border-color: #5e6d70; background: #293538; }
+  .capacity { margin-left: auto; white-space: nowrap; font-size: 13px; font-variant-numeric: tabular-nums; color: #c1cec9; }
+  .search-area { padding: 12px; border-bottom: 1px solid #45575b; }
+  .search-line { display: flex; gap: 8px; }
+  .search { min-width: 0; width: 100%; height: 38px; padding: 8px 10px; background: #121c20; }
+  .categories-toggle { display: grid; place-items: center; width: 38px; height: 38px; padding: 8px; flex: none; }
+  .categories-toggle svg { width: 20px; height: 20px; }
+  .categories-toggle[data-active="true"] { color: #f1d377; border-color: #b9a76e; }
+  .categories-toggle[aria-expanded="true"] { border-color: #b6d2d9; }
+  .categories { display: flex; flex-direction: column; gap: 2px; max-height: 180px; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; scrollbar-width: auto; margin-top: 12px; padding: 6px; border: 1px solid #45575b; background: #222c30; font-size: 13px; }
+  .categories::-webkit-scrollbar { width: 8px; }
+  .categories::-webkit-scrollbar-track { background: #182125; }
+  .categories::-webkit-scrollbar-thumb { background: #819597; border-radius: 4px; }
+  .categories label { display: flex; flex: 0 0 auto; gap: 9px; align-items: center; min-height: 32px; padding: 4px 6px; cursor: pointer; }
+  .categories label:hover { background: #2b373a; }
+  .categories input { margin: 0; accent-color: #b6d2d9; }
+  .item-list { height: 460px; overflow-y: auto; scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: #819597 #182125; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .item-row { flex: 0 0 auto; }
+  [hidden] { display: none !important; }
+  .status { margin: 12px 0 0; }
+  .mockup-note { color: #8f9fa3; font-size: 12px; line-height: 1.6; margin: 8px 0 0; }
+  @media (max-width: 620px) {
+    body { padding: 20px 12px; }
+    .toolbar { padding: 10px; }
+    .toolbar button { padding-inline: 9px; }
+    .capacity { flex: 1 0 100%; text-align: right; }
+    .search-area { padding: 10px; }
+    .item-list { padding: 8px; height: 460px; }
+    /* Same compact row layout as item-row; shell needs extra room for borders and scrollbars. */
+    .item-row { height: 204px; grid-template-columns: 76px minmax(0, 1fr) 34px; grid-template-areas: "icon info actions" "icon slots slots" "icon take take"; grid-template-rows: minmax(0, 1fr) 54px 36px; column-gap: 10px; }
+    .item-icon { width: 76px; height: 76px; }
+    .item-icon .sprite { --scale: 1; }
+    .item-meta { gap: 4px 8px; }
+    .quick-actions { max-width: 34px; }
+  }
+
+  .favorites-window { position: fixed; z-index: 10; width: 420px; max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); display: flex; flex-direction: column; color: #e0e5df; background: #202b2f; border: 1px solid #9e8a55; box-shadow: 0 16px 48px #0009; }
+  .favorites-header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #393728; border-bottom: 1px solid #706446; cursor: move; touch-action: none; user-select: none; flex: none; }
+  .favorites-header h2 { margin: 0; font-size: 16px; font-weight: 500; flex: 1; }
+  .favorites-header h2 span { color: #f1d377; margin-right: 8px; }
+  .favorites-close { width: 30px; min-height: 30px; padding: 0; font-size: 21px; }
+  .favorites-body { overflow-y: auto; min-height: 0; padding: 12px; }
+  .favorites-list, .favorite-results { overflow-y: auto; overscroll-behavior-y: contain; scrollbar-color: #819597 #182125; scrollbar-width: thin; }
+  .favorites-list { max-height: 220px; min-height: 150px; border: 1px solid #506064; background: #182125; }
+  .favorite-entry { display: flex; align-items: center; gap: 10px; padding: 8px; border-bottom: 1px solid #354448; min-height: 58px; }
+  .favorite-entry:last-child { border-bottom: 0; }
+  .favorite-entry .sprite, .favorite-result .sprite { --scale: .5; }
+  .favorite-entry-name { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 14px; line-height: 1.4; }
+  .favorite-remove { flex: none; width: 30px; min-height: 30px; padding: 0; font-size: 21px; }
+  .favorite-remove:hover { color: #f56969; border-color: #f56969; }
+  .favorites-empty { margin: 0; padding: 36px 12px; color: #aab5b7; font-size: 13px; text-align: center; line-height: 1.5; }
+  .favorite-add { margin-top: 12px; }
+  .favorite-add-area { margin-top: 12px; padding-top: 12px; border-top: 1px solid #45575b; }
+  .favorite-add-area label { display: block; margin-bottom: 8px; font-size: 13px; color: #b9c6c7; }
+  .favorite-type-search { width: 100%; min-width: 0; padding: 8px; height: 38px; background: #121c20; }
+  .favorite-results { max-height: 152px; margin-top: 8px; }
+  .favorite-result { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px; text-align: left; border-color: #45575b; border-radius: 0; margin-bottom: 4px; }
+  .favorite-result span:last-child { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
+  .favorite-search-hint { margin: 10px 0 2px; color: #aab5b7; font-size: 13px; }
+
+  .filters-window { position: fixed; z-index: 10; width: 480px; max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); display: flex; flex-direction: column; color: #e0e5df; background: #202b2f; border: 1px solid #819597; box-shadow: 0 16px 48px #0009; }
+  .filters-header { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #304044; border-bottom: 1px solid #63777b; cursor: move; touch-action: none; user-select: none; flex: none; }
+  .filters-header h2 { margin: 0; flex: 1; font-size: 16px; font-weight: 500; }
+  .filters-close { width: 30px; min-height: 30px; padding: 0; font-size: 21px; flex: none; }
+  .filters-body { padding: 12px; min-height: 0; overflow-y: auto; scrollbar-color: #819597 #182125; }
+  .filter-mode { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .filter-mode legend { margin-bottom: 8px; padding: 0; font-size: 13px; color: #b9c6c7; }
+  .filter-mode-options { display: flex; flex-wrap: wrap; gap: 6px; }
+  .filter-mode-options label { display: flex; align-items: center; gap: 6px; padding: 8px; border: 1px solid #637377; font-size: 13px; cursor: pointer; }
+  .filter-mode-options label:has(input:checked) { background: #3a5056; border-color: #b6d2d9; }
+  .filter-mode-options input, .filter-nested input { accent-color: #b6d2d9; margin: 0; flex: none; }
+  .filter-mode-hint { color: #b9c6c7; font-size: 13px; line-height: 1.5; margin: 10px 0 12px; }
+  .filter-nested { display: flex; align-items: start; gap: 8px; font-size: 13px; line-height: 1.5; cursor: pointer; }
+  .filter-nested input { margin-top: 3px; }
+  .filter-section { border-top: 1px solid #45575b; margin-top: 16px; padding-top: 12px; }
+  .filter-section h3 { margin: 0 0 8px; font-size: 14px; font-weight: 500; }
+  .filter-selected { max-height: 150px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #506064; background: #182125; scrollbar-color: #819597 #182125; }
+  .filter-entry { display: flex; align-items: center; gap: 10px; padding: 7px 8px; min-height: 44px; border-bottom: 1px solid #354448; }
+  .filter-entry:last-child { border-bottom: 0; }
+  .filter-entry .sprite { --scale: .5; }
+  .filter-entry-name { flex: 1; min-width: 0; font-size: 14px; overflow-wrap: anywhere; }
+  .filter-remove { width: 28px; min-height: 28px; flex: none; padding: 0; font-size: 20px; }
+  .filter-remove:hover { color: #f56969; border-color: #f56969; }
+  .filter-empty { margin: 0; padding: 14px 8px; font-size: 13px; color: #aab5b7; }
+  .filter-add { margin-top: 8px; font-size: 13px; }
+  .filter-picker { margin-top: 10px; }
+  .filter-category-options { max-height: 150px; overflow-y: auto; border: 1px solid #506064; scrollbar-color: #819597 #182125; }
+  .filter-category-option { display: block; width: 100%; text-align: left; padding: 8px; border: 0; border-bottom: 1px solid #45575b; border-radius: 0; font-size: 13px; }
+  .filter-picker label { display: block; margin-bottom: 8px; font-size: 13px; color: #b9c6c7; }
+  .filter-item-search { width: 100%; min-width: 0; height: 38px; padding: 8px; background: #121c20; }
+  .filter-item-results { margin-top: 8px; max-height: 150px; overflow-y: auto; scrollbar-color: #819597 #182125; }
+  .filter-item-hint { margin: 8px 0 0; color: #aab5b7; font-size: 13px; }
+</style></head>
+<body><main>
+<h1>Меню хранилища</h1>
+<p class="intro">Общий макет · расположение элементов</p>
+<section class="storage-menu" aria-label="Меню хранилища">
+  <div class="toolbar">
+    <button class="favorites-settings" type="button" aria-label="Настроить избранное" title="Настроить избранное" aria-expanded="false" aria-haspopup="dialog"><span aria-hidden="true">★</span></button>
+    <button class="filters-settings" type="button" aria-label="Настроить фильтры приёма" aria-describedby="filter-button-state" aria-haspopup="dialog" aria-expanded="false" data-mode="off" data-inherited="false" data-propagating="false"><svg viewBox="0 0 42 28" aria-hidden="true" focusable="false"><path class="filter-arrow filter-arrow-up" d="M6 1 1 7h3v5h4V7h3Z"/><path class="filter-arrow filter-arrow-down" d="M4 16h4v5h3l-5 6-5-6h3Z"/><path d="M14 2v24" stroke="#506064" stroke-width="1"/><g class="filter-symbol" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m25 7 3 3 6-7M23 13h-3l-3 7v6h23v-6l-3-7h-3M17 20h23"/></g></svg></button>
+    <span class="sr-only" id="filter-button-state"></span>
+    <span class="capacity" title="Занято / всего в контейнерах мода">Занято: 18 / 64</span>
+  </div>
+  <div class="search-area">
+    <div class="search-line"><input class="search" type="search" placeholder="Поиск…" aria-label="Поиск по названию" autocomplete="off"><button class="categories-toggle" type="button" aria-expanded="false" aria-controls="categories" aria-label="Категории" title="Категории"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 4h18l-7 8v7l-4 2v-9L3 4Z"/></svg></button></div>
+    <div class="categories" id="categories" role="group" aria-label="Категории отображения" hidden>
+      <label><input type="checkbox" value="materials">Материалы</label>
+      <label><input type="checkbox" value="tools">Инструменты</label>
+      <label><input type="checkbox" value="weapons">Оружие</label>
+      <label><input type="checkbox" value="equipment">Снаряжение</label>
+      <label><input type="checkbox" value="medical">Медицина</label>
+      <label><input type="checkbox" value="ammunition">Боеприпасы</label>
+      <label><input type="checkbox" value="electrical">Электроника</label>
+      <label><input type="checkbox" value="fuel">Топливо</label>
+      <label><input type="checkbox" value="other">Прочее</label>
+    </div>
+  </div>
+  <div class="item-list" role="region" aria-label="Содержимое хранилища" tabindex="0"><article class="item-row" data-name="Алюминий" data-stock="54">
+      <div class="item-icon"><span class="sprite aluminium" role="img" aria-label="Алюминий"></span><span class="stock" title="В запасе: 54">×54</span></div>
+      <div class="item-info"><h2 class="item-name">Алюминий</h2></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Алюминий: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Алюминий: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+<article class="item-row" data-name="Экзокостюм" data-stock="1">
+      <div class="item-icon"><span class="sprite exosuit" role="img" aria-label="Экзокостюм"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Экзокостюм</h2><div class="item-meta"><span class="condition" data-condition="84" title="Состояние">84%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Экзокостюм: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <div class="inserted-items" role="group" aria-label="Встроенные слоты экзокостюма" title="Просмотр слотов: колесо мыши, полоса прокрутки или стрелки на клавиатуре">
+        <span class="inserted-item" title="Слот 1: Кислородный баллон"><span class="sprite oxygentank" role="img" aria-label="Слот 1: Кислородный баллон"></span></span>
+        <span class="inserted-item" title="Слот 2: Топливный стержень"><span class="sprite fuelrod" role="img" aria-label="Слот 2: Топливный стержень"></span></span>
+        <span class="inserted-item" title="Слот 3: Плазморез"><span class="sprite plasmacutter" role="img" aria-label="Слот 3: Плазморез"></span></span>
+        <span class="inserted-item" title="Слот 4: Аккумулятор"><span class="sprite batterycell" role="img" aria-label="Слот 4: Аккумулятор"></span></span>
+        <span class="inserted-item" title="Слот 5: Сварочный баллон"><span class="sprite weldingfueltank" role="img" aria-label="Слот 5: Сварочный баллон"></span></span>
+        <span class="inserted-item" title="Слот 6: Алюминий"><span class="sprite aluminium" role="img" aria-label="Слот 6: Алюминий"></span></span>
+        <span class="inserted-item" title="Слот 7: Магазин пистолета-пулемёта"><span class="sprite smgmagazine" role="img" aria-label="Слот 7: Магазин пистолета-пулемёта"></span></span>
+        <span class="inserted-item" title="Слот 8: Аккумулятор"><span class="sprite batterycell" role="img" aria-label="Слот 8: Аккумулятор"></span></span>
+        <span class="inserted-item" title="Слот 9: Топливный стержень"><span class="sprite fuelrod" role="img" aria-label="Слот 9: Топливный стержень"></span></span>
+        <span class="inserted-item" title="Слот 10: Кислородный баллон"><span class="sprite oxygentank" role="img" aria-label="Слот 10: Кислородный баллон"></span></span>
+        <span class="inserted-item" title="Слот 11: Магазин пистолета-пулемёта"><span class="sprite smgmagazine" role="img" aria-label="Слот 11: Магазин пистолета-пулемёта"></span></span>
+        <span class="inserted-item" title="Слот 12: Плазморез"><span class="sprite plasmacutter" role="img" aria-label="Слот 12: Плазморез"></span></span>
+      </div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Экзокостюм: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+<article class="item-row good" data-name="Плазморез" data-stock="1">
+      <div class="item-icon"><span class="sprite plasmacutter" role="img" aria-label="Плазморез"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Плазморез</h2><div class="item-meta"><span class="quality">Хорошее качество</span><span class="condition" data-condition="50" title="Состояние">50%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Плазморез: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <div class="inserted-items" role="group" aria-label="Вставленные предметы, только просмотр"><span class="inserted-item" title="Кислородный баллон"><span class="sprite oxygentank" role="img" aria-label="Кислородный баллон"></span></span></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Плазморез: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+<article class="item-row excellent" data-name="Пистолет-пулемёт" data-stock="1">
+      <div class="item-icon"><span class="sprite smg" role="img" aria-label="Пистолет-пулемёт"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Пистолет-пулемёт</h2><div class="item-meta"><span class="quality">Отличное качество</span><span class="condition" data-condition="100" title="Состояние">100%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Пистолет-пулемёт: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <div class="inserted-items" role="group" aria-label="Вставленные предметы, только просмотр"><span class="inserted-item" title="Магазин пистолета-пулемёта"><span class="sprite smgmagazine" role="img" aria-label="Магазин пистолета-пулемёта"></span></span></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Пистолет-пулемёт: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+<article class="item-row" data-name="Кислородный баллон" data-stock="1">
+      <div class="item-icon"><span class="sprite oxygentank" role="img" aria-label="Кислородный баллон"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Кислородный баллон</h2><div class="item-meta"><span class="condition" data-condition="8" title="Состояние">8%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Кислородный баллон: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Кислородный баллон: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article></div>
+</section>
+<p class="status" role="status" aria-live="polite"></p>
+<p class="mockup-note">Демонстрационные данные. Счётчик вместимости — пример; настройки фильтров не связаны с игрой. Категории условные. После обновления страницы данные сбрасываются.</p>
+</main>
+<section class="favorites-window" role="dialog" aria-labelledby="favorites-title" hidden>
+  <header class="favorites-header" title="Перетащить окно">
+    <h2 id="favorites-title"><span aria-hidden="true">★</span>Избранное</h2>
+    <button class="favorites-close" type="button" aria-label="Закрыть избранное" title="Закрыть">×</button>
+  </header>
+  <div class="favorites-body">
+    <div class="favorites-list" role="list" aria-label="Избранные типы предметов"></div>
+    <button class="favorite-add" type="button" aria-expanded="false" aria-controls="favorite-add-area">Добавить</button>
+    <div class="favorite-add-area" id="favorite-add-area" hidden>
+      <label for="favorite-type-search">Поиск по всем типам предметов</label>
+      <input id="favorite-type-search" class="favorite-type-search" type="search" placeholder="Название предмета" autocomplete="off">
+      <div class="favorite-results" aria-label="Результаты поиска типов"></div>
+      <p class="favorite-search-hint" role="status">Введите название предмета</p>
+    </div>
+  </div>
+</section>
+
+<section class="filters-window" role="dialog" aria-labelledby="filters-title" hidden>
+ <header class="filters-header" title="Перетащить окно"><h2 id="filters-title">Фильтры приёма</h2><button class="filters-close" type="button" aria-label="Закрыть фильтры приёма" title="Закрыть">×</button></header>
+ <div class="filters-body">
+  <p class="filter-inherited-note" role="status" hidden>Действуют фильтры внешних хранилищ.</p>
+  <fieldset class="filter-mode"><legend>Режим</legend><div class="filter-mode-options">
+   <label><input type="radio" name="acceptance-mode" value="off" checked>Выключен</label>
+   <label><input type="radio" name="acceptance-mode" value="allow">Белый список</label>
+   <label><input type="radio" name="acceptance-mode" value="deny">Чёрный список</label>
+  </div></fieldset>
+  <p class="filter-mode-hint" role="status"></p>
+  <label class="filter-nested"><input type="checkbox">Применять к вложенным хранилищам</label>
+  <section class="filter-section" aria-labelledby="filter-categories-title">
+   <h3 id="filter-categories-title">Категории</h3>
+   <div class="filter-selected filter-category-list" role="list" aria-label="Категории фильтра приёма"></div>
+   <button class="filter-add filter-add-category" type="button" aria-expanded="false" aria-controls="filter-category-picker">Добавить категорию</button>
+   <div class="filter-picker" id="filter-category-picker" hidden><div class="filter-category-options" role="group" aria-label="Выбор категории фильтра приёма"></div></div>
+  </section>
+  <section class="filter-section" aria-labelledby="filter-items-title">
+   <h3 id="filter-items-title">Предметы</h3>
+   <div class="filter-selected filter-item-list" role="list" aria-label="Типы предметов фильтра приёма"></div>
+   <button class="filter-add filter-add-item" type="button" aria-expanded="false" aria-controls="filter-item-picker">Добавить предмет</button>
+   <div class="filter-picker" id="filter-item-picker" hidden>
+    <label for="filter-item-search">Поиск по всем типам предметов</label><input class="filter-item-search" id="filter-item-search" type="search" placeholder="Название предмета" autocomplete="off">
+    <div class="filter-item-results"></div><p class="filter-item-hint" role="status">Введите название предмета</p>
+   </div>
+  </section>
+ </div>
+</section>
+<script>
+  // Vanilla Content/UI/style.xml: ColorInventoryEmpty, Half, Full.
+  // Inventory.cs interpolates these three stops with ToolBox.GradientLerp.
+  const conditionStops = [[245,105,105], [243,162,50], [96,222,146]];
+  function conditionColor(percent) {
+    const position = Math.max(0, Math.min(100, percent)) / 50;
+    const segment = Math.min(1, Math.floor(position));
+    const blend = position - segment;
+    const rgb = conditionStops[segment].map((value, channel) => Math.trunc(value + (conditionStops[segment + 1][channel] - value) * blend));
+    return `rgb(${rgb.join(',')})`;
+  }
+  for (const label of document.querySelectorAll('.condition')) {
+    label.style.color = conditionColor(Number(label.dataset.condition));
+    label.setAttribute('aria-label', `Состояние: ${label.textContent}`);
+  }
+  // Demonstration only: no connection to the game inventory.
+  const status = document.querySelector('.status');
+  for (const row of document.querySelectorAll('.item-row')) {
+    const favorite = row.querySelector('.favorite');
+    favorite.addEventListener('click', () => {
+      setFavoriteType(row.dataset.name, !favoriteTypes.has(row.dataset.name));
+    });
+    const input = row.querySelector('.quantity');
+    input.addEventListener('input', () => input.removeAttribute('aria-invalid'));
+    // Commit on leaving the field or submitting; do not interrupt typing.
+    const clampQuantityToStock = () => {
+      const raw = input.value.trim();
+      const available = Number(row.dataset.stock);
+      if (available > 0 && /^\d+$/.test(raw) && Number(raw) > available) {
+        input.value = String(available);
+        input.removeAttribute('aria-invalid');
+      }
+    };
+    input.addEventListener('blur', clampQuantityToStock);
+    row.querySelector('form').addEventListener('submit', event => {
+      event.preventDefault();
+      clampQuantityToStock();
+      const raw = input.value.trim();
+      const amount = Number(raw);
+      const valid = /^\d+$/.test(raw) && Number.isSafeInteger(amount) && amount > 0;
+      input.setAttribute('aria-invalid', String(!valid));
+      if (!valid) {
+        status.textContent = 'Для демонстрации укажи целое количество больше нуля.';
+        input.focus();
+        return;
+      }
+      const available = Number(row.dataset.stock);
+      const taken = Math.min(available, amount);
+      row.dataset.stock = String(available - taken);
+      const stock = row.querySelector('.stock');
+      stock.textContent = `×${row.dataset.stock}`;
+      stock.title = `В запасе: ${row.dataset.stock}`;
+      status.textContent = taken ? `${row.dataset.name}: взято ${taken}.` : `${row.dataset.name}: запас закончился.`;
+      updateList();
+    });
+  }
+  // Native scrollbar / touch scrolling; wheel and keyboard support for overflow only.
+  for (const strip of document.querySelectorAll('.inserted-items')) {
+    const updateScrollable = () => {
+      const overflow = strip.scrollWidth > strip.clientWidth + 1;
+      if (overflow) strip.tabIndex = 0;
+      else strip.removeAttribute('tabindex');
+    };
+    new ResizeObserver(updateScrollable).observe(strip);
+    updateScrollable();
+    strip.addEventListener('wheel', event => {
+      if (event.ctrlKey || event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      const multiplier = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? strip.clientWidth : 1;
+      const delta = event.deltaY * multiplier;
+      const max = strip.scrollWidth - strip.clientWidth;
+      const next = Math.max(0, Math.min(max, strip.scrollLeft + delta));
+      if (Math.abs(next - strip.scrollLeft) < 1) return;
+      event.preventDefault();
+      strip.scrollLeft = next;
+    }, { passive: false });
+    strip.addEventListener('keydown', event => {
+      if (event.target !== strip || event.altKey || event.ctrlKey || event.metaKey) return;
+      const positions = { ArrowLeft: strip.scrollLeft - 50, ArrowRight: strip.scrollLeft + 50, Home: 0, End: strip.scrollWidth };
+      if (!(event.key in positions)) return;
+      event.preventDefault();
+      strip.scrollLeft = positions[event.key];
+    });
+  }
+
+  const list = document.querySelector('.item-list');
+  const rows = [...list.querySelectorAll('.item-row')];
+  const search = document.querySelector('.search');
+  const categories = document.querySelector('.categories');
+  const categoryButton = document.querySelector('.categories-toggle');
+  const categoryByName = { 'Алюминий': 'materials', 'Экзокостюм': 'equipment', 'Плазморез': 'tools', 'Пистолет-пулемёт': 'weapons', 'Кислородный баллон': 'equipment' };
+  function updateList() {
+    const selected = [...categories.querySelectorAll('input:checked')].map(input => input.value);
+    const query = search.value.trim().toLocaleLowerCase('ru');
+    rows.sort((a, b) => Number(b.querySelector('.favorite').getAttribute('aria-pressed') === 'true') - Number(a.querySelector('.favorite').getAttribute('aria-pressed') === 'true') || a.dataset.name.localeCompare(b.dataset.name, 'ru'));
+    for (const row of rows) {
+      row.hidden = Number(row.dataset.stock) === 0 || !row.dataset.name.toLocaleLowerCase('ru').includes(query) || (selected.length > 0 && !selected.includes(categoryByName[row.dataset.name]));
+      list.append(row);
+    }
+    categoryButton.dataset.active = String(selected.length > 0);
+    categoryButton.title = selected.length ? 'Категории: выбрано ' + selected.length : 'Категории';
+  }
+  categoryButton.addEventListener('click', () => {
+    const open = categoryButton.getAttribute('aria-expanded') !== 'true';
+    categoryButton.setAttribute('aria-expanded', String(open));
+    categories.hidden = !open;
+  });
+  search.addEventListener('input', () => { updateList(); list.scrollTop = 0; });
+  categories.addEventListener('change', () => { updateList(); list.scrollTop = 0; });
+
+  let popupStack = [];
+  let popupZ = 10;
+  function raisePopup(popup) {
+    popupStack = popupStack.filter(item => item !== popup); popupStack.push(popup);
+    popup.style.zIndex = String(++popupZ);
+  }
+  function releasePopup(popup, trigger) {
+    popupStack = popupStack.filter(item => item !== popup);
+    if(popupStack.length) popupStack[popupStack.length-1].querySelector('button').focus(); else trigger.focus();
+  }
+  // Demo catalog includes types absent from storage; names stand in for type IDs here.
+  const favoriteCatalog = [
+    { name: 'Алюминий', sprite: 'aluminium' },
+    { name: 'Аккумулятор', sprite: 'batterycell' },
+    { name: 'Кислородный баллон', sprite: 'oxygentank' },
+    { name: 'Магазин пистолета-пулемёта', sprite: 'smgmagazine' },
+    { name: 'Пистолет-пулемёт', sprite: 'smg' },
+    { name: 'Плазморез', sprite: 'plasmacutter' },
+    { name: 'Сварочный баллон', sprite: 'weldingfueltank' },
+    { name: 'Топливный стержень', sprite: 'fuelrod' },
+    { name: 'Экзокостюм', sprite: 'exosuit' }
+  ].sort((a,b) => a.name.localeCompare(b.name, 'ru'));
+  const favoriteTypes = new Set(['Алюминий', 'Аккумулятор', 'Сварочный баллон']);
+  const favoritesWindow = document.querySelector('.favorites-window');
+  const favoritesTrigger = document.querySelector('.favorites-settings');
+  const favoritesList = document.querySelector('.favorites-list');
+  const favoriteAdd = document.querySelector('.favorite-add');
+  const favoriteAddArea = document.querySelector('.favorite-add-area');
+  const favoriteSearch = document.querySelector('.favorite-type-search');
+  const favoriteResults = document.querySelector('.favorite-results');
+  const favoriteHint = document.querySelector('.favorite-search-hint');
+  function makeFavoriteIcon(type) {
+    const icon = document.createElement('span');
+    icon.className = 'sprite ' + type.sprite;
+    icon.setAttribute('aria-hidden', 'true');
+    return icon;
+  }
+  function setFavoriteType(name, selected) {
+    if (selected) favoriteTypes.add(name); else favoriteTypes.delete(name);
+    for (const row of rows) {
+      const button = row.querySelector('.favorite');
+      const active = favoriteTypes.has(row.dataset.name);
+      const action = active ? 'Убрать из избранного' : 'В избранное';
+      button.setAttribute('aria-pressed', String(active));
+      button.textContent = active ? '★' : '☆';
+      button.title = action;
+      button.setAttribute('aria-label', row.dataset.name + ': ' + action);
+    }
+    updateList();
+    renderFavorites();
+    renderFavoriteResults();
+  }
+  function renderFavorites() {
+    const scroll = favoritesList.scrollTop;
+    favoritesList.replaceChildren();
+    const types = favoriteCatalog.filter(type => favoriteTypes.has(type.name));
+    if (!types.length) {
+      const empty = document.createElement('p');
+      empty.className = 'favorites-empty';
+      empty.textContent = 'В избранном пока нет предметов';
+      favoritesList.append(empty);
+    }
+    types.forEach((type, index) => {
+      const entry = document.createElement('div');
+      entry.className = 'favorite-entry';
+      entry.setAttribute('role', 'listitem');
+      const name = document.createElement('span');
+      name.className = 'favorite-entry-name';
+      name.textContent = type.name;
+      const remove = document.createElement('button');
+      remove.className = 'favorite-remove';
+      remove.type = 'button'; remove.textContent = '×';
+      remove.title = 'Убрать из избранного';
+      remove.setAttribute('aria-label', 'Убрать из избранного: ' + type.name);
+      remove.addEventListener('click', () => {
+        setFavoriteType(type.name, false);
+        const buttons = favoritesList.querySelectorAll('button');
+        (buttons[Math.min(index, buttons.length - 1)] || favoriteAdd).focus();
+      });
+      entry.append(makeFavoriteIcon(type), name, remove);
+      favoritesList.append(entry);
+    });
+    favoritesList.scrollTop = scroll;
+  }
+  function renderFavoriteResults() {
+    favoriteResults.replaceChildren();
+    const query = favoriteSearch.value.trim().toLocaleLowerCase('ru');
+    const matches = query ? favoriteCatalog.filter(type => type.name.toLocaleLowerCase('ru').includes(query)) : [];
+    favoriteHint.hidden = matches.length > 0;
+    favoriteHint.textContent = query ? 'Ничего не найдено' : 'Введите название предмета';
+    for (const type of matches) {
+      const button = document.createElement('button');
+      const alreadySelected = favoriteTypes.has(type.name);
+      button.className = 'favorite-result'; button.type = 'button';
+      button.disabled = alreadySelected;
+      button.setAttribute('aria-label', (alreadySelected ? 'Уже в избранном: ' : 'Добавить в избранное: ') + type.name);
+      const name = document.createElement('span');
+      name.textContent = type.name + (alreadySelected ? ' ★' : '');
+      button.append(makeFavoriteIcon(type), name);
+      button.addEventListener('click', () => {
+        setFavoriteType(type.name, true);
+        favoriteSearch.focus();
+      });
+      favoriteResults.append(button);
+    }
+  }
+  function placeFavorites(left, top) {
+    const bounds = favoritesWindow.getBoundingClientRect();
+    favoritesWindow.style.left = Math.max(12, Math.min(left, document.documentElement.clientWidth - bounds.width - 12)) + 'px';
+    favoritesWindow.style.top = Math.max(12, Math.min(top, innerHeight - bounds.height - 12)) + 'px';
+  }
+  function closeFavorites() {
+    favoritesWindow.hidden = true;
+    favoritesTrigger.setAttribute('aria-expanded', 'false');
+    releasePopup(favoritesWindow, favoritesTrigger);
+  }
+  favoritesTrigger.addEventListener('click', () => {
+    if (!favoritesWindow.hidden) { closeFavorites(); return; }
+    favoriteAddArea.hidden = true;
+    favoriteAdd.setAttribute('aria-expanded', 'false');
+    favoriteSearch.value = '';
+    renderFavorites(); renderFavoriteResults();
+    favoritesWindow.hidden = false;
+    raisePopup(favoritesWindow);
+    favoritesTrigger.setAttribute('aria-expanded', 'true');
+    const bounds = favoritesWindow.getBoundingClientRect();
+    placeFavorites((document.documentElement.clientWidth - bounds.width) / 2, (innerHeight - bounds.height) / 2);
+    document.querySelector('.favorites-close').focus();
+  });
+  document.querySelector('.favorites-close').addEventListener('click', closeFavorites);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && popupStack.length) {
+      event.preventDefault();
+      if(popupStack[popupStack.length-1] === favoritesWindow) closeFavorites(); else closeFilters();
+    }
+  });
+  favoriteAdd.addEventListener('click', () => {
+    const open = favoriteAddArea.hidden;
+    favoriteAddArea.hidden = !open;
+    favoriteAdd.setAttribute('aria-expanded', String(open));
+    if (open) favoriteSearch.focus();
+  });
+  favoriteSearch.addEventListener('input', renderFavoriteResults);
+  const favoriteHeader = document.querySelector('.favorites-header');
+  let drag = null;
+  favoriteHeader.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('button')) return;
+    const bounds = favoritesWindow.getBoundingClientRect();
+    drag = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+    favoriteHeader.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  });
+  favoriteHeader.addEventListener('pointermove', event => {
+    if (drag) placeFavorites(event.clientX - drag.x, event.clientY - drag.y);
+  });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) favoriteHeader.addEventListener(type, () => { drag = null; });
+  function keepFavoritesOnscreen() {
+    if (favoritesWindow.hidden) return;
+    const bounds = favoritesWindow.getBoundingClientRect();
+    placeFavorites(bounds.left, bounds.top);
+  }
+  window.addEventListener('resize', keepFavoritesOnscreen);
+  new ResizeObserver(keepFavoritesOnscreen).observe(favoritesWindow);
+  setFavoriteType('Алюминий', true);
+
+  // UI demonstration only: acceptance settings never filter or move existing stock.
+  const filtersWindow = document.querySelector('.filters-window');
+  const filtersTrigger = document.querySelector('.filters-settings');
+  const acceptance = { mode: 'off', nested: false, inherited: new URLSearchParams(location.search).get('inherited') === '1', categories: new Set(['materials']), items: new Set(['Плазморез']) };
+  const acceptanceCategories = [...categories.querySelectorAll('label')].map(label => ({ id: label.querySelector('input').value, name: label.textContent.trim() }));
+  const filterCategoryList = document.querySelector('.filter-category-list');
+  const filterItemList = document.querySelector('.filter-item-list');
+  const filterCategoryPicker = document.querySelector('#filter-category-picker');
+  const filterCategoryOptions = document.querySelector('.filter-category-options');
+  const filterItemPicker = document.querySelector('#filter-item-picker');
+  const filterItemSearch = document.querySelector('.filter-item-search');
+  const filterItemResults = document.querySelector('.filter-item-results');
+  const filterItemHint = document.querySelector('.filter-item-hint');
+  const addCategoryButton = document.querySelector('.filter-add-category');
+  const addItemButton = document.querySelector('.filter-add-item');
+  function updateAcceptanceHint() {
+    const empty = !acceptance.categories.size && !acceptance.items.size;
+    const hints = {
+      off: 'Собственный фильтр не ограничивает приём.',
+      allow: empty ? 'Список пуст — приём запрещён.' : 'Принимать только перечисленные категории и предметы.',
+      deny: empty ? 'Список пуст — собственный фильтр не ограничивает приём.' : 'Не принимать перечисленные категории и предметы.'
+    };
+    document.querySelector('.filter-mode-hint').textContent = hints[acceptance.mode];
+    const propagating = acceptance.mode !== 'off' && acceptance.nested;
+    filtersTrigger.dataset.mode = acceptance.mode;
+    filtersTrigger.dataset.inherited = String(acceptance.inherited);
+    filtersTrigger.dataset.propagating = String(propagating);
+    document.querySelector('.filter-inherited-note').hidden = !acceptance.inherited;
+    document.querySelector('#filter-button-state').textContent =
+      'Собственный фильтр: ' + { off: 'выключен', allow: 'белый список', deny: 'чёрный список' }[acceptance.mode] + '. ' +
+      (acceptance.inherited ? 'Действуют фильтры внешних хранилищ. ' : 'Внешние фильтры не действуют. ') +
+      (propagating ? 'Собственный фильтр распространяется вниз.' : 'Собственный фильтр не распространяется вниз.');
+  }
+  function renderAcceptanceList(container, entries, set, emptyText, addButton) {
+    const scroll = container.scrollTop;
+    container.replaceChildren();
+    if (!entries.length) {
+      const text = document.createElement('p'); text.className = 'filter-empty'; text.textContent = emptyText; container.append(text);
+    }
+    entries.forEach((type, index) => {
+      const entry = document.createElement('div'); entry.className = 'filter-entry'; entry.setAttribute('role', 'listitem');
+      const name = document.createElement('span'); name.className = 'filter-entry-name'; name.textContent = type.name;
+      const remove = document.createElement('button'); remove.className = 'filter-remove'; remove.type = 'button'; remove.textContent = '×';
+      remove.setAttribute('aria-label', 'Удалить из фильтра: ' + type.name); remove.title = 'Удалить из фильтра';
+      remove.addEventListener('click', () => {
+        set.delete(type.id || type.name); renderAcceptance();
+        const remaining = container.querySelectorAll('button'); (remaining[Math.min(index, remaining.length - 1)] || addButton).focus();
+      });
+      if(type.sprite) entry.append(makeFavoriteIcon(type));
+      entry.append(name, remove); container.append(entry);
+    });
+    container.scrollTop = scroll;
+  }
+  function renderAcceptance() {
+    renderAcceptanceList(filterCategoryList, acceptanceCategories.filter(type => acceptance.categories.has(type.id)), acceptance.categories, 'Категории не добавлены', addCategoryButton);
+    renderAcceptanceList(filterItemList, favoriteCatalog.filter(type => acceptance.items.has(type.name)), acceptance.items, 'Предметы не добавлены', addItemButton);
+    renderAcceptanceCategories(); renderAcceptanceItems(); updateAcceptanceHint();
+  }
+  function renderAcceptanceCategories() {
+    const scroll = filterCategoryOptions.scrollTop;
+    filterCategoryOptions.replaceChildren();
+    for(const category of acceptanceCategories) {
+      const selected = acceptance.categories.has(category.id);
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'filter-category-option';
+      button.textContent = category.name + (selected ? ' ✓' : ''); button.disabled = selected;
+      button.setAttribute('aria-label', (selected ? 'Категория уже добавлена: ' : 'Добавить категорию: ') + category.name);
+      button.addEventListener('click', () => {
+        acceptance.categories.add(category.id); renderAcceptance(); addCategoryButton.focus();
+      });
+      filterCategoryOptions.append(button);
+    }
+    filterCategoryOptions.scrollTop = scroll;
+  }
+  function renderAcceptanceItems() {
+    filterItemResults.replaceChildren();
+    const query = filterItemSearch.value.trim().toLocaleLowerCase('ru');
+    const matches = query ? favoriteCatalog.filter(type => type.name.toLocaleLowerCase('ru').includes(query)) : [];
+    filterItemHint.hidden = matches.length > 0; filterItemHint.textContent = query ? 'Ничего не найдено' : 'Введите название предмета';
+    for(const type of matches) {
+      const selected = acceptance.items.has(type.name);
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'favorite-result'; button.disabled = selected;
+      button.setAttribute('aria-label', (selected ? 'Предмет уже добавлен: ' : 'Добавить предмет: ') + type.name);
+      const name = document.createElement('span'); name.textContent = type.name + (selected ? ' ✓' : '');
+      button.append(makeFavoriteIcon(type), name);
+      button.addEventListener('click', () => { acceptance.items.add(type.name); renderAcceptance(); filterItemSearch.focus(); });
+      filterItemResults.append(button);
+    }
+  }
+  for(const radio of filtersWindow.querySelectorAll('input[name="acceptance-mode"]')) radio.addEventListener('change', () => {
+    acceptance.mode = radio.value; updateAcceptanceHint();
+  });
+  document.querySelector('.filter-nested input').addEventListener('change', event => { acceptance.nested = event.target.checked; updateAcceptanceHint(); });
+  addCategoryButton.addEventListener('click', () => {
+    filterCategoryPicker.hidden = !filterCategoryPicker.hidden;
+    addCategoryButton.setAttribute('aria-expanded', String(!filterCategoryPicker.hidden));
+  });
+  addItemButton.addEventListener('click', () => {
+    filterItemPicker.hidden = !filterItemPicker.hidden;
+    addItemButton.setAttribute('aria-expanded', String(!filterItemPicker.hidden));
+    if(!filterItemPicker.hidden) filterItemSearch.focus();
+  });
+  filterItemSearch.addEventListener('input', renderAcceptanceItems);
+  function placeFilters(left, top) {
+    const bounds = filtersWindow.getBoundingClientRect();
+    filtersWindow.style.left = Math.max(12, Math.min(left, document.documentElement.clientWidth - bounds.width - 12)) + 'px';
+    filtersWindow.style.top = Math.max(12, Math.min(top, innerHeight - bounds.height - 12)) + 'px';
+  }
+  function closeFilters() {
+    filtersWindow.hidden = true; filtersTrigger.setAttribute('aria-expanded', 'false'); releasePopup(filtersWindow, filtersTrigger);
+  }
+  filtersTrigger.addEventListener('click', () => {
+    if(!filtersWindow.hidden) { raisePopup(filtersWindow); return; }
+    filterCategoryPicker.hidden = true; filterItemPicker.hidden = true;
+    addCategoryButton.setAttribute('aria-expanded', 'false'); addItemButton.setAttribute('aria-expanded', 'false');
+    filterItemSearch.value = ''; renderAcceptance();
+    filtersWindow.hidden = false; raisePopup(filtersWindow); filtersTrigger.setAttribute('aria-expanded', 'true');
+    const bounds = filtersWindow.getBoundingClientRect();
+    placeFilters((document.documentElement.clientWidth - bounds.width) / 2, (innerHeight - bounds.height) / 2);
+    filtersWindow.querySelector('.filters-body').scrollTop = 0;
+    filtersWindow.querySelector('.filters-close').focus();
+  });
+  document.querySelector('.filters-close').addEventListener('click', closeFilters);
+  const filtersHeader = document.querySelector('.filters-header');
+  let filtersDrag = null;
+  filtersHeader.addEventListener('pointerdown', event => {
+    if(event.button !== 0 || event.target.closest('button')) return;
+    const bounds = filtersWindow.getBoundingClientRect();
+    filtersDrag = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+    filtersHeader.setPointerCapture(event.pointerId); event.preventDefault();
+  });
+  filtersHeader.addEventListener('pointermove', event => { if(filtersDrag) placeFilters(event.clientX - filtersDrag.x, event.clientY - filtersDrag.y); });
+  for(const type of ['pointerup','pointercancel','lostpointercapture']) filtersHeader.addEventListener(type, () => { filtersDrag = null; });
+  function keepFiltersOnscreen() {
+    if(filtersWindow.hidden) return;
+    const bounds = filtersWindow.getBoundingClientRect(); placeFilters(bounds.left, bounds.top);
+  }
+  window.addEventListener('resize', keepFiltersOnscreen);
+  new ResizeObserver(keepFiltersOnscreen).observe(filtersWindow);
+  for(const popup of [favoritesWindow, filtersWindow]) {
+    popup.addEventListener('pointerdown', () => raisePopup(popup));
+    popup.addEventListener('focusin', () => raisePopup(popup));
+  }
+  renderAcceptance();
+</script></body></html>

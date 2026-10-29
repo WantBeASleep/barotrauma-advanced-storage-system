@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Строка предмета — макет</title>
+<style>
+  :root { color-scheme: dark; font-family: Arial, sans-serif; color: #e0e5df; background: #141a1d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 28px 20px 40px; }
+  main { max-width: 640px; margin: auto; }
+  h1 { font-size: 20px; font-weight: 500; margin: 0 0 8px; }
+  .intro, .example-label { color: #aab5b7; font-size: 13px; line-height: 1.5; }
+  .intro { margin: 0 0 26px; }
+  .example { margin: 0 0 22px; }
+  .example-label { margin: 0 0 7px; }
+  .item-row { display: grid; grid-template-columns: 100px minmax(0, 1fr) auto; grid-template-areas: "icon info actions" "icon slots take"; grid-template-rows: 44px 54px; height: 120px; align-items: start; gap: 4px 12px; padding: 8px; background: #222c30; border: 1px solid #667578; border-radius: 0; }
+  .item-info { grid-area: info; min-width: 0; padding-top: 0; }
+  .item-name { margin: 0; font-size: 16px; line-height: 1.3; font-weight: 500; overflow-wrap: anywhere; }
+  .item-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 3px; font-size: 13px; line-height: 1.4; }
+  .item-meta:empty { display: none; }
+  .quality { color: var(--quality-color); }
+  .condition { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .good { --quality-color: #90ee90; }
+  .excellent { --quality-color: #add8e6; }
+  .item-icon { grid-area: icon; align-self: center; position: relative; display: grid; place-items: center; width: 100px; height: 100px; border: 1px solid #66777a; background: #182125; }
+  .good .item-icon, .excellent .item-icon { border-color: var(--quality-color); box-shadow: inset 0 0 14px color-mix(in srgb, var(--quality-color) 20%, transparent); }
+  /* Original Content/Items/InventoryIconAtlas.png, 1024 x 1024; rectangles from Item XML. */
+  .sprite { --scale: 1; display: block; flex: none; width: calc(64px * var(--scale)); height: calc(64px * var(--scale)); background-image: url('assets/InventoryIconAtlas.png'); background-repeat: no-repeat; background-size: calc(1024px * var(--scale)) calc(1024px * var(--scale)); background-position: calc(var(--x) * var(--scale)) calc(var(--y) * var(--scale)); }
+  .item-icon .sprite { --scale: 1.375; }
+  .aluminium { --x: -448px; --y: -192px; } /* Materials/materials.xml */
+  .plasmacutter { --x: -704px; --y: 0px; } /* Tools/tools.xml */
+  .oxygentank { --x: -896px; --y: 0px; } /* Tools/tools.xml */
+  .smg { --x: -832px; --y: -830px; } /* Weapons/weapons.xml */
+  .smgmagazine { --x: -960px; --y: -960px; } /* Weapons/weapons.xml */
+  .stock { position: absolute; right: 2px; bottom: 2px; max-width: calc(100% - 4px); padding: 1px 4px; border-radius: 2px; background: #11191ee8; color: #fff; font-size: 13px; line-height: 1.3; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .quick-actions { grid-area: actions; display: flex; justify-content: end; flex-wrap: wrap; gap: 6px; max-width: 132px; justify-self: end; }
+  button, input { font: inherit; color: inherit; border: 1px solid #84908e; background: #2b373a; border-radius: 2px; }
+  button { min-height: 34px; padding: 5px 13px; cursor: pointer; }
+  button:hover { background: #3a4849; }
+  button:focus-visible, input:focus-visible { outline: 2px solid #b6d2d9; outline-offset: 3px; }
+  .favorite { width: 34px; height: 34px; padding: 0; font-size: 22px; line-height: 1; }
+  .favorite[aria-pressed="true"] { color: #f1d377; }
+  .item-row:has(.favorite[aria-pressed="true"]) { background: #493f28; border-color: #a18a51; }
+  .inserted-items { grid-area: slots; display: flex; gap: 6px; align-self: center; overflow-x: auto; min-width: 0; padding-bottom: 2px; scrollbar-width: thin; }
+  .inserted-item { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border: 1px solid #637377; background: #182125; }
+  .inserted-item .sprite { --scale: .625; }
+  .take-controls { grid-area: take; display: flex; align-items: center; justify-self: end; align-self: center; gap: 8px; margin: 0; }
+  .quantity { width: 52px; min-width: 0; height: 36px; padding: 4px; text-align: center; font-variant-numeric: tabular-nums; }
+  .quantity[aria-invalid="true"] { border-color: #f56969; }
+  .take { min-width: 72px; height: 36px; }
+  .status { min-height: 20px; color: #b7c6bf; font-size: 13px; line-height: 1.5; margin: 10px 0 0; }
+  @media (max-width: 510px) {
+    body { padding: 20px 12px; }
+    .item-row { height: 204px; grid-template-columns: 76px minmax(0, 1fr) 34px; grid-template-areas: "icon info actions" "icon slots slots" "icon take take"; grid-template-rows: minmax(0, 1fr) 54px 36px; column-gap: 10px; }
+    .item-icon { width: 76px; height: 76px; }
+    .item-icon .sprite { --scale: 1; }
+
+
+    .item-meta { gap: 4px 8px; }
+    .quick-actions { max-width: 34px; }
+  }
+  .fuelrod { --x: -576px; --y: -64px; }
+  .batterycell { --x: -832px; --y: 0px; }
+  .weldingfueltank { --x: -960px; --y: 0px; }
+  /* Exosuit.png: InventoryIcon rectangle 384,384,128,128 in a 512 x 512 atlas. */
+  .exosuit { background-image: url('assets/Exosuit.png'); background-size: calc(256px * var(--scale)) calc(256px * var(--scale)); --x: -192px; --y: -192px; }
+  .inserted-items { overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-color: #819597 #182125; padding-bottom: 2px; }
+  .inserted-items:focus-visible { outline: 2px solid #b6d2d9; outline-offset: 3px; }
+  .inserted-items::-webkit-scrollbar { height: 8px; }
+  .inserted-items::-webkit-scrollbar-track { background: #182125; }
+  .inserted-items::-webkit-scrollbar-thumb { background: #819597; border-radius: 4px; }
+
+</style>
+</head>
+<body>
+<main>
+  <h1>Строка предмета</h1>
+  <p class="intro">Название справа от иконки · запас на иконке · цвет состояния как в игре.</p>
+  <section class="example" aria-labelledby="material-label">
+    <p class="example-label" id="material-label">Материал · обычное качество</p>
+    <article class="item-row" data-name="Алюминий" data-stock="54">
+      <div class="item-icon"><span class="sprite aluminium" role="img" aria-label="Алюминий"></span><span class="stock" title="В запасе: 54">×54</span></div>
+      <div class="item-info"><h2 class="item-name">Алюминий</h2></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Алюминий: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Алюминий: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+  </section>
+  <section class="example" aria-labelledby="exosuit-label">
+    <p class="example-label" id="exosuit-label">12 заполненных слотов · горизонтальная прокрутка</p>
+    <article class="item-row" data-name="Экзокостюм" data-stock="1">
+      <div class="item-icon"><span class="sprite exosuit" role="img" aria-label="Экзокостюм"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Экзокостюм</h2><div class="item-meta"><span class="condition" data-condition="84" title="Состояние">84%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Экзокостюм: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <div class="inserted-items" role="group" aria-label="Встроенные слоты экзокостюма" title="Просмотр слотов: колесо мыши, полоса прокрутки или стрелки на клавиатуре">
+        <span class="inserted-item" title="Слот 1: Кислородный баллон"><span class="sprite oxygentank" role="img" aria-label="Слот 1: Кислородный баллон"></span></span>
+        <span class="inserted-item" title="Слот 2: Топливный стержень"><span class="sprite fuelrod" role="img" aria-label="Слот 2: Топливный стержень"></span></span>
+        <span class="inserted-item" title="Слот 3: Плазморез"><span class="sprite plasmacutter" role="img" aria-label="Слот 3: Плазморез"></span></span>
+        <span class="inserted-item" title="Слот 4: Аккумулятор"><span class="sprite batterycell" role="img" aria-label="Слот 4: Аккумулятор"></span></span>
+        <span class="inserted-item" title="Слот 5: Сварочный баллон"><span class="sprite weldingfueltank" role="img" aria-label="Слот 5: Сварочный баллон"></span></span>
+        <span class="inserted-item" title="Слот 6: Алюминий"><span class="sprite aluminium" role="img" aria-label="Слот 6: Алюминий"></span></span>
+        <span class="inserted-item" title="Слот 7: Магазин пистолета-пулемёта"><span class="sprite smgmagazine" role="img" aria-label="Слот 7: Магазин пистолета-пулемёта"></span></span>
+        <span class="inserted-item" title="Слот 8: Аккумулятор"><span class="sprite batterycell" role="img" aria-label="Слот 8: Аккумулятор"></span></span>
+        <span class="inserted-item" title="Слот 9: Топливный стержень"><span class="sprite fuelrod" role="img" aria-label="Слот 9: Топливный стержень"></span></span>
+        <span class="inserted-item" title="Слот 10: Кислородный баллон"><span class="sprite oxygentank" role="img" aria-label="Слот 10: Кислородный баллон"></span></span>
+        <span class="inserted-item" title="Слот 11: Магазин пистолета-пулемёта"><span class="sprite smgmagazine" role="img" aria-label="Слот 11: Магазин пистолета-пулемёта"></span></span>
+        <span class="inserted-item" title="Слот 12: Плазморез"><span class="sprite plasmacutter" role="img" aria-label="Слот 12: Плазморез"></span></span>
+      </div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Экзокостюм: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+  </section>
+  <section class="example" aria-labelledby="tool-label">
+    <p class="example-label" id="tool-label">Инструмент · вставлен кислородный баллон</p>
+    <article class="item-row good" data-name="Плазморез" data-stock="1">
+      <div class="item-icon"><span class="sprite plasmacutter" role="img" aria-label="Плазморез"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Плазморез</h2><div class="item-meta"><span class="quality">Хорошее качество</span><span class="condition" data-condition="50" title="Состояние">50%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Плазморез: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <div class="inserted-items" role="group" aria-label="Вставленные предметы, только просмотр"><span class="inserted-item" title="Кислородный баллон"><span class="sprite oxygentank" role="img" aria-label="Кислородный баллон"></span></span></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Плазморез: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+  </section>
+  <section class="example" aria-labelledby="weapon-label">
+    <p class="example-label" id="weapon-label">Оружие · вставлен магазин</p>
+    <article class="item-row excellent" data-name="Пистолет-пулемёт" data-stock="1">
+      <div class="item-icon"><span class="sprite smg" role="img" aria-label="Пистолет-пулемёт"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Пистолет-пулемёт</h2><div class="item-meta"><span class="quality">Отличное качество</span><span class="condition" data-condition="100" title="Состояние">100%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Пистолет-пулемёт: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <div class="inserted-items" role="group" aria-label="Вставленные предметы, только просмотр"><span class="inserted-item" title="Магазин пистолета-пулемёта"><span class="sprite smgmagazine" role="img" aria-label="Магазин пистолета-пулемёта"></span></span></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Пистолет-пулемёт: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+  </section>
+  <section class="example" aria-labelledby="tank-label">
+    <p class="example-label" id="tank-label">Низкое состояние · обычное качество</p>
+    <article class="item-row" data-name="Кислородный баллон" data-stock="1">
+      <div class="item-icon"><span class="sprite oxygentank" role="img" aria-label="Кислородный баллон"></span><span class="stock" title="В запасе: 1">×1</span></div>
+      <div class="item-info"><h2 class="item-name">Кислородный баллон</h2><div class="item-meta"><span class="condition" data-condition="8" title="Состояние">8%</span></div></div>
+      <div class="quick-actions" role="group" aria-label="Быстрые действия"><button type="button" class="favorite" aria-label="Кислородный баллон: добавить в избранное" aria-pressed="false" title="В избранное">☆</button></div>
+      <form class="take-controls"><input class="quantity" type="text" inputmode="numeric" value="1" aria-label="Кислородный баллон: количество для получения" autocomplete="off"><button class="take" type="submit">Взять</button></form>
+    </article>
+  </section>
+  <p class="status" role="status" aria-live="polite"></p>
+</main>
+<script>
+  // Vanilla Content/UI/style.xml: ColorInventoryEmpty, Half, Full.
+  // Inventory.cs interpolates these three stops with ToolBox.GradientLerp.
+  const conditionStops = [[245,105,105], [243,162,50], [96,222,146]];
+  function conditionColor(percent) {
+    const position = Math.max(0, Math.min(100, percent)) / 50;
+    const segment = Math.min(1, Math.floor(position));
+    const blend = position - segment;
+    const rgb = conditionStops[segment].map((value, channel) => Math.trunc(value + (conditionStops[segment + 1][channel] - value) * blend));
+    return `rgb(${rgb.join(',')})`;
+  }
+  for (const label of document.querySelectorAll('.condition')) {
+    label.style.color = conditionColor(Number(label.dataset.condition));
+    label.setAttribute('aria-label', `Состояние: ${label.textContent}`);
+  }
+  // Demonstration only: no connection to the game inventory.
+  const status = document.querySelector('.status');
+  for (const row of document.querySelectorAll('.item-row')) {
+    const favorite = row.querySelector('.favorite');
+    favorite.addEventListener('click', () => {
+      const selected = favorite.getAttribute('aria-pressed') !== 'true';
+      favorite.setAttribute('aria-pressed', String(selected));
+      favorite.textContent = selected ? '★' : '☆';
+      const action = selected ? 'Убрать из избранного' : 'В избранное';
+      favorite.title = action;
+      favorite.setAttribute('aria-label', `${row.dataset.name}: ${action}`);
+    });
+    const input = row.querySelector('.quantity');
+    input.addEventListener('input', () => input.removeAttribute('aria-invalid'));
+    // Commit on leaving the field or submitting; do not interrupt typing.
+    const clampQuantityToStock = () => {
+      const raw = input.value.trim();
+      const available = Number(row.dataset.stock);
+      if (available > 0 && /^\d+$/.test(raw) && Number(raw) > available) {
+        input.value = String(available);
+        input.removeAttribute('aria-invalid');
+      }
+    };
+    input.addEventListener('blur', clampQuantityToStock);
+    row.querySelector('form').addEventListener('submit', event => {
+      event.preventDefault();
+      clampQuantityToStock();
+      const raw = input.value.trim();
+      const amount = Number(raw);
+      const valid = /^\d+$/.test(raw) && Number.isSafeInteger(amount) && amount > 0;
+      input.setAttribute('aria-invalid', String(!valid));
+      if (!valid) {
+        status.textContent = 'Для демонстрации укажи целое количество больше нуля.';
+        input.focus();
+        return;
+      }
+      const available = Number(row.dataset.stock);
+      const taken = Math.min(available, amount);
+      row.dataset.stock = String(available - taken);
+      const stock = row.querySelector('.stock');
+      stock.textContent = `×${row.dataset.stock}`;
+      stock.title = `В запасе: ${row.dataset.stock}`;
+      status.textContent = taken ? `${row.dataset.name}: взято ${taken}.` : `${row.dataset.name}: запас закончился.`;
+      if (!Number(row.dataset.stock)) row.closest('.example').hidden = true;
+    });
+  }
+  // Native scrollbar / touch scrolling; wheel and keyboard support for overflow only.
+  for (const strip of document.querySelectorAll('.inserted-items')) {
+    const updateScrollable = () => {
+      const overflow = strip.scrollWidth > strip.clientWidth + 1;
+      if (overflow) strip.tabIndex = 0;
+      else strip.removeAttribute('tabindex');
+    };
+    new ResizeObserver(updateScrollable).observe(strip);
+    updateScrollable();
+    strip.addEventListener('wheel', event => {
+      if (event.ctrlKey || event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      const multiplier = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? strip.clientWidth : 1;
+      const delta = event.deltaY * multiplier;
+      const max = strip.scrollWidth - strip.clientWidth;
+      const next = Math.max(0, Math.min(max, strip.scrollLeft + delta));
+      if (Math.abs(next - strip.scrollLeft) < 1) return;
+      event.preventDefault();
+      strip.scrollLeft = next;
+    }, { passive: false });
+    strip.addEventListener('keydown', event => {
+      if (event.target !== strip || event.altKey || event.ctrlKey || event.metaKey) return;
+      const positions = { ArrowLeft: strip.scrollLeft - 50, ArrowRight: strip.scrollLeft + 50, Home: 0, End: strip.scrollWidth };
+      if (!(event.key in positions)) return;
+      event.preventDefault();
+      strip.scrollLeft = positions[event.key];
+    });
+  }
+</script>
+</body>
+</html>
