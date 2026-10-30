@@ -1,0 +1,4 @@
+interface:
+  display_name: "Скрипты"
+  short_description: "Python-утилиты с README и справкой на русском"
+  default_prompt: "Используй $scripts, чтобы создать или доработать Python-утилиту проекта с README и встроенной справкой на русском языке."

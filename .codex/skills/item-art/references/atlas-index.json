@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "game_version": "1.13.5.0",
+  "manifest": "Content/ContentPackages/Vanilla.xml",
+  "items_file": "items.jsonl",
+  "item_count": 379,
+  "atlases": [
+    {
+      "file": "InventoryIconAtlas.png",
+      "source": "Content/Items/InventoryIconAtlas.png",
+      "size_px": [
+        1024,
+        1024
+      ],
+      "sha256": "4140ac10b96096efab90aecdf1813093ebca3a51645822e6c0b7f0f084066035",
+      "item_count": 223,
+      "roles": {
+        "inventory_icon": 223
+      },
+      "unique_rectangles": 176
+    },
+    {
+      "file": "InventoryIconAtlas2.png",
+      "source": "Content/Items/InventoryIconAtlas2.png",
+      "size_px": [
+        768,
+        1024
+      ],
+      "sha256": "810d5f2907a3a6f2f5cdc60376f29e038b187216404584cb9c224c8f1e9051d6",
+      "item_count": 105,
+      "roles": {
+        "auxiliary": 1,
+        "inventory_icon": 104,
+        "world_sprite": 1
+      },
+      "unique_rectangles": 89
+    },
+    {
+      "file": "MedicinesSprites.png",
+      "source": "Content/Items/Medical/Medicines.png",
+      "size_px": [
+        512,
+        512
+      ],
+      "sha256": "793e92c157e4bdd2100b5ee143ffa36bbdb682cdc03bfb6f4d160f688d39a2b0",
+      "item_count": 47,
+      "roles": {
+        "inventory_icon": 3,
+        "world_sprite": 47
+      },
+      "unique_rectangles": 50
+    },
+    {
+      "file": "MineralsSprites.png",
+      "source": "Content/Items/Materials/minerals.png",
+      "size_px": [
+        1024,
+        1024
+      ],
+      "sha256": "24f1a2adaae5627183fb586acc2aec3136ff568f872f3ae7bc0f8f7ab35308b4",
+      "item_count": 59,
+      "roles": {
+        "auxiliary": 66,
+        "world_sprite": 59
+      },
+      "unique_rectangles": 92
+    },
+    {
+      "file": "GeneticIconAndSprites.png",
+      "source": "Content/Items/Genetic/Genetic.png",
+      "size_px": [
+        512,
+        256
+      ],
+      "sha256": "d74471c18742ae20706453565cd0813254e3e8465b60a9007fb426bc1bd59265",
+      "item_count": 15,
+      "roles": {
+        "auxiliary": 2,
+        "inventory_icon": 14,
+        "world_sprite": 15
+      },
+      "unique_rectangles": 31
+    }
+  ],
+  "source_xml_sha256": {
+    "Content/ContentPackages/Vanilla.xml": "9bff44d20433850af7d6d63dcb11836ea87431e1236ae87f9b237f58415ccd82",
+    "Content/Items/Alien/alienitems.xml": "2aefacfa32252bd5613e125b34efa91e13b4c8a6953cfd11b6a804173e669ee7",
+    "Content/Items/Button/button.xml": "e89c177f9feec12d697c5375ffce91b109f83b838d42e4a7d9c5ab4a369c9454",
+    "Content/Items/Command/command.xml": "1768bf7aaa928458cbd05956091119468e4e70989afd7c468213516b4bd1eaee",
+    "Content/Items/Containers/containers.xml": "269f6c95b3e157f8db3af45b6303648f2fc75c6c03e995bdb9a771614c0afcf3",
+    "Content/Items/CreatureLoot/creatureloot.xml": "260d3ac616ad419036d96c71b76aed662830046060f9d4900bee0a2a0483de8f",
+    "Content/Items/Diving/divinggear.xml": "eb889ace7b6252c994ee70de653e70842e9434e4a237c7d576326ceb9d4183ef",
+    "Content/Items/Door/doors.xml": "848ac6504b15b09f6095c754b276a4513768797e51829f9c10e686f1561ddf85",
+    "Content/Items/Electricity/lights.xml": "2133ba13bd7c8d772dc017d762eeed94c5b5f811c6ec81268b95fc47375ba459",
+    "Content/Items/Electricity/poweritems.xml": "bc5b675f33bfc4f0572faa1f7e254ed36e5bffbedc619fdee28f74e14f5d8acd",
+    "Content/Items/Electricity/signalitems.xml": "5015eb9447e670f6f9d0af902c3a85f983e6f757389a4221c786aac7d58a843d",
+    "Content/Items/Engine/engine.xml": "30e658358748c745a3f591dd9721014a751e1ea75c0df416af191093bb0b5aa3",
+    "Content/Items/Fabricators/fabricators.xml": "8f9ebb483a4b1e2aaa0fdc6b07de48bcdbf7cbd46bc91f2f8f1b90cd9a8a5e95",
+    "Content/Items/Gardening/gardeningtools.xml": "9f49974f198b506716a55f989d76dd00cda08c12defe23695e8f6e276600e752",
+    "Content/Items/Gardening/growableplants.xml": "7781a42f3bfbca4247d93d148ac41599b7ce0c7d35b3729d2ae4b14de680d771",
+    "Content/Items/Gardening/plantproducts.xml": "3a5805671509680a108e749e8e822645aa359d5f0b590ed747462019b34ab367",
+    "Content/Items/Genetic/genetic.xml": "3836612051fcff0b35d7310ac79626c52e7587e26dbc1d128e71ce80cc0d1df3",
+    "Content/Items/Jobgear/Assistant/assistant_gear.xml": "b733f84e0a32990d5278fd23989b9da2ece8a6e0586fa5619a55a323f1959cb4",
+    "Content/Items/Jobgear/Assistant/assistant_talent_items.xml": "d18171b1e80ae4d39efce5100d7e3af9545dadc6d192da890e29d0f57cc1569c",
+    "Content/Items/Jobgear/Captain/captain_gear.xml": "2cb30f23912ec54b834757f90488b65bc8b329313860e48a91552cbb0c97ee54",
+    "Content/Items/Jobgear/Captain/captain_talent_items.xml": "8d1b60f4f28ffd01ae282c4f605914635785ae9093fae831f68d1f3970c036bf",
+    "Content/Items/Jobgear/Clown/clown.xml": "b06fa49688b4c658ac442fd7cb2ac63dd5d3ef921dbcc934384b111148b345d5",
+    "Content/Items/Jobgear/Commoner/commoner_gear.xml": "b298752949aff64bb33b1bed855123870465da0a424d59d04f56630febafcf83",
+    "Content/Items/Jobgear/Cultist/cultist_gear.xml": "ea5ac29681ef6d391b5f4207fd4261f4525c1e643f39cb30dadecaf888ad1068",
+    "Content/Items/Jobgear/Engineer/engineer_gear.xml": "902fe704a2038058c0803114cd90845a2a788d1bfb6918e87f37a2f4f184ef48",
+    "Content/Items/Jobgear/Engineer/engineer_talent_items.xml": "8920126730ad80f0cafe06172b41409351f67416b037bf8447392884f695d58d",
+    "Content/Items/Jobgear/Mechanic/mechanic_gear.xml": "af0c0a9765953b947896ea355fb58dde2bad44e93722250ebc26de854c93246f",
+    "Content/Items/Jobgear/Mechanic/mechanic_talent_items.xml": "719459f09a3877b4b6e5d2adb6c9b21e22cc573324cac3b8864837e2076f6aba",
+    "Content/Items/Jobgear/Medic/medic_gear.xml": "0f89cd1da1e28d1804fd1b5b1c7f31ce94182217fffdbb6161979a3446c91460",
+    "Content/Items/Jobgear/Medic/medic_talent_items.xml": "2cb260c0de9e12e8025880d41c64be03e3d3c7f71af9db73764584ce6e862040",
+    "Content/Items/Jobgear/Security/securityofficer_gear.xml": "9dc57ecad4d5b6aafba3490b08410df594089d4bf77c513fe1befc959c69222a",
+    "Content/Items/Jobgear/Security/securityofficer_talent_items.xml": "793b78f4d0f1f097307d22c8522f5783e845af2fe8c0c1a9a9b9784a476bc3b5",
+    "Content/Items/Jobgear/Watchman/watchman_gear.xml": "ae83e08d7a8f697c37260d5b7a1f79fee53bc2534861aa8fd4d3326f0b39636a",
+    "Content/Items/Jobgear/misc.xml": "ecad9124a7122d99601e4306b469dfcedb434dc4c340cf97803619c3e261c15f",
+    "Content/Items/Labels/labels.xml": "872596079bf9faaf10e6f9c540e8cbad58bff0a21732b7137ef32d9ee6f89b2a",
+    "Content/Items/Ladder/ladder.xml": "9f5842ec61f7ec10d06a7cfbf9b469a11727608caf34ce455bc0046e9f963220",
+    "Content/Items/Legacy/legacycommand.xml": "3016be5dce63d864bfee01b6a0352790f1f38e9833f3d03a87552a85c1776c37",
+    "Content/Items/Legacy/legacycontainers.xml": "2af815dde0c44234f48fccdf18af0f8029134216d53ddf21ced5c30f19ce4f07",
+    "Content/Items/Legacy/legacyengine.xml": "67abf995984d13e2a788cfcfec49a495d5e1b3685dd224f7831ede3e790c3ca1",
+    "Content/Items/Legacy/legacyfabricators.xml": "de92dfd49d6424ab31c6cc62435fd58bb834d37ffddead3f0335296094aa091e",
+    "Content/Items/Legacy/legacyoxygengenerator.xml": "06aa034d2997f237480df6c5f6df0cd7a5ab942c7d8584f99e5386bf16706e13",
+    "Content/Items/Legacy/legacypoweritems.xml": "9c08de0e7040acba32fc32a33b99121126d2a531d3860ece3d5b18de1e305b8a",
+    "Content/Items/Legacy/legacypump.xml": "43928f46b032ff49d38d04a0dfcde805a37c18b2ad65fe887a1650ebbea7f690",
+    "Content/Items/Legacy/legacyrailgun.xml": "deb314ecacccf1e2a4f87acedaa3ab3ef3090841f89e7d749bd9e55ca160c9ad",
+    "Content/Items/Legacy/legacysearchlight.xml": "8a31520e627897a8734ba37c60aea54b46adb878af8619b2d73c7504afcbeed3",
+    "Content/Items/Materials/materials.xml": "2a241f0710ceb883396e1b9827fe2a6e9f1f7d519c781b8d88fdb7337defc00e",
+    "Content/Items/Materials/medmaterials.xml": "05a86dd1698a88350e25c89757768c6895370f519568b3f061129b8b49304a52",
+    "Content/Items/Materials/minerals.xml": "ed68f04b4bcc006bbd46b2f93a0ebaa0596e6d8aa27559eb372865c69391f7de",
+    "Content/Items/Medical/buffs.xml": "f07e3db252687cdc962b7ad860159becdb2461a63057095e5e9165246a717e53",
+    "Content/Items/Medical/medical.xml": "2f347af155ab89d3ceb4bc0b82d7c7b804b8c86c3cc3ff81a958213c542c8aec",
+    "Content/Items/Medical/poisons.xml": "06b818688c095dc453b80a419b884263aa653149f72ea744e20a7a4498983f3b",
+    "Content/Items/Misc/blueprints.xml": "f593a42a761ccb74f2db674ee6527ca35427be642733a7e85c2bcc8fa07368a2",
+    "Content/Items/Misc/misc.xml": "a943b0e361bbdd9f6a9d3557bc55673ce5b259503eff419ed34c1110c7725d99",
+    "Content/Items/Misc/pvp_items.xml": "ace4553a10c3cfb8f26aea165cffcde7547174c187560b92f847f2ddd2c70440",
+    "Content/Items/Misc/traitor_items.xml": "9074f6574694d7281a413236845a1cd01089e2070e7469992b01356fbe23d669",
+    "Content/Items/OxygenGenerator/oxygengenerator.xml": "c2efda1da33b795d7e615a508a17cc3291632e21088e4698de0a4159303737a1",
+    "Content/Items/Pets/PetEggs.xml": "43c4bbefb2c48c9d1b7ac296f4efb930bfc82be833503a6f1cd67edc7ca775f9",
+    "Content/Items/Pets/PetItems.xml": "713f977fc0745475f4ac825c27aee27296b3047f1503aa919839fbe87f269dee",
+    "Content/Items/Pump/pump.xml": "22b07dcf5bbea82d4e00f507109abc1cf4b4b92e9d910a84977aedb95d04a2bc",
+    "Content/Items/Reactor/reactor.xml": "37eded912e5681da477401b1160a5ce998de29329ebb5de059cfa53c0861296c",
+    "Content/Items/SearchLight/searchlight.xml": "1b020361ec691d2ed2077834d0223319fad44fef19cd2a99983fa620f54d199c",
+    "Content/Items/Shipwrecks/wreckeditems.xml": "b6ccc064aaaee3d39c02912f67c0100957cf7f8badc084d99584d4108c2a4eaa",
+    "Content/Items/Tools/tools.xml": "9957f19db717e1a65a48e5389cd1d52993b7ef9d2c91601448223822f88f0fb4",
+    "Content/Items/Weapons/chaingun.xml": "c20af6e2b5e0417654b4e7056b6452bbb33e88930ceff268337c35dc15281656",
+    "Content/Items/Weapons/coilgun.xml": "dd088d5e348f9831391705c6616434fc0c18be40956e0935a5185d0405068237",
+    "Content/Items/Weapons/depthcharge.xml": "5b7aba9e301c6754fc8f17f871a4c1d611f55a2889ad01b25c4755a31442544d",
+    "Content/Items/Weapons/dischargecoil.xml": "d0d13e6127edafcb488106cea6d2163f852cf1231ec1fcb7791fc1995ffee45a",
+    "Content/Items/Weapons/explosives.xml": "828ac85ead15d05fbad84e414ca35047b0eb43d1db35b8e6f95365d854aaa8ff",
+    "Content/Items/Weapons/flakcannon.xml": "6e6e213438b09526404aaa32695343a9e942ee24f59971eba420a3ad3a940d2c",
+    "Content/Items/Weapons/pulselaser.xml": "8564b7a7e0596fe4bda970443ff040c2c3dfd3cb8e167aa4ca62966c05f22b74",
+    "Content/Items/Weapons/railgun.xml": "0400b15bd8e87f667d0aa791ea4008df019b79a4e4ca39f8f10e2d5a1c0d8c35",
+    "Content/Items/Weapons/turrethardpoint.xml": "6e97b3342a77eeda81004731ce240e8d77ff136cc919d05157ee6fe1b81e7ff1",
+    "Content/Items/Weapons/weapons.xml": "5fc2a18e229ea04a1e3301dbd468cc1beaf9fa595d2cabee288e08f12c343b01",
+    "Content/Items/idcard.xml": "9ed8342d7fc942a9d003ca7964bb7f51c961f6628455d5b5534220d753c0d6ee",
+    "Content/Map/Outposts/AbandonedOutpost/AbandonedOutpostDecals.xml": "c4949884efa2e55156bafa1baa63611ef4de293c9c650f3a4c76d698ba2ff08b",
+    "Content/Map/Outposts/OutpostItems.xml": "c67f88ce30f93e0f8a29eb0d72b28e42d8b6ca5fe2dde24de4c31903f12e5af0",
+    "Content/Map/Pirates/PirateItems.xml": "31f36d1bdc6045bbd156aa3ef65f9d9622fd0b8bb1fade3eb5ad5c60d0205d3f",
+    "Content/Map/Thalamus/thalamusitems.xml": "84ea31c902ad27bd51a653f1a97bc0d1e2a06cfebfee550c1e68fece16123c90",
+    "Content/Texts/English/EnglishVanilla.xml": "0b4446db3185536816fdf0f356305652cc7481cdec71a7678b860a21fb358a59",
+    "Content/Texts/English/EnglishVanillaEditorTexts.xml": "8901cc296ab9509548f3af4ea5b57b666ffbe7f4f60a7f08aa3fc1d93c3ff4e6",
+    "Content/Texts/English/EnglishVanillaEndgame.xml": "2f4459b5bf648884e1699c4ea2e4bf4905efc9124f6ec9e18f4b31594c98f439",
+    "Content/Texts/English/EnglishVanillaFactions.xml": "1e664fd2d4a46606b3a7377ee18d8823160b95e2fb14e007ce5147f609be75d4",
+    "Content/Texts/English/EnglishVanillaNew.xml": "1db396e5e12657bac5e5e74eed394e4c0960224cf1ae0697187e82a095ba9a3d",
+    "Content/Texts/Russian/RussianVanilla.xml": "56482c6f137fa989f2591b4ae48c4e705833fe1600b10770734f4a63db2a00ee",
+    "Content/Texts/Russian/RussianVanillaEditorTexts.xml": "f109c8fa94bbdbea754d363107104b4a45a9e743e6c8e7b40ecea342442c5d28",
+    "Content/Texts/Russian/RussianVanillaEndgame.xml": "f6c8cca71c41f11c8c37d1890b3475e6eb9b6323f47b1102e6da97687fd931ac",
+    "Content/Texts/Russian/RussianVanillaFactions.xml": "909e04594822266897538d0444c4727cd204030e9e1df87f5166d00d357da16d"
+  }
+}

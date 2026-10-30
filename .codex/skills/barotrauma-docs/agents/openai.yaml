@@ -1,0 +1,4 @@
+interface:
+  display_name: "Barotrauma Docs"
+  short_description: "XML, документация моддинга и исходники Barotrauma"
+  default_prompt: "Используй $barotrauma-docs, чтобы найти контекст по XML-контенту или игровой механике в документации моддинга и исходниках Barotrauma."

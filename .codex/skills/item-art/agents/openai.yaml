@@ -1,0 +1,4 @@
+interface:
+  display_name: "item-art"
+  short_description: "Создание иконок и спрайтов предметов Barotrauma"
+  default_prompt: "Используй $item-art: подготовь иконку и спрайт по моему референсу, подобрав стиль и размер по схожим ванильным предметам."

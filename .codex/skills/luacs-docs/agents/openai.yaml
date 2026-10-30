@@ -1,0 +1,4 @@
+interface:
+  display_name: "LuaCs Docs"
+  short_description: "Документация платформы LuaCs: Lua, C#, API и настройка"
+  default_prompt: "Используй $luacs-docs, чтобы найти и проверить документацию по нужному аспекту LuaCsForBarotrauma: код, API, подключение модов, конфигурация или работа платформы."
