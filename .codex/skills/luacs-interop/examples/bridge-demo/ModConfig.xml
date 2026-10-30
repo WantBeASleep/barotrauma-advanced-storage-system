@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModConfig>
+  <Assembly File="%ModDir%/CSharp/Contracts.cs" Target="Any" IsScript="true" UseInternalAccessName="false" />
+  <Assembly File="%ModDir%/CSharp/Plugin.cs" Target="Any" IsScript="true" UseInternalAccessName="false" />
+  <Lua File="%ModDir%/Lua/Autorun/main.lua" IsAutorun="true" />
+</ModConfig>
