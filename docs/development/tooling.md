@@ -33,3 +33,5 @@ python tools/lualint/lualint.py
 ```
 
 Параметры запуска и требования — в README [luafmt](../../tools/luafmt/README.md) и [lualint](../../tools/lualint/README.md).
+
+Selene использует `lua52` и единый `selene_std_luacs.yml` для клиента и сервера.
