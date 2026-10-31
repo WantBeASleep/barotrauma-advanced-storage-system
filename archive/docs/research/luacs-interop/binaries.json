@@ -1,0 +1,32 @@
+[
+  {
+    "path": "D:\\SteamLibrary\\steamapps\\common\\Barotrauma\\Barotrauma.dll",
+    "productVersion": "1.13.5.0+0a9af9a7f0efeef46d63a4fe80103b4446a21dee",
+    "sha256": "4E6F3B7CCD5F81E12397E1BD489F9E14278E48C6ACA3FD5E4EC481A265D65DD5"
+  },
+  {
+    "path": "D:\\SteamLibrary\\steamapps\\common\\Barotrauma\\DedicatedServer.dll",
+    "productVersion": "1.13.5.0+0a9af9a7f0efeef46d63a4fe80103b4446a21dee",
+    "sha256": "D058BBDE56286699AA3FFCDD95E87D4D1E430B184ECC3C4007EA442EE9518A46"
+  },
+  {
+    "path": "D:\\SteamLibrary\\steamapps\\common\\Barotrauma\\MoonSharp.Interpreter.dll",
+    "productVersion": "2.0.0+b556e550eb20b950a7db3ef69006104af3f654da",
+    "sha256": "56724D16A978AC509EF930167DD8471FD456B9717ADE4268102543610DF43019"
+  },
+  {
+    "path": "D:\\SteamLibrary\\steamapps\\workshop\\content\\602960\\2559634234\\Binary\\Barotrauma.dll",
+    "productVersion": "1.13.5.0+c6e8829143c98162ed376aee33eb9799602365ac",
+    "sha256": "16B291054467BE52DC851F64D3C96D78D5D561C7981D01C7F3D7D942458501CF"
+  },
+  {
+    "path": "D:\\SteamLibrary\\steamapps\\workshop\\content\\602960\\2559634234\\Binary\\DedicatedServer.dll",
+    "productVersion": "1.13.5.0+c6e8829143c98162ed376aee33eb9799602365ac",
+    "sha256": "2C246953EFDD01E4C9DE4ED2CE1D5EE331E5519AF807EC0410C9FD3662F37500"
+  },
+  {
+    "path": "D:\\SteamLibrary\\steamapps\\workshop\\content\\602960\\2559634234\\Binary\\MoonSharp.Interpreter.dll",
+    "productVersion": "2.0.0+b556e550eb20b950a7db3ef69006104af3f654da",
+    "sha256": "FCAAF118B7B273CB32F6CB1039AF862699970D9B95CED6A4FFB009EA9296FA5C"
+  }
+]

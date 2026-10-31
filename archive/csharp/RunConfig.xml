@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunConfig>
+  <!--Options: "None" / "Forced" (always) / "Standard" (when enabled)-->
+  <!--
+    Template defaults:
+    - client-only C# helpers are enabled;
+    - server C# is disabled until the mod needs it.
+
+    When enabling a side here, also enable the matching Assembly entries in
+    ../ModConfig.xml.
+  -->
+  <Server>None</Server>
+  <Client>Standard</Client>
+</RunConfig>

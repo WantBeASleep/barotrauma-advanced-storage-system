@@ -1,0 +1,998 @@
+{
+  "date": "2026-10-30",
+  "root": "D:\\SteamLibrary\\steamapps\\workshop\\content\\602960",
+  "selection": "rg --files --hidden --no-ignore -g *.lua -g *.cs",
+  "files": [
+    {
+      "path": "2559634234/Lua/LuaSetup.lua",
+      "sha256": "453207f953d65da13aecb966d12ce65f0ab687ec3df57b25d5f04e72265f7850",
+      "bytes": 933,
+      "lines": 38
+    },
+    {
+      "path": "2559634234/Lua/CompatibilityLib.lua",
+      "sha256": "741be0c15d74ed3d43714396dddb8e94ee27e9be7fbd7a0c256bd392970a9e17",
+      "bytes": 2062,
+      "lines": 81
+    },
+    {
+      "path": "2559634234/Lua/DefaultHook.lua",
+      "sha256": "5a47adf7b6203786fe7f25483d16158df0a224b1f9a370e9bf47d5ebf96b09e5",
+      "bytes": 1850,
+      "lines": 68
+    },
+    {
+      "path": "2559634234/Lua/DefaultLib/Utils/Util.lua",
+      "sha256": "456602bd65d52b28bf6e8c8dc40c424fea9806570cb529cd71987052de074b7a",
+      "bytes": 2291,
+      "lines": 86
+    },
+    {
+      "path": "2559634234/Lua/DefaultLib/Utils/String.lua",
+      "sha256": "5aadca267bf3786e239f9dd879b9387c6ba0d96b27cb1477304fd328cd31db01",
+      "bytes": 777,
+      "lines": 13
+    },
+    {
+      "path": "2559634234/Lua/DefaultLib/Utils/SteamApi.lua",
+      "sha256": "9bc96ed4b98eb8c91d7b0d95d74f06059d7094c9104c77b7e1882c38f95f2186",
+      "bytes": 886,
+      "lines": 28
+    },
+    {
+      "path": "2559634234/Lua/DefaultLib/Utils/Math.lua",
+      "sha256": "96c0bf84b7029dff37c1aeb62f1feaf18c6bb076af1d9fcd1c06b96c4c9d362c",
+      "bytes": 2400,
+      "lines": 40
+    },
+    {
+      "path": "2559634234/Lua/DefaultLib/LibShared.lua",
+      "sha256": "199300b8bd8b26451f75a45daea6b58c1412de08eca646c91db67c2a503e3183",
+      "bytes": 14651,
+      "lines": 195
+    },
+    {
+      "path": "2559634234/Lua/DefaultLib/LibServer.lua",
+      "sha256": "50c4372b97bb7fcb5b34001e46a9aae82c7ee1bf36c7c3d04e23ab8a4cbf3880",
+      "bytes": 606,
+      "lines": 14
+    },
+    {
+      "path": "2559634234/Lua/DefaultLib/LibClient.lua",
+      "sha256": "210441222b600f584792e065a4299497d3f5fbbdeda28cf42e4e6fbdaf2aff23",
+      "bytes": 4536,
+      "lines": 90
+    },
+    {
+      "path": "2852315967/Lua/findtarget.lua",
+      "sha256": "d9941a02bdaedefa7c6c83617cf24138414125827013d0214678c48864c16adf",
+      "bytes": 2940,
+      "lines": 80
+    },
+    {
+      "path": "2852315967/Lua/Autorun/lualinker.lua",
+      "sha256": "34d7d550152f66304ad16ccccc565e91154756d46da1397042d2c0c42929192b",
+      "bytes": 3379,
+      "lines": 105
+    },
+    {
+      "path": "2852315967/Lua/Autorun/luaDisplaySideBySide.lua",
+      "sha256": "6d3ab6e9af2e15ed789e1ffb6cdcf25b85c91610e991150d9c07726571279067",
+      "bytes": 2830,
+      "lines": 84
+    },
+    {
+      "path": "2936760984/Lua/think.lua",
+      "sha256": "ff589180d735138a4eee472ee7fd077c1570ea2e5d5ce1a7928e0a809a76f6af",
+      "bytes": 833,
+      "lines": 22
+    },
+    {
+      "path": "2936760984/Lua/stopsounds.lua",
+      "sha256": "30948f3d807c351e8b047792687ab3adca941da10556f3740a5de53a3e96dec9",
+      "bytes": 440,
+      "lines": 10
+    },
+    {
+      "path": "2936760984/Lua/soundvolume.lua",
+      "sha256": "def3b9e175e1504912b61016646d512a06f55e3240c22fc9b03c4e56b44db389",
+      "bytes": 1463,
+      "lines": 38
+    },
+    {
+      "path": "2936760984/Lua/sonarping.lua",
+      "sha256": "69efa2c0f06d0d31372143d0471f24db010346e08e9268efedee57af4316e702",
+      "bytes": 11564,
+      "lines": 240
+    },
+    {
+      "path": "2936760984/Lua/servercontrol.lua",
+      "sha256": "efe52ee7a40a8eaa57ab12030a13eaf0b056aca10942482cb9f1776e8c103ac8",
+      "bytes": 1288,
+      "lines": 36
+    },
+    {
+      "path": "2936760984/Lua/roundstart.lua",
+      "sha256": "70242ea260d09bda05d7bd7c58125170eb6627ad56e24afd075ba8a0ac82e0de",
+      "bytes": 463,
+      "lines": 15
+    },
+    {
+      "path": "2936760984/Lua/networkmessages.lua",
+      "sha256": "34b9bccaa5d71d02a580d4afec03b8c071c76c0bfee4f9330cc9969b33aeb8ca",
+      "bytes": 376,
+      "lines": 13
+    },
+    {
+      "path": "2936760984/Lua/multilinetextbox.lua",
+      "sha256": "fb9beb62040eb58c0089cc7ac63fdb79d850b01122646deb2c6e29b9dff82ecf",
+      "bytes": 2007,
+      "lines": 50
+    },
+    {
+      "path": "2936760984/Lua/menu.lua",
+      "sha256": "5fa2fd0ba6866713800dee913dbc45e143e18aad46f6e0bd5e9b68395fdc10ff",
+      "bytes": 18001,
+      "lines": 300
+    },
+    {
+      "path": "2936760984/Lua/loadconfig.lua",
+      "sha256": "abf5493f6f3aec2de61d8884c7bf85e8c547c6a84705ad42304662b3c7b93e7e",
+      "bytes": 3463,
+      "lines": 76
+    },
+    {
+      "path": "2936760984/Lua/functions.lua",
+      "sha256": "e93f3e523f75a0132233873e2cdc875eddfcd9de7a67aaf3bf5a322edfe17efa",
+      "bytes": 23795,
+      "lines": 622
+    },
+    {
+      "path": "2936760984/Lua/easysettings.lua",
+      "sha256": "6fc310c569f3353639b749b77da7fd1da16d8f32f972c6ddd377d6ad2a056e9e",
+      "bytes": 4785,
+      "lines": 139
+    },
+    {
+      "path": "2936760984/Lua/defaultconfig.lua",
+      "sha256": "20f8510deb10a81f33f4bbe72ecf859b5a55f150ce36dffab810cb49dafd0925",
+      "bytes": 3092,
+      "lines": 75
+    },
+    {
+      "path": "2936760984/Lua/cortizideoverride.lua",
+      "sha256": "bbd3ead9ee745b41969c57ea0b5a8d8f9eef14c2bd22759d02c6ec5fd4c58b59",
+      "bytes": 403,
+      "lines": 7
+    },
+    {
+      "path": "2936760984/Lua/Autorun/init.lua",
+      "sha256": "a203027431d0e5c6cf24467fe446215386eee7c7a1b3449ac39154ad7525922c",
+      "bytes": 1089,
+      "lines": 31
+    },
+    {
+      "path": "2936760984/Lua/anechoicsuit.lua",
+      "sha256": "1e78c1cebaa87e7179d8570b0732673818a1422d0482fcc88830973efb880289",
+      "bytes": 1186,
+      "lines": 23
+    },
+    {
+      "path": "2936760984/Lua/aiobjectives.lua",
+      "sha256": "5f9e3bdb8205cdd48806200275e93c239ceaa6d14f1e61c9243eff13aa84aa27",
+      "bytes": 2942,
+      "lines": 71
+    },
+    {
+      "path": "2968896556/Lua/Autorun/init.lua",
+      "sha256": "ba163a6f202e515f375030ea0dec47686c1cec10f541fdabe6791b99dbda831d",
+      "bytes": 41,
+      "lines": 2
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Utils/utils.lua",
+      "sha256": "a0cabccf50c18e44ec859b0d366a4a4c6d5039ec3d566147db9f8d8c3c6fac21",
+      "bytes": 1539,
+      "lines": 47
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Utils/gui.lua",
+      "sha256": "544c10eb2dd5a202b9331165700e5326c320b6684fd53c39228d2d849c262510",
+      "bytes": 2519,
+      "lines": 65
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Scripts/menu.lua",
+      "sha256": "752d64673da4505135b46c6bbf4081fd24254ed28d89961028bdf451720f5cfe",
+      "bytes": 4490,
+      "lines": 110
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/init.lua",
+      "sha256": "bad860c142ee3af1f750e6d09f03871b3d2f785b9e2b5c2b60c1870ac90807b0",
+      "bytes": 2658,
+      "lines": 74
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Config/init.lua",
+      "sha256": "4ae44c25ae4067bc15bc643199e6a449bc77f9991fc3cc7e1605fd73ae8913be",
+      "bytes": 1814,
+      "lines": 73
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Scripts/Hooks/shared.lua",
+      "sha256": "7d3cd95a3f1082164710d03dc92b9286a677f1209e5403d467b3b37ca1f37879",
+      "bytes": 2653,
+      "lines": 69
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Config/default.lua",
+      "sha256": "d6a5729c05ee8ccfd1a75b49dd867d3c401293fa8a222a9ffcb8eada9382ecc9",
+      "bytes": 503,
+      "lines": 17
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Scripts/Hooks/server.lua",
+      "sha256": "10e7e62f11a1b935e9ace954c15190a684e50ee34b06582676ab995b677d6422",
+      "bytes": 1204,
+      "lines": 47
+    },
+    {
+      "path": "2968896556/Lua/EnhancedImmersion/Scripts/Hooks/client.lua",
+      "sha256": "8b62d536d15a9f71021b3e0cffe3cecd24eccc00941760d949da4c8c3e419eaf",
+      "bytes": 2921,
+      "lines": 83
+    },
+    {
+      "path": "2986079116/Lua/mods.lua",
+      "sha256": "72ef85b0f0dec41cd09b697a395da2f927ee4e927fc9e9ae0d6076877eeabd6a",
+      "bytes": 216,
+      "lines": 6
+    },
+    {
+      "path": "2986079116/Lua/ForcedAutorun/init.lua",
+      "sha256": "f41e7ba54e88387ec207e987387130a2cf03eb0b6973206298d06928519e7685",
+      "bytes": 1811,
+      "lines": 58
+    },
+    {
+      "path": "2986079116/Lua/Autorun/main.lua",
+      "sha256": "9bba7f1c0b97a77ee55018a378841e7c39feb0c2b3806c9a4231991406db14ef",
+      "bytes": 843,
+      "lines": 30
+    },
+    {
+      "path": "3045796581/Lua/hooks.lua",
+      "sha256": "a6d41610256bee79bef2bff0464e03980e7290e21d71527a55e6d8cbc444cc32",
+      "bytes": 488,
+      "lines": 19
+    },
+    {
+      "path": "3045796581/Lua/enhancedreactors.lua",
+      "sha256": "138d2d24f53e97425f8762d11f2b1baa00ff3963d55ce6db2f55942e3e15f171",
+      "bytes": 7358,
+      "lines": 188
+    },
+    {
+      "path": "3045796581/Lua/Autorun/init.lua",
+      "sha256": "b80442a0c9334e6841b9c9c12f77170437263c47fe38b9a0ed1e26c5299ac729",
+      "bytes": 271,
+      "lines": 8
+    },
+    {
+      "path": "3231293294/CSharp/Shared/BetterHealthUIMod.cs",
+      "sha256": "c15ab1334ee50aa28c4cf90a0d34785c76203cb82de1c3d9c9004618a784527c",
+      "bytes": 610,
+      "lines": 20
+    },
+    {
+      "path": "3231293294/CSharp/Client/BetterHealthUIMod.cs",
+      "sha256": "bf94d9db3284fb1c1d61d225c22a24402270ba167eb8dcdc8acad849a1609c52",
+      "bytes": 138584,
+      "lines": 2988
+    },
+    {
+      "path": "3231293294/CSharp/Client/AnnouncementManager.cs",
+      "sha256": "24fdb5a50bd70555436cb79ee8406f24670220d5773ef4f1dc0ed93d9ce2cbac",
+      "bytes": 18790,
+      "lines": 478
+    },
+    {
+      "path": "3231293294/CSharp/Client/CharacterHealthAccess.cs",
+      "sha256": "57bf7492f1ab04430f66187b168335d905dee50440b544aa86948c147fac8de2",
+      "bytes": 6505,
+      "lines": 111
+    },
+    {
+      "path": "3231293294/CSharp/Client/LimbHealthAccess.cs",
+      "sha256": "31c3afa7e22bb5d8bc4b3282ffe7dd11d809ec0f40820ff86ce9bab3cf1461b3",
+      "bytes": 1250,
+      "lines": 27
+    },
+    {
+      "path": "3231293294/CSharp/Client/Styles/MenuStyleLoader.cs",
+      "sha256": "80e670d58d81e3d215f48b11551ccbb768b9635aa29ac4238dccfbf02916b100",
+      "bytes": 3378,
+      "lines": 132
+    },
+    {
+      "path": "3231293294/CSharp/Client/Styles/ExperimentalMenuStyle.cs",
+      "sha256": "74be57941d7c3118ccb1f45291aa52f469b3e91ba465770e794a91350956825b",
+      "bytes": 138124,
+      "lines": 2792
+    },
+    {
+      "path": "3231293294/CSharp/Client/Styles/DefaultMenuStyle.cs",
+      "sha256": "fc01c6ac6c710d434f733421289508fbe7d31c707468b135317acff35f4ceb02",
+      "bytes": 57035,
+      "lines": 1115
+    },
+    {
+      "path": "3413495302/Lua/Autorun/ReloadLua.lua",
+      "sha256": "c73b825db6839e6a8d7b1cf1e92b578108dbb4f4724ff0a1c27a24c1cecf3743",
+      "bytes": 21233,
+      "lines": 496
+    },
+    {
+      "path": "3457759775/Lua/Autorun/reloadPatch.lua",
+      "sha256": "292d6d627bb6d391c16ac217cf13ac3aafa426883648bdf28d16bcd917fb2ae1",
+      "bytes": 2611,
+      "lines": 55
+    },
+    {
+      "path": "3471496395/CSharp/Client/condition_bars_for_interaction_labels.cs",
+      "sha256": "6fafc51ab997e241d7b0db407548b2dd6d9943f514eec26eb7c3455582497af5",
+      "bytes": 4462,
+      "lines": 113
+    },
+    {
+      "path": "3574799606/CSharp/Shared/CompilePls.cs",
+      "sha256": "7bf0f003e7d621358658158afe79898c132e8de864b7afbc88ca6e8d63a185bb",
+      "bytes": 194,
+      "lines": 4
+    },
+    {
+      "path": "3574799606/CSharp/Shared/Mod.cs",
+      "sha256": "a991ac6735c22ec71e6ca39d99989af3daf09e66bf50cbb7fdb9b431fdc3b54e",
+      "bytes": 7417,
+      "lines": 242
+    },
+    {
+      "path": "3574799606/CSharp/Server/Mod.cs",
+      "sha256": "147181aac0ef5cd0c046d8c3c264fd9d2bb372d5eeb359ce966e4aecee4214ac",
+      "bytes": 274,
+      "lines": 12
+    },
+    {
+      "path": "3574799606/CSharp/Client/Mod.cs",
+      "sha256": "9ce225c9f30c1426fe4429010842b1183798f723b8de45177a54765b65d31123",
+      "bytes": 380,
+      "lines": 17
+    },
+    {
+      "path": "3574799606/CSharp/Shared/Patches/SharedSource/Networking/BroadcastReprioritize.cs",
+      "sha256": "933d5e64f5db9a763d646fd436382a302b304037ee2dd5e9c3ef6c3256b7b8f8",
+      "bytes": 798,
+      "lines": 19
+    },
+    {
+      "path": "3574799606/CSharp/Shared/Patches/SharedSource/Networking/BroadcastPolicy.cs",
+      "sha256": "0f4cca3f12fa21a29ca2d538c6ecc17c358f27ea45c85e261b3f58e3a00cff91",
+      "bytes": 6608,
+      "lines": 147
+    },
+    {
+      "path": "3574799606/CSharp/Shared/Patches/SharedSource/Networking/BroadcastOrderMessage.cs",
+      "sha256": "e069dd46cd67bfeaa5bff244333ab19f55449b053a1aa241f70dcc144c3a6fd2",
+      "bytes": 2928,
+      "lines": 69
+    },
+    {
+      "path": "3574799606/CSharp/Server/Patches/ServerSource/Networking/BroadcastServer.cs",
+      "sha256": "a7a056791232b1f5cfab6171b5a6ee257216fd3193f2d455a6e9804db8c8167b",
+      "bytes": 22486,
+      "lines": 560
+    },
+    {
+      "path": "3574799606/CSharp/Shared/Patches/SharedSource/Characters/OrderPriorityMigration.cs",
+      "sha256": "af65bc3febde534078f728d856f5e3259ee1d7257f41891bb88a1c8e2fd63667",
+      "bytes": 1756,
+      "lines": 53
+    },
+    {
+      "path": "3574799606/CSharp/Shared/Patches/SharedSource/Characters/CharacterInfo.cs",
+      "sha256": "672ab43a9bdd1d115de15c7275146d3a716c20fc4abacc1ad44eb36e23047f78",
+      "bytes": 2480,
+      "lines": 68
+    },
+    {
+      "path": "3574799606/CSharp/Client/Patches/ClientSource/GameSession/OrderStripLayout.cs",
+      "sha256": "d01dab46f13037691cc7317cd66e4231c3d8a1c90736aa6ce9a9c1684fc5b8d1",
+      "bytes": 9665,
+      "lines": 214
+    },
+    {
+      "path": "3574799606/CSharp/Client/Patches/ClientSource/GameSession/CrewManager.cs",
+      "sha256": "3c081599aad7f0f9cd7517dc8bb74ee5e6a4724bbeb98d09047401c9e7c2664f",
+      "bytes": 34744,
+      "lines": 882
+    },
+    {
+      "path": "3574799606/CSharp/Client/Patches/ClientSource/GameSession/BroadcastKeybind.cs",
+      "sha256": "9d69dcfb1f2e3fd15cfffc48881fe0cdb5f55726195ccb907456104a1398bab5",
+      "bytes": 11451,
+      "lines": 318
+    },
+    {
+      "path": "3574799606/CSharp/Client/Patches/ClientSource/GameSession/BroadcastClient.cs",
+      "sha256": "2df998ce293198b66e219ba7eced66de9a7cc67916ff8d2512f089948899156d",
+      "bytes": 3329,
+      "lines": 89
+    },
+    {
+      "path": "3748775860/CSharp/Lib/Storage/Storage.cs",
+      "sha256": "b3051490ef6334ca04765b1761b70dafae7c38ba9c5fa2ded5bd7355e719ff4f",
+      "bytes": 13899,
+      "lines": 360
+    },
+    {
+      "path": "3748775860/CSharp/Client/UrlOpener.cs",
+      "sha256": "0aae3e062576005ff0c3ba5b65958c81ed19b8eb800546ab4243885d32f6d472",
+      "bytes": 375,
+      "lines": 18
+    },
+    {
+      "path": "3748775860/CSharp/Client/Plugin.cs",
+      "sha256": "8a68ca67fb38e298db06100108ce2121d4253ef91856ef1fdefee75821617b0c",
+      "bytes": 589,
+      "lines": 23
+    },
+    {
+      "path": "3748775860/Lua/Autorun/main.lua",
+      "sha256": "c4189098bd6a8f2551fbe4e51003ec978f592488d4bd99828495de30d8a53e8b",
+      "bytes": 844,
+      "lines": 33
+    },
+    {
+      "path": "3748775860/CSharp/Client/OverlayCalculator/OverlayCalculator.cs",
+      "sha256": "0064ab2ed18575986d1dd75cb65164e60cc21bf3a0c01a63f3b458e6491394a3",
+      "bytes": 12502,
+      "lines": 327
+    },
+    {
+      "path": "3748775860/CSharp/Client/AtlasComposer/AtlasComposer.cs",
+      "sha256": "35e16414c62680d841f7ce2ee1920fbe1ffa4b1fe96106732b7cb0982f6feda6",
+      "bytes": 21859,
+      "lines": 531
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/atlas_naming.lua",
+      "sha256": "b9e707edc8a7f58346fe9e79a7c2c1dd23c5c71c3b71150c52e45463217ae343",
+      "bytes": 975,
+      "lines": 41
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/atlas_builder/output_path.lua",
+      "sha256": "da024d2623b1bc5ebe3e46ee001caf80d874a96d5a66f56919895290342ad546",
+      "bytes": 988,
+      "lines": 38
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/atlas_builder/operation_builder.lua",
+      "sha256": "49ab40a64908729cfdc63483f0689496c7d2c00216c03c10b7e9c7c04c754919",
+      "bytes": 3037,
+      "lines": 93
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/atlas_builder/init.lua",
+      "sha256": "db7ab743b8a3996c3e62044f37845fa3e2f40aa4f19de1e29d0e6673f809287d",
+      "bytes": 1532,
+      "lines": 57
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/config.lua",
+      "sha256": "611e1f97caa5b199b0023a1304f9d51ca42da3fbb2c522ef6c5fc0cf7d703ca3",
+      "bytes": 1734,
+      "lines": 65
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/utils.lua",
+      "sha256": "dc03472e0907b4e0de81479c514b95a18a98def1caf9e0e6529d4039fd6d8f18",
+      "bytes": 991,
+      "lines": 39
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/settings.lua",
+      "sha256": "44a7376312b7f2a5d899b310f74fe6573831359058242d0fbf12c2618726c27a",
+      "bytes": 3668,
+      "lines": 142
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/overlay_atlas.lua",
+      "sha256": "9432beec326b3e8ff71d981c8fa0e188def6b3232cacfac107581c275acbc003",
+      "bytes": 1808,
+      "lines": 67
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/name_list.lua",
+      "sha256": "39d1b2de1f35b6edb888103535e6a7ccfc93115cd440004f2eeb41a615c75d00",
+      "bytes": 1020,
+      "lines": 42
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/item_overlays.lua",
+      "sha256": "d12b73187aa909aca7f2e9e808b56797dff612c255a03e1839fff2f73404c776",
+      "bytes": 1442,
+      "lines": 56
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/item_atlas.lua",
+      "sha256": "f8f62d5ac33afe8b332d03b539023a5060c64fe5af72c95105f158b0a3d20b0b",
+      "bytes": 2482,
+      "lines": 86
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/init.lua",
+      "sha256": "33b9f1ffa5b1e1841050ab6f69562294b7a29c0631e87a9d1327d66b37209dfa",
+      "bytes": 793,
+      "lines": 25
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/schema/consts.lua",
+      "sha256": "7baa2cf29acdab2e2c0eb6d903be350c1540af3867cfc6eb45110ac3f840bc54",
+      "bytes": 418,
+      "lines": 20
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/safe_settings.lua",
+      "sha256": "2ebc3d2381c8a58652af395fc8df55b888ff9ddc962d34d7548c8bfe2f397c90",
+      "bytes": 3730,
+      "lines": 147
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/registry.lua",
+      "sha256": "faff1ece25cc0484edbf4e35d30fbe38e2d1e576bc24b21e10b5aa432867c2e2",
+      "bytes": 3251,
+      "lines": 96
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/utils/init.lua",
+      "sha256": "6bc27ca0e666a37957d3326d05189943966073affff17ebfc1a4960262df80f4",
+      "bytes": 1467,
+      "lines": 71
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/override/prefab_sprites.lua",
+      "sha256": "41949cef36515a3e16db472e71cc4804379e242eab4515c5d181cb9728637530",
+      "bytes": 2436,
+      "lines": 70
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/override/init.lua",
+      "sha256": "ffcd16000ef8e311521c652a0ee0ca3ec950a6f6484cb489c2045fce23f758fd",
+      "bytes": 4289,
+      "lines": 125
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/override/icon_atlas_path.lua",
+      "sha256": "43c3d7be0bbee014eaa5cfafd6d43f2893f9fae528df8c22ce19d3e840500e37",
+      "bytes": 960,
+      "lines": 32
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/override/holdable_settings.lua",
+      "sha256": "6bb8ec35fbce7e56468f747849a6f105bd30b1ceb7b8e19c53bbcd73b57701e0",
+      "bytes": 3860,
+      "lines": 137
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/override/atlas_index.lua",
+      "sha256": "bf40449b733afabe334adc7f74266afb7afe74728b3fbddbe37d690ab274a390",
+      "bytes": 755,
+      "lines": 31
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/overlay_calculator/tracing.lua",
+      "sha256": "2f24e1bb5e858569857c2b2be081c84602fa8b1a050da0766b98b50fb68459bb",
+      "bytes": 2012,
+      "lines": 71
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/overlay_calculator/overlay_calculator.d.lua",
+      "sha256": "0448da3fb2d76dcf272507a61beb4f868ab31bcfc05b5d1913e204a162be751b",
+      "bytes": 2559,
+      "lines": 77
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/overlay_calculator/init.lua",
+      "sha256": "49e0c578ebbcf617f0ee64ac65fdac523a44303a0de21153ecd3cae6c30f4236",
+      "bytes": 3838,
+      "lines": 115
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/overlay_calculator/error_factory.lua",
+      "sha256": "e2cb5e009a26cf6681abe28025ad6739714f13d75b802e7a1c6d7c7cbd623080",
+      "bytes": 2135,
+      "lines": 75
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/overlay_calculator/csharp_bridge.lua",
+      "sha256": "4eb3d4cc6fb69de7fea96cfeed79a988972aa592369b00db15abecade8b93d9f",
+      "bytes": 3295,
+      "lines": 105
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/errors/errors.lua",
+      "sha256": "400f708ccc5e2b07501eb396ba42eb2f1cd763d0d23625fd3360fa7c21eba9d8",
+      "bytes": 3549,
+      "lines": 155
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/errors/errors.d.lua",
+      "sha256": "61b288ebcf7683bbd1ad60221d33bbd718a3c5fab798ae4570eb76b6033dc04d",
+      "bytes": 528,
+      "lines": 14
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/ui_runtime/init.lua",
+      "sha256": "00c0a5e9d98f5ba3082f2754817503995933c058fe91a972dde9841272e96724",
+      "bytes": 1548,
+      "lines": 59
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/ui_runtime/validator.lua",
+      "sha256": "e585ad21f2861b9b924ea01cd75bb03b03345b02cf34b9e2fb9e1827c90db446",
+      "bytes": 6585,
+      "lines": 243
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/ui_runtime/tree.lua",
+      "sha256": "2f9bb2956dc91219c6c5858e333b96ef951c915946c81b32b5373fbf6a011d12",
+      "bytes": 1961,
+      "lines": 68
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/window.lua",
+      "sha256": "7762bc116e2a15aaab72112e4df0ef07a525d7536099eeb553b733ab6803394d",
+      "bytes": 1578,
+      "lines": 67
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/ui_runtime/renderer.lua",
+      "sha256": "79ddce2bd0440032ab7902dcc53b5ecd80479c732580f182a1b335adb2ff1cce",
+      "bytes": 10643,
+      "lines": 319
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/ui_runtime/node.lua",
+      "sha256": "ffa3222f21c88d64b119445da12b9076dd0ca3aefb44b7cabb06c501c860b076",
+      "bytes": 5933,
+      "lines": 228
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/ui_runtime/layout_loader.lua",
+      "sha256": "bedc104b811e312e11f533d92e63b6a1850b1104eab60c81cc9ff191001820e3",
+      "bytes": 930,
+      "lines": 39
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/pause_menu.lua",
+      "sha256": "a4d44ee5a88286d8a880bcc0c948afaacadd7c62b045776597af84f7d99f49f1",
+      "bytes": 4448,
+      "lines": 139
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/init.lua",
+      "sha256": "e77e91f68314a1ed2076bdeb136e61da31c57a13f65309a946d6097986edbdf2",
+      "bytes": 3823,
+      "lines": 105
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/controller.lua",
+      "sha256": "65774412b18583c3e8b421781ecbff2aa489eddd1d10cde9631baa759cfff59d",
+      "bytes": 5410,
+      "lines": 168
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/init.lua",
+      "sha256": "dce82e483afa33b5623049e0d1aeefc1726f67e3c967b56f9a70029a9e035bff",
+      "bytes": 647,
+      "lines": 35
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/csharp/storage/storage.lua",
+      "sha256": "4a241fdc05124eb063e34b4f318c86f17921836d2dabf519c19074f167728376",
+      "bytes": 2232,
+      "lines": 72
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/logger/logger.lua",
+      "sha256": "103431e271aa27734b0aa9abbef0e7c8467f6702f4049f84359bb965f9b2e8eb",
+      "bytes": 4162,
+      "lines": 170
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/csharp/storage/storage.d.lua",
+      "sha256": "6a4655c1e029b499c202f51bcc904fccc8c2c37df4bd07c18bdf754a3b9ae185",
+      "bytes": 2084,
+      "lines": 58
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/csharp/storage/service.lua",
+      "sha256": "3cb602c789baf337ccd263d1ca1a4b535d17488924515c8a3fc6fdcbc0f89f37",
+      "bytes": 6670,
+      "lines": 244
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/logger/logger.d.lua",
+      "sha256": "7daedfed8aa402146f2a08078cc433f1a2945ae8d83a725b962b4758fcc5831f",
+      "bytes": 1144,
+      "lines": 34
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/atlas_composer/csharp_bridge.lua",
+      "sha256": "0060826854fc0155a9fa96d101c60c38b3f232bd4a4cceef32bf0f50c4e4414b",
+      "bytes": 6819,
+      "lines": 200
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/atlas_composer/atlas_composer.d.lua",
+      "sha256": "4daf93b1760c399b07fdffcbc3193d782d8548e869b74942e149e48730e4ce7a",
+      "bytes": 4160,
+      "lines": 128
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/atlas_composer/dto_factory.lua",
+      "sha256": "03b71ff97cd21c54fb29de44a775fb14aa58e07e30832d87c7d26cd37049ad3f",
+      "bytes": 4962,
+      "lines": 133
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/atlas_composer/error_factory.lua",
+      "sha256": "1b4cea78c309e8a68289e892a587b8142f2c7a543b709873d0067f41cb113012",
+      "bytes": 2118,
+      "lines": 75
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/atlas_composer/tracing.lua",
+      "sha256": "ce9e467c263a98b982be3051f0ada78fee691cb3cafb58a30e86182b9fad7f2e",
+      "bytes": 1942,
+      "lines": 69
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/csharp/atlas_composer/init.lua",
+      "sha256": "60cdde4a26ffcced040dde4321ee91cf4e83772140ecd8f39a01300edfda8706",
+      "bytes": 2951,
+      "lines": 88
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/utils.lua",
+      "sha256": "680a66b532596c08bf37d12940281d5c10bdc77291c366bfe0aeb4b828b27454",
+      "bytes": 1888,
+      "lines": 74
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/texturepack_section.lua",
+      "sha256": "c2cf9fea46dd2a8b79a0848b568a3cea4970768c0cfe0f5823a538f49c5e5390",
+      "bytes": 2462,
+      "lines": 66
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/steam_callout.lua",
+      "sha256": "189221cf558a643ccc4586f4d53000cb599db9f29f0be76b9fd61bf18a0bf91c",
+      "bytes": 673,
+      "lines": 24
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/file/file.lua",
+      "sha256": "05013727b856215f210f3e4e9f00ee3a91d2f3de2c45a85539ebc0e70ec04bd6",
+      "bytes": 2192,
+      "lines": 82
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/lib/file/file.d.lua",
+      "sha256": "85c1e0235fb39df3eef85dc0ac722b9a20f147618358dd89601334f621916871",
+      "bytes": 299,
+      "lines": 14
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/actions.lua",
+      "sha256": "83476501c1f7a6299ec78e8e74122f42f12dce0365e93f115142cb3cad5432ea",
+      "bytes": 1075,
+      "lines": 31
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/overlays_section.lua",
+      "sha256": "cd4ca679643baff81f07053d046211394903fcee11190382df178ecd2ba48aaf",
+      "bytes": 7521,
+      "lines": 195
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/preview_section/render_icon.lua",
+      "sha256": "a5efa8598210d20010075a02937d91cd9fe06704194cde8d50bdc8cb483bb113",
+      "bytes": 7485,
+      "lines": 238
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/preview_section/prepare_render_data.lua",
+      "sha256": "11d8a39f87c84a010e1394f99e0a8ee8307323ef962ea362336eb95d5ecdb2b2",
+      "bytes": 4044,
+      "lines": 126
+    },
+    {
+      "path": "3748775860/Lua/limanchel/medical_icons/menu/view/components/preview_section/init.lua",
+      "sha256": "2692228301cca7a009f1c4b10bc97ab754fe24a7f1b8294fbfe498eec9165522",
+      "bytes": 6735,
+      "lines": 219
+    },
+    {
+      "path": "3755729681/Lua/Autorun/enhanced_sonar_settings_menu.lua",
+      "sha256": "ed39ea32882807dcfb53be1d24ec04a30a9c312e39acf283334197280dd6c80a",
+      "bytes": 6899,
+      "lines": 226
+    },
+    {
+      "path": "3755729681/Lua/Autorun/enhanced_sonar_real_sonar_compat.lua",
+      "sha256": "e3ed10c9f77fdc4d4ac7f2cec4d4f1473bdd5f6b860dbb3080085507ab54f386",
+      "bytes": 77211,
+      "lines": 1944
+    },
+    {
+      "path": "3755729681/CSharp/Shared/EnhancedSonarNavigationController.cs",
+      "sha256": "cd09cec09dcf2432e238735c94cdece7978e101f5c1f9f4648d9adcfff69f031",
+      "bytes": 194816,
+      "lines": 5598
+    },
+    {
+      "path": "3755729681/CSharp/Shared/EnhancedSonar.BotCompatibilityShared.cs",
+      "sha256": "3728295b6137a2e45e9a7e153fc8026592f5a309a95112baf3be9c208692f52a",
+      "bytes": 69054,
+      "lines": 1569
+    },
+    {
+      "path": "3755729681/CSharp/Server/EnhancedSonarServerPlugin.cs",
+      "sha256": "d03225b8dbe974faf127c948041df5790c3861d31461cfc0c1f0526cbbcbd7f8",
+      "bytes": 616,
+      "lines": 31
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonarText.cs",
+      "sha256": "9b69f640458bb8435d31080133e2e757b0ae1b3a398860479c75864834f21a9d",
+      "bytes": 1263,
+      "lines": 51
+    },
+    {
+      "path": "3755729681/CSharp/Server/EnhancedSonar.BotCompatibilityServer.cs",
+      "sha256": "373f452ffdb34600734ebd4058014d007945003ce7485ede29a460f8ff295502",
+      "bytes": 37077,
+      "lines": 925
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonarNavigation.cs",
+      "sha256": "a91e74b2e706bb38e6a228045209f878bc846849de0dd5794dce9ec28b204a5a",
+      "bytes": 23007,
+      "lines": 721
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonarEnvironmentScanner.cs",
+      "sha256": "e48756664e52f7f9c15dc3be726c1de1f414a74fa2dc113b588b566cf50713f6",
+      "bytes": 45820,
+      "lines": 1313
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonarDocking.cs",
+      "sha256": "68a6548c19bea33ac8fb5ac916ef0692b26e7797fe33f1668c849ac0deb8e84a",
+      "bytes": 26561,
+      "lines": 930
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.VanillaSonarUI.cs",
+      "sha256": "e70c7552511aba660601e93c9ee2e98dd3830d802328ccaa82a9589b79ec0cb5",
+      "bytes": 10217,
+      "lines": 285
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.Utility.cs",
+      "sha256": "65b0ec77cb620a4e121509d15eae5aad426be7f47072e1cd147052cd3c6aa1f9",
+      "bytes": 33730,
+      "lines": 996
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.Spectrogram.cs",
+      "sha256": "86ee511322c5d751807e84de5861f09daf48d21e0b886d84dccdc99410c396d2",
+      "bytes": 95535,
+      "lines": 2621
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.PerformanceSettings.cs",
+      "sha256": "52c50e94365923db33d20ceb448d66ebc25f35233455bbe4374599db3e0251b5",
+      "bytes": 17181,
+      "lines": 475
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.PerformanceDiagnostics.cs",
+      "sha256": "c350a8fedd58180a6933d49e9296937e3da90876317f96fc01da0eca90ad6d84",
+      "bytes": 19402,
+      "lines": 438
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.PerformanceDebugLite.cs",
+      "sha256": "09924062ca36205f3d6dec988646eea0083ee3645e05b43ddf261eaebdab45f5",
+      "bytes": 38500,
+      "lines": 755
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.OptimizationCore.cs",
+      "sha256": "231f1ad5f338560f703e820a790ba55d472056e2cb1cfa6b664e743fcedf8877",
+      "bytes": 55300,
+      "lines": 1454
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.MiniMapBridge.cs",
+      "sha256": "715bfef1b814a210bf1aa5fad26a000c22fa9d02f2008cc1c9f8d2179d25900f",
+      "bytes": 44803,
+      "lines": 1764
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.MarkersAndContacts.cs",
+      "sha256": "790574348b1bfadb1d77df08d2f15a6d7568a150174e65f4f33ea9438430ea11",
+      "bytes": 74634,
+      "lines": 2317
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.MainSonarStabilization.cs",
+      "sha256": "f5e077d8090854e4ad4ab427362f868e0b92bf52b7605d7a7ca8616723fe584d",
+      "bytes": 7339,
+      "lines": 190
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.MainSonarBuffer.cs",
+      "sha256": "827ef4ed474c85b3be424852c0471c21df2eecbcd1d8cb985f94209f50473d17",
+      "bytes": 206058,
+      "lines": 6750
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.LayoutAndUI.cs",
+      "sha256": "61bba968852ecf8b19a432941b3242016af6600983d1bff3538d5ca73d7afcea",
+      "bytes": 150635,
+      "lines": 4306
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.KeyboardInput.cs",
+      "sha256": "b3c0b495c9d38452ba24fd64c8ee26e5216c12de49a32ff08dcb3e03d13b3715",
+      "bytes": 24349,
+      "lines": 669
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.Explosions.cs",
+      "sha256": "8c2c80eb58e2ce5b5458a27e3f46fa518883ca2f051f9a745b06758851a86bf7",
+      "bytes": 22336,
+      "lines": 652
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.Core.cs",
+      "sha256": "ea69ab42bd3029c25db3ef6fc9bbe84cac895f80688a2934e57609b24f502763",
+      "bytes": 57644,
+      "lines": 1846
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.BotCompatibility.cs",
+      "sha256": "1e3446679f4e6f90535e0f8ea9883cbbe461eb907d80297ec4dbf50c00308647",
+      "bytes": 32391,
+      "lines": 837
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.AutoSonarBackground.cs",
+      "sha256": "deaf9edf6c197e9f2cec787097d42a48f2931f2e8cfa8e09feb4525079f8e191",
+      "bytes": 4371,
+      "lines": 124
+    },
+    {
+      "path": "3755729681/CSharp/Client/EnhancedSonar.AudioAndModes.cs",
+      "sha256": "7af56290a712a1c73f1ff104e90b844192d4d51882da1d57c33c4077a7efb970",
+      "bytes": 46268,
+      "lines": 1377
+    }
+  ],
+  "identical_files": []
+}

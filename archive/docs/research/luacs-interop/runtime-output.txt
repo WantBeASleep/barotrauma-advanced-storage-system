@@ -1,0 +1,22 @@
+BridgeDemo PASS: total=5, callback=6, event=5
+PASS constructors, fields, static, inheritance, interface
+PASS readonly and private setter reject writes
+PASS struct copy and explicit writeback
+PASS nil, optional, nullable
+PASS number overload and rounding
+PASS params and ref/out
+PASS table collections and no automatic DTO mapping
+PASS unregistered list is table snapshot
+PASS registered list is zero-based userdata
+PASS explicit array wrapper and params
+PASS enum numeric then registered
+PASS generic explicit type and constraints
+PASS Closure automatic, arbitrary Func needs converter
+PASS callback error propagates synchronously
+PASS event signature limitation
+PASS private member opt-in through real LuaCs service
+PASS C# exceptions become pcall error strings
+PASS class reference and copied table container
+PASS generic numeric argument is not converted after MakeGenericMethod
+PASS adapter rejects fractional quantity
+Bridge probes PASS: 20
