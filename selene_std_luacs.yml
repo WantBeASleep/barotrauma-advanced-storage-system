@@ -1,0 +1,457 @@
+---
+# Сгенерировано tools/selene_std/generate_selene_std.py; вручную не изменять.
+# Источники: Barotrauma-Lua-Annotations/Library/Client и Library/Server.
+# Игровые объекты — any; штатные функции предоставляет встроенный std lua52.
+globals:
+  AIObjective:
+    any: true
+  AIObjectiveChargeBatteries:
+    any: true
+  AIObjectiveCleanupItem:
+    any: true
+  AIObjectiveCleanupItems:
+    any: true
+  AIObjectiveCombat:
+    any: true
+  AIObjectiveContainItem:
+    any: true
+  AIObjectiveDeconstructItem:
+    any: true
+  AIObjectiveDeconstructItems:
+    any: true
+  AIObjectiveEscapeHandcuffs:
+    any: true
+  AIObjectiveExtinguishFire:
+    any: true
+  AIObjectiveExtinguishFires:
+    any: true
+  AIObjectiveFightIntruders:
+    any: true
+  AIObjectiveFindDivingGear:
+    any: true
+  AIObjectiveFindSafety:
+    any: true
+  AIObjectiveFixLeak:
+    any: true
+  AIObjectiveFixLeaks:
+    any: true
+  AIObjectiveGetItem:
+    any: true
+  AIObjectiveGoTo:
+    any: true
+  AIObjectiveIdle:
+    any: true
+  AIObjectiveOperateItem:
+    any: true
+  AIObjectivePumpWater:
+    any: true
+  AIObjectiveRepairItem:
+    any: true
+  AIObjectiveRepairItems:
+    any: true
+  AIObjectiveRescue:
+    any: true
+  AIObjectiveRescueAll:
+    any: true
+  AIObjectiveReturn:
+    any: true
+  AITarget:
+    any: true
+  AbilityEffectType:
+    any: true
+  AbilityFlags:
+    any: true
+  AccountId:
+    any: true
+  ActionType:
+    any: true
+  AddedPunctuationLString:
+    any: true
+  Address:
+    any: true
+  AfflictionPrefab:
+    any: true
+  AttackResult:
+    any: true
+  AutoItemPlacer:
+    any: true
+  BackgroundMusic:
+    any: true
+  Byte:
+    any: true
+  CLIENT:
+    any: true
+  CS:
+    any: true
+  CSActive:
+    any: true
+  CanEnterSubmarine:
+    any: true
+  CapitalizeLString:
+    any: true
+  CauseOfDeathType:
+    any: true
+  Character:
+    any: true
+  CharacterHealth:
+    any: true
+  CharacterInfo:
+    any: true
+  CharacterInfoPrefab:
+    any: true
+  CharacterInventory:
+    any: true
+  CharacterPrefab:
+    any: true
+  CharacterTeamType:
+    any: true
+  CharacterType:
+    any: true
+  ChatMessage:
+    any: true
+  ChatMessageType:
+    any: true
+  ChatMode:
+    any: true
+  Client:
+    any: true
+  ClientPacketHeader:
+    any: true
+  ClientPermissions:
+    any: true
+  Color:
+    any: true
+  CombatMode:
+    any: true
+  Components:
+    any: true
+  ConcatLString:
+    any: true
+  ConfigService:
+    any: true
+  ContentPackage:
+    any: true
+  ContentPackageId:
+    any: true
+  ContentPackageManager:
+    any: true
+  ContentPath:
+    any: true
+  ContentXElement:
+    any: true
+  ConvertUnits:
+    any: true
+  DamageModifier:
+    any: true
+  DamageSound:
+    any: true
+  DecalManager:
+    any: true
+  DeliveryMethod:
+    any: true
+  Descriptors:
+    any: true
+  DisconnectReason:
+    any: true
+  Double:
+    any: true
+  Endpoint:
+    any: true
+  Entity:
+    any: true
+  EventManagerSettings:
+    any: true
+  EventPrefab:
+    any: true
+  EventSet:
+    any: true
+  Events:
+    any: true
+  ExecutionNumber:
+    any: true
+  Explosion:
+    any: true
+  FactionPrefab:
+    any: true
+  FallbackLString:
+    any: true
+  File:
+    any: true
+  FireSource:
+    any: true
+  Float:
+    any: true
+  FormattedLString:
+    any: true
+  GUI:
+    any: true
+  GUISound:
+    any: true
+  Game:
+    any: true
+  GameSettings:
+    any: true
+  Gap:
+    any: true
+  Hook:
+    any: true
+  Hull:
+    any: true
+  IPAddress:
+    any: true
+  Identifier:
+    any: true
+  InputType:
+    any: true
+  InputTypeLString:
+    any: true
+  Int16:
+    any: true
+  Int32:
+    any: true
+  Int64:
+    any: true
+  InvSlotType:
+    any: true
+  Inventory:
+    any: true
+  Item:
+    any: true
+  ItemInventory:
+    any: true
+  ItemPrefab:
+    any: true
+  Job:
+    any: true
+  JobPrefab:
+    any: true
+  JobVariant:
+    any: true
+  JoinLString:
+    any: true
+  Keys:
+    any: true
+  LanguageIdentifier:
+    any: true
+  Level:
+    any: true
+  LevelGenerationParams:
+    any: true
+  LimbType:
+    any: true
+  LimitLString:
+    any: true
+  LocalizedString:
+    any: true
+  LowerLString:
+    any: true
+  LuaUserData:
+    any: true
+  MapEntity:
+    any: true
+  MapEntityPrefab:
+    any: true
+  Matrix:
+    any: true
+  Md5Hash:
+    any: true
+  Mission:
+    any: true
+  MissionPrefab:
+    any: true
+  NetConfig:
+    any: true
+  NetEntityEvent:
+    any: true
+  NetworkConnection:
+    any: true
+  Networking:
+    any: true
+  NumberType:
+    any: true
+  Order:
+    any: true
+  OrderCategory:
+    any: true
+  OrderPrefab:
+    any: true
+  OrderTarget:
+    any: true
+  OutpostGenerationParams:
+    any: true
+  OutpostGenerator:
+    any: true
+  Physics:
+    any: true
+  Player:
+    any: true
+  PlayerInput:
+    any: true
+  Point:
+    any: true
+  PositionType:
+    any: true
+  PropertyConditional:
+    any: true
+  RandSync:
+    any: true
+  Random:
+    any: true
+  RawLString:
+    any: true
+  Rectangle:
+    any: true
+  ReplaceLString:
+    any: true
+  RichString:
+    any: true
+  RuinGenerationParams:
+    any: true
+  SByte:
+    any: true
+  SERVER:
+    any: true
+  Screen:
+    any: true
+  ServerLogMessageType:
+    any: true
+  ServerLog_MessageType:
+    any: true
+  ServerMsgLString:
+    any: true
+  ServerPacketHeader:
+    any: true
+  SettingBase:
+    any: true
+  SettingList:
+    any: true
+  SettingRangeBase:
+    any: true
+  Short:
+    any: true
+  Signal:
+    any: true
+  Single:
+    any: true
+  SkillSettings:
+    any: true
+  SoundPlayer:
+    any: true
+  SoundPrefab:
+    any: true
+  Sounds:
+    any: true
+  SoundsFile:
+    any: true
+  SpawnType:
+    any: true
+  SplitLString:
+    any: true
+  Sprite:
+    any: true
+  SpriteEffects:
+    any: true
+  StatTypes:
+    any: true
+  StatusEffect:
+    any: true
+  StripRichTagsLString:
+    any: true
+  Structure:
+    any: true
+  Submarine:
+    any: true
+  SubmarineInfo:
+    any: true
+  TagLString:
+    any: true
+  TalentPrefab:
+    any: true
+  TalentTree:
+    any: true
+  TempClient:
+    any: true
+  TextManager:
+    any: true
+  TextureLoader:
+    any: true
+  TimeSpan:
+    any: true
+  Timer:
+    any: true
+  ToolBox:
+    any: true
+  TraitorEvent:
+    any: true
+  TraitorEventPrefab:
+    any: true
+  TraitorManager:
+    any: true
+  TrimLString:
+    any: true
+  UInt16:
+    any: true
+  UInt32:
+    any: true
+  UInt64:
+    any: true
+  UShort:
+    any: true
+  UpperLString:
+    any: true
+  Util:
+    any: true
+  Vector2:
+    any: true
+  Vector3:
+    any: true
+  Vector4:
+    any: true
+  VoteType:
+    any: true
+  Voting:
+    any: true
+  WaterRenderer:
+    any: true
+  WayPoint:
+    any: true
+  WearableType:
+    any: true
+  WrappedLString:
+    any: true
+  XAttribute:
+    any: true
+  XContainer:
+    any: true
+  XDocument:
+    any: true
+  XElement:
+    any: true
+  XName:
+    any: true
+  XNode:
+    any: true
+  debug.breakpoint:
+    any: true
+  json:
+    any: true
+  math.clamp:
+    any: true
+  math.lerp:
+    any: true
+  math.remap:
+    any: true
+  math.round:
+    any: true
+  math.sign:
+    any: true
+  printerror:
+    any: true
+  setmodulepaths:
+    any: true
+  string.endsWith:
+    any: true
+  string.startsWith:
+    any: true
+  trygetpackage:
+    any: true
