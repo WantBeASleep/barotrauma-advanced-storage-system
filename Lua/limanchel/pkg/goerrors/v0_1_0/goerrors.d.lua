@@ -9,6 +9,8 @@
 ---@class goerrors.Lib
 ---@field new fun(message: string): goerrors.Error Новый объект с указанным сообщением.
 ---@field wrap fun(message: string, err: goerrors.Error, ...: goerrors.Error): goerrors.Error Контекст с одной или несколькими причинами по ссылке; nil недопустим.
+---@field is fun(err: goerrors.Error?, target: goerrors.Error?): boolean Поиск того же объекта в глубину без __eq; nil совпадает только с nil.
+---@field as fun(err: goerrors.Error?, error_class: table): goerrors.Error? Первый исходный объект указанного класса, без наследования; nil при отсутствии совпадения.
 local goerrors = {}
 
 return goerrors
