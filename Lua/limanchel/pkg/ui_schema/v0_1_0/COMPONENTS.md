@@ -1,6 +1,6 @@
 # Карта игровых типов UI
 
-Целевая ревизия: `c6e8829143c98162ed376aee33eb9799602365ac`, Barotrauma `1.13.5.0`. Сигнатуры ниже прочитаны в исходниках (S). Игровой прогон (E) пока не выполнен; эта карта сама по себе не объявляет поддержку готовой.
+Целевая ревизия: `c6e8829143c98162ed376aee33eb9799602365ac`, Barotrauma `1.13.5.0`. Сигнатуры ниже прочитаны в исходниках (S). В клиенте LuaCs 1.0.117 выполнено создание и очистка 22 типов ниже, кроме CreditsPlayer; проверен основной вариант каждого типа, а не все перегрузки. ContextMenuOption проверен как значение.
 
 Режим `new` создаёт описанный `rect`, `parent` передаёт существующего родителя, `none` использует собственный способ размещения типа. Для обычного компонента очистка означает снятие его дерева с обновления и отсоединение; дополнительные действия указаны отдельно.
 
@@ -28,7 +28,7 @@
 | [Graph](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/GUI/Graph.cs) | `none`, Нет | Только управляемая память; не панель |
 | [SerializableEntityEditor](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Serialization/SerializableEntityEditor.cs) | `parent`, `RectTransform` | Обычная очистка |
 | [SlideshowPlayer](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Screens/SlideshowPlayer.cs) | `new`, `RectTransform` | Обычная очистка |
-| [CreditsPlayer](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Screens/CreditsPlayer.cs) | `new`, `RectTransform` | Нужна точечная отписка собственной анонимной функции `ResolutionChanged`; требуется проверка в LuaCs перед объявлением поддержки |
+| [CreditsPlayer](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Screens/CreditsPlayer.cs) | `new`, `RectTransform` | Пока не зарегистрирован: скрытая подписка `ResolutionChanged` требует отдельного согласования C#-помощника |
 
 ## Варианты создания
 
@@ -55,7 +55,7 @@
 
 ### NumberInput
 
-- `public GUINumberInput( RectTransform rectT, NumberType inputType, string style = "", Alignment textAlignment = Alignment.Center, float? relativeButtonAreaWidth = null, ButtonVisibility buttonVisibility = ButtonVisibility.Automatic, (GUIButton PlusButton, GUIButton MinusButton)`.
+- `public GUINumberInput( RectTransform rectT, NumberType inputType, string style = "", Alignment textAlignment = Alignment.Center, float? relativeButtonAreaWidth = null, ButtonVisibility buttonVisibility = ButtonVisibility.Automatic, (GUIButton PlusButton, GUIButton MinusButton)? customPlusMinusButtons = null)`.
 
 ### TickBox
 
@@ -134,9 +134,11 @@
 ## Вспомогательные и служебные имена
 
 - `ContextMenuOption`: значение для контекстного меню, варианты label/isEnabled/onSelected и label/isEnabled/subOptions; не принимает UI-детей.
-- `GUI.Canvas`: существующий singleton, используется как родитель/ресурс; пакет не создаёт и не удаляет его.
+- `GUI.Canvas.Instance`: существующий singleton, используется как родитель/ресурс; пакет не создаёт и не удаляет его.
 - `GUI`, `Style`, `GUIStyle`, `Component`, `Screen`: фасады, базовые/служебные классы; не являются схемами создаваемых панелей.
 - `RectTransform`: объект размещения, создаётся через поле `rect`.
 - `Anchor`, `Alignment`, `Pivot`, `SoundType`, `CursorState`: именованные игровые варианты; передаются через `$enum`. `ScaleBasis` и вложенные enum получают точное CLR-имя.
 
 Для ColorPicker, MessageBox, ContextMenu, VideoPlayer и CreditsPlayer тесты обязаны проверить очистку не только прямоугольника. Для всех типов итоговый README отмечает реально выполненный игровой прогон.
+
+Для `DropDown` в цепочке родителей необходим настоящий GUIComponent, например Frame. Один RectTransform без GUIComponent не удовлетворяет требованиям штатного раскрывающегося списка.
