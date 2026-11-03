@@ -15,16 +15,16 @@ local function as_error(value)
 end
 
 local function abort(path, message)
-   error(goerrors.new(path .. ": " .. message), 0)
+   error(path .. ": " .. message, 0)
 end
 
 local function checked(path, callback, ...)
    local ok, result, err = pcall(callback, ...)
    if not ok then
-      error(goerrors.wrap(path, as_error(result)), 0)
+      error(goerrors.wrap(path, as_error(result)):error(), 0)
    end
    if err then
-      error(goerrors.wrap(path, as_error(err)), 0)
+      error(goerrors.wrap(path, as_error(err)):error(), 0)
    end
    return result
 end
@@ -230,7 +230,7 @@ local function make_entry(entry, external_parent, context, view)
          end
       end
       if #errors > 0 then
-         error(goerrors.wrap(entry.path, table.unpack(errors)), 0)
+         error(goerrors.wrap(entry.path, table.unpack(errors)):error(), 0)
       end
    end
    view.records[#view.records + 1] = record
@@ -274,7 +274,7 @@ local function make_entry(entry, external_parent, context, view)
       if not ok then
          local detached, detach_err = pcall(context.backend.detach, context.backend, object)
          if not detached then
-            error(goerrors.wrap(entry.path, as_error(err), as_error(detach_err)), 0)
+            error(goerrors.wrap(entry.path, as_error(err), as_error(detach_err)):error(), 0)
          end
          error(err, 0)
       end

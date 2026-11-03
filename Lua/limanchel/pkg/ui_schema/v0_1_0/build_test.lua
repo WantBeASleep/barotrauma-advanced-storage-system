@@ -23,6 +23,35 @@ local function setup()
 end
 
 describe("Построение и владение UI", function()
+   it("сохраняет причину отказа при строковом error MoonSharp", function()
+      local env = {
+         require = require,
+         assert = assert,
+         type = type,
+         tostring = tostring,
+         pairs = pairs,
+         ipairs = ipairs,
+         table = table,
+         setmetatable = setmetatable,
+         pcall = pcall,
+         error = function(message, level)
+            if type(message) ~= "string" then
+               error("MoonSharp принимает только строковые исключения")
+            end
+            error(message, level)
+         end,
+      }
+      local source = assert(io.open("Lua/limanchel/pkg/ui_schema/v0_1_0/build.lua", "r"))
+      local text = source:read("*a")
+      source:close()
+      -- В Busted используется Lua 5.2 с четырьмя аргументами load; игровой std описывает только один.
+      -- selene: allow(incorrect_standard_library_use)
+      local isolated = assert(load(text, "build", "t", env))()
+      local backend, reg, parent = setup()
+      local view, err = isolated.run(doc("{\"type\":\"Unknown\"}"), "row", parent, nil, reg, backend)
+      assert.is_nil(view)
+      assert.matches("неизвестный тип Unknown", err:error(), 1, true)
+   end)
    it(
       "не удерживает освобождённые объекты через результат построения",
       function()

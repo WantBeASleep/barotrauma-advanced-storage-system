@@ -24,11 +24,6 @@ local function optional(object, name)
    end
 end
 
-local function is_struct(value)
-   local get_type = optional(value, "GetType")
-   return get_type ~= nil and value:GetType().IsValueType == true
-end
-
 local function game_environment()
    return {
       CLIENT = CLIENT,
@@ -47,6 +42,10 @@ end
 
 local function environment(self)
    return self.environment or game_environment()
+end
+
+local function is_struct(self, value)
+   return optional(value, "GetType") ~= nil and environment(self).LuaUserData.IsTargetType(value, "System.ValueType")
 end
 
 function native.new(api)
@@ -119,7 +118,8 @@ end
 function Backend:new_rect(spec, parent)
    local size = spec.size
    assert(size ~= nil, "rect.size обязателен")
-   local kind = size:GetType().Name
+   local kind = environment(self).LuaUserData.TypeOf(size)
+   kind = kind:match("[^%.]+$")
    assert(kind == "Point" or kind == "Vector2", "rect.size должен быть Point или Vector2")
    local anchor = spec.anchor
    if anchor == nil then
@@ -159,7 +159,7 @@ function Backend:write_member(object, path, value)
    end
    owners[#parts][parts[#parts]] = value
    for i = #parts - 1, 1, -1 do
-      if is_struct(owners[i + 1]) then
+      if is_struct(self, owners[i + 1]) then
          owners[i][parts[i]] = owners[i + 1]
       end
    end

@@ -4,6 +4,20 @@ local native = require("limanchel.pkg.ui_schema.v0_1_0.native")
 local describe, it = busted.describe, busted.it
 
 describe("Нативный доступ", function()
+   it("определяет размер через TypeOf без отражения System.Type", function()
+      local size = {}
+      local api = { GUI = {}, LuaUserData = {} }
+      function api.LuaUserData.TypeOf(value)
+         assert.is_true(rawequal(size, value))
+         return "Microsoft.Xna.Framework.Point"
+      end
+      function api.GUI.RectTransform(value, parent)
+         return { size = value, parent = parent }
+      end
+      local rect = native.new(api):new_rect({ size = size, anchor = 0, scale_basis = 0 }, "parent")
+      assert.is_true(rawequal(size, rect.size))
+      assert.are.equal("parent", rect.parent)
+   end)
    it(
       "восстанавливает регистрацию списка после локального доступа к окнам",
       function()
@@ -61,7 +75,16 @@ describe("Нативный доступ", function()
             end
          end,
       })
-      native.new():write_member(owner, "Offset.X", 9)
+      native
+         .new({
+            LuaUserData = {
+               IsTargetType = function(_, name)
+                  assert.are.equal("System.ValueType", name)
+                  return true
+               end,
+            },
+         })
+         :write_member(owner, "Offset.X", 9)
       assert.are.equal(9, assigned.X)
       assert.are.equal(2, assigned.Y)
    end)

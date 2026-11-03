@@ -14,7 +14,7 @@ local function action(example, name, callback)
       local ok, err = pcall(callback, ...)
       example.busy = false
       if not ok then
-         error(err, 0)
+         error(tostring(err), 0)
       end
       example.last_action = name
       if example.on_action then
@@ -83,7 +83,7 @@ end
 
 local function bind_controls(example)
    local view = example.view
-   view:get("entry").OnTextChanged = function(_, text)
+   view:get("entry").OnTextChangedDelegate = function(_, text)
       return action(example, "text", function()
          message(example, "Ввод: " .. tostring(text))
       end)()
@@ -126,7 +126,7 @@ local function bind_rows(example, owner)
       local list = example.view:get("rows")
       local row, err = owner.builder:build(owner.documents.rows, "item_row", list.Content.RectTransform)
       if err then
-         error(err, 0)
+         error(tostring(err), 0)
       end
       row:get("name").Text = "Строка " .. example.serial
       example.rows[#example.rows + 1] = row
@@ -137,7 +137,7 @@ local function bind_rows(example, owner)
             if rawequal(current, row) then
                local ok, remove_err = row:dispose()
                if not ok then
-                  error(remove_err, 0)
+                  error(remove_err:error(), 0)
                end
                table.remove(example.rows, i)
                example.expected_rows = example.expected_rows - 1

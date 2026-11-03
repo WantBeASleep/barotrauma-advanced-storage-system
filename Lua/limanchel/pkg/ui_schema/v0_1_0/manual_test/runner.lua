@@ -166,7 +166,7 @@ function runner.start(options)
          local text = options.read_text(options.schema_path .. "/" .. name .. ".json")
          local doc, err = builder:parse(text)
          if err then
-            error(err, 0)
+            error(tostring(err), 0)
          end
          documents[name] = doc
       end
