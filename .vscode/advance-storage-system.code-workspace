@@ -17,5 +17,7 @@
       "missing-fields"
     ],
     "Lua.diagnostics.workspaceDelay": 300000,
+    "Lua.workspace.ignoreDir": ["**/*_test.lua"],
+    "Lua.diagnostics.ignoredFiles": "Disable"
   }
 }
