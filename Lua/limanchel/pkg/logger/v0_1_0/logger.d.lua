@@ -17,6 +17,7 @@
 ---@field info fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем INFO.
 ---@field warning fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем WARNING.
 ---@field error fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем ERROR, без исключения по уровню.
+---@field with_prefix fun(self: logger.Logger, prefix: string, ...: string): logger.Logger Новый экземпляр с добавленными непустыми префиксами; наследует порог и write, не меняет родителя. Отсутствие аргументов, nil и неверные типы вызывают строковую ошибку Lua.
 
 ---@class logger.Lib
 ---@field new fun(options: logger.Options): logger.Logger Новый независимый экземпляр; копирует префиксы, сохраняет write по ссылке.

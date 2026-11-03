@@ -106,6 +106,24 @@ function Logger:error(message, fields)
    self:write_message("error", message, fields)
 end
 
+function Logger:with_prefix(prefix, ...)
+   assert(
+      type(prefix) == "string" and prefix ~= "",
+      "Префикс должен быть непустой строкой"
+   )
+   local prefixes = copy_prefixes(self.prefixes)
+   prefixes[#prefixes + 1] = prefix
+   for i = 1, select("#", ...) do
+      local extra_prefix = select(i, ...)
+      assert(
+         type(extra_prefix) == "string" and extra_prefix ~= "",
+         "Префикс должен быть непустой строкой"
+      )
+      prefixes[#prefixes + 1] = extra_prefix
+   end
+   return setmetatable({ threshold = self.threshold, prefixes = prefixes, write = self.write }, Logger_mt)
+end
+
 function logger.new(options)
    assert(type(options) == "table", "Настройки логгера должны быть таблицей")
    for name in pairs(options) do

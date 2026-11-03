@@ -377,3 +377,124 @@ describe("Именованные поля logger", function()
       end
    )
 end)
+
+describe("Производные логгеры", function()
+   it(
+      "добавляет несколько префиксов без изменения родителя и соседей",
+      function()
+         local log, lines = new_log("warning", { "ASS" })
+         local child = log:with_prefix("storage", "filters")
+         local sibling = log:with_prefix("menu")
+         local grandchild = child:with_prefix("filters")
+         child:warning("текст")
+         sibling:warning("текст")
+         grandchild:warning("текст")
+         log:warning("текст")
+         assert.are.same({
+            "[ASS][storage][filters][WARNING] текст",
+            "[ASS][menu][WARNING] текст",
+            "[ASS][storage][filters][filters][WARNING] текст",
+            "[ASS][WARNING] текст",
+         }, lines)
+         assert.is_false(rawequal(log, child))
+         assert.is_false(rawequal(child, sibling))
+         assert.is_false(rawequal(child, grandchild))
+      end
+   )
+
+   it("наследует порог и функцию вывода", function()
+      local log, lines = new_log("warning", {})
+      local child = log:with_prefix("storage")
+      local sibling = log:with_prefix("menu")
+      local grandchild = child:with_prefix("filters")
+      for _, instance in ipairs({ log, child, sibling, grandchild }) do
+         assert.is_nil(instance:info("скрыто"))
+         assert.is_nil(instance:error("текст", { count = 42 }))
+      end
+      assert.are.same({
+         "[ERROR] текст {count = 42}",
+         "[storage][ERROR] текст {count = 42}",
+         "[menu][ERROR] текст {count = 42}",
+         "[storage][filters][ERROR] текст {count = 42}",
+      }, lines)
+   end)
+
+   it("создаёт независимые экземпляры при повторном new", function()
+      local first, first_lines = new_log("info", { "ASS" })
+      local second, second_lines = new_log("error", { "other" })
+      assert.is_false(rawequal(first, second))
+      first:with_prefix("storage"):info("текст")
+      second:info("скрыто")
+      second:error("сбой")
+      assert.are.same({ "[ASS][storage][INFO] текст" }, first_lines)
+      assert.are.same({ "[other][ERROR] сбой" }, second_lines)
+   end)
+
+   local invalid_prefixes = {
+      {
+         name = "отсутствие аргументов",
+         call = function(log)
+            log:with_prefix()
+         end,
+      },
+      {
+         name = "пустую строку",
+         call = function(log)
+            log:with_prefix("")
+         end,
+      },
+      {
+         name = "число",
+         call = function(log)
+            log:with_prefix(42)
+         end,
+      },
+      {
+         name = "начальный nil",
+         call = function(log)
+            log:with_prefix(nil, "x")
+         end,
+      },
+      {
+         name = "промежуточный nil",
+         call = function(log)
+            log:with_prefix("x", nil, "y")
+         end,
+      },
+      {
+         name = "замыкающий nil",
+         call = function(log)
+            log:with_prefix("x", nil)
+         end,
+      },
+   }
+   for _, case in ipairs(invalid_prefixes) do
+      it("отклоняет " .. case.name .. " без изменения родителя", function()
+         local log, lines = new_log("info", { "ASS" })
+         assert_contract_error(function()
+            case.call(log)
+         end)
+         log:info("текст")
+         assert.are.same({ "[ASS][INFO] текст" }, lines)
+      end)
+   end
+
+   -- Подмена глобальной функции проверяет захват явно переданного print.
+   -- selene: allow(global_usage)
+   it("сохраняет явно переданный print у всей семьи", function()
+      local original_print = _G.print
+      local lines = {}
+      local replacement_lines = {}
+      restore_globals = function()
+         _G.print = original_print
+      end
+      _G.print = collect_lines(lines)
+      local log = logger.new({ level = "info", prefixes = {}, write = _G.print })
+      _G.print = collect_lines(replacement_lines)
+      local child = log:with_prefix("storage")
+      log:info("текст")
+      child:info("текст")
+      assert.are.same({ "[INFO] текст", "[storage][INFO] текст" }, lines)
+      assert.are.same({}, replacement_lines)
+   end)
+end)
