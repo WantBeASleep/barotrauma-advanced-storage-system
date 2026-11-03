@@ -98,7 +98,7 @@ local loaded, startup_error = pcall(function()
    end
 
    host.resources.draw = function(sprite_batch, component)
-      GUI.DrawRectangle(sprite_batch, component.Rect, Color.LimeGreen, false, 2)
+      GUI.DrawRectangle(sprite_batch, component.Rect, Color.LimeGreen, false, 0, 2)
    end
 
    local prefab = ItemPrefab.Prefabs[Identifier("wrench")]

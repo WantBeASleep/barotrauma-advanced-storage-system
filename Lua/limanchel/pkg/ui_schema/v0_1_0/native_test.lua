@@ -4,6 +4,28 @@ local native = require("limanchel.pkg.ui_schema.v0_1_0.native")
 local describe, it = busted.describe, busted.it
 
 describe("Нативный доступ", function()
+   it("создаёт params-массив без регистрации System.Type", function()
+      local wrapper, entries = {}, {}
+      local registered = false
+      local api = { LuaUserData = {} }
+      function api.LuaUserData.IsRegistered()
+         return registered
+      end
+      function api.LuaUserData.RegisterType()
+         registered = true
+         return wrapper
+      end
+      function api.LuaUserData.UnregisterType()
+         registered = false
+      end
+      function api.LuaUserData.CreateUserDataFromDescriptor(value, kind)
+         assert.is_true(rawequal(entries, value))
+         assert.is_true(rawequal(wrapper, kind))
+         return "array"
+      end
+      assert.are.equal("array", native.new(api):new_array("Barotrauma.ContextMenuOption", entries))
+      assert.is_false(registered)
+   end)
    it("определяет размер через TypeOf без отражения System.Type", function()
       local size = {}
       local api = { GUI = {}, LuaUserData = {} }

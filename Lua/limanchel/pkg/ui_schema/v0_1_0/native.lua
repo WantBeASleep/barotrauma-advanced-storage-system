@@ -73,8 +73,19 @@ end
 
 function Backend:new_array(type_name, entries)
    local api = environment(self).LuaUserData
-   local descriptor = api.RegisterType(type_name)
-   return api.CreateUserDataFromType(entries, descriptor.Type:MakeArrayType())
+   local array_name = type_name .. "[]"
+   local existed = api.IsRegistered(array_name)
+   local descriptor = api.RegisterType(array_name)
+   local ok, result = pcall(function()
+      return api.CreateUserDataFromDescriptor(entries, descriptor)
+   end)
+   if not existed then
+      api.UnregisterType(array_name)
+   end
+   if not ok then
+      error(tostring(result), 0)
+   end
+   return result
 end
 
 function Backend:remove_message_box(object)
