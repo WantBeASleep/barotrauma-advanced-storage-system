@@ -28,7 +28,7 @@
 | [Graph](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/GUI/Graph.cs) | `none`, Нет | Только управляемая память; не панель |
 | [SerializableEntityEditor](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Serialization/SerializableEntityEditor.cs) | `parent`, `RectTransform` | Обычная очистка |
 | [SlideshowPlayer](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Screens/SlideshowPlayer.cs) | `new`, `RectTransform` | Обычная очистка |
-| [CreditsPlayer](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Screens/CreditsPlayer.cs) | `new`, `RectTransform` | Пока не зарегистрирован: скрытая подписка `ResolutionChanged` требует отдельного согласования C#-помощника |
+| [CreditsPlayer](https://github.com/evilfactory/LuaCsForBarotrauma/blob/c6e8829143c98162ed376aee33eb9799602365ac/Barotrauma/BarotraumaClient/ClientSource/Screens/CreditsPlayer.cs) | Исключён из текущей версии | По решению пользователя создание пока не поддерживается; C#-помощник не добавляется |
 
 ## Варианты создания
 
@@ -129,6 +129,8 @@
 
 ### CreditsPlayer
 
+Создание пока исключено по согласованию с пользователем. Сигнатура приведена справочно:
+
 - `public CreditsPlayer(RectTransform rectT, string configFile)`.
 
 ## Вспомогательные и служебные имена
@@ -139,6 +141,6 @@
 - `RectTransform`: объект размещения, создаётся через поле `rect`.
 - `Anchor`, `Alignment`, `Pivot`, `SoundType`, `CursorState`: именованные игровые варианты; передаются через `$enum`. `ScaleBasis` и вложенные enum получают точное CLR-имя.
 
-Для ColorPicker, MessageBox, ContextMenu, VideoPlayer и CreditsPlayer тесты обязаны проверить очистку не только прямоугольника. Для всех типов итоговый README отмечает реально выполненный игровой прогон.
+Для ColorPicker, MessageBox, ContextMenu и VideoPlayer тесты обязаны проверить очистку не только прямоугольника. Для всех типов итоговый README отмечает реально выполненный игровой прогон.
 
 Для `DropDown` в цепочке родителей необходим настоящий GUIComponent, например Frame. Один RectTransform без GUIComponent не удовлетворяет требованиям штатного раскрывающегося списка.
