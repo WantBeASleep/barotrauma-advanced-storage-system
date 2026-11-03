@@ -9,12 +9,14 @@
 ---@field write fun(line: string) Получает готовую строку без завершающего перевода строки.
 
 ---Настроенный экземпляр. Подавленные сообщения не проверяют аргументы.
+---Разрешённый вызов требует строку и таблицу со строковыми ключами или nil;
+---неверные типы вызывают строковую ошибку Lua. Сбои __tostring/write распространяются вызывающему коду.
 ---@class logger.Logger
----@field trace fun(self: logger.Logger, message: string): nil Вывод с уровнем TRACE.
----@field debug fun(self: logger.Logger, message: string): nil Вывод с уровнем DEBUG.
----@field info fun(self: logger.Logger, message: string): nil Вывод с уровнем INFO.
----@field warning fun(self: logger.Logger, message: string): nil Вывод с уровнем WARNING.
----@field error fun(self: logger.Logger, message: string): nil Вывод с уровнем ERROR, без исключения по уровню.
+---@field trace fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем TRACE.
+---@field debug fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем DEBUG.
+---@field info fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем INFO.
+---@field warning fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем WARNING.
+---@field error fun(self: logger.Logger, message: string, fields?: table<string, any>): nil Вывод с уровнем ERROR, без исключения по уровню.
 
 ---@class logger.Lib
 ---@field new fun(options: logger.Options): logger.Logger Новый независимый экземпляр; копирует префиксы, сохраняет write по ссылке.

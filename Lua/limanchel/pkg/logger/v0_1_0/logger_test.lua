@@ -203,3 +203,177 @@ describe("Сообщения logger", function()
       end
    end)
 end)
+
+describe("Именованные поля logger", function()
+   it("сортирует именованные поля", function()
+      local log, lines = new_log("info", { "ASS", "storage", "filters" })
+      log:info("Предмет отклонён", { reason = "blacklist", item_id = 42 })
+      assert.are.same({
+         "[ASS][storage][filters][INFO] Предмет отклонён {item_id = 42; reason = blacklist}",
+      }, lines)
+   end)
+
+   for _, level in ipairs({ "trace", "debug", "info", "warning", "error" }) do
+      it("выводит поля на уровне " .. level, function()
+         local log, lines = new_log("trace", {})
+         assert.is_nil(log[level](log, "текст", { count = 42 }))
+         assert.are.same({ "[" .. string.upper(level) .. "] текст {count = 42}" }, lines)
+      end)
+   end
+
+   it("сохраняет false, ноль и пустые строки", function()
+      local log, lines = new_log("info", {})
+      log:info("", { [""] = false, count = 0, text = "" })
+      assert.are.same({ "[INFO]  { = false; count = 0; text = }" }, lines)
+   end)
+
+   it("не выводит блок для отсутствующих или пустых полей", function()
+      local log, lines = new_log("info", {})
+      log:info("текст")
+      log:info("текст", nil)
+      log:info("текст", {})
+      log:info("текст", { absent = nil })
+      assert.are.same({ "[INFO] текст", "[INFO] текст", "[INFO] текст", "[INFO] текст" }, lines)
+   end)
+
+   it("отклоняет неверные типы полей и ключей", function()
+      local log, lines = new_log("info", {})
+      for _, fields in ipairs({
+         false,
+         42,
+         "текст",
+         { [1] = "значение" },
+         { [false] = "значение" },
+      }) do
+         assert_contract_error(function()
+            log:info("текст", fields)
+         end)
+      end
+      assert.are.same({}, lines)
+   end)
+
+   it(
+      "вызывает __tostring по одному разу на поле и не меняет объекты",
+      function()
+         local log, lines = new_log("info", {})
+         local calls = 0
+         local object = setmetatable({ tag = "предмет" }, {
+            __tostring = function(self)
+               calls = calls + 1
+               return self.tag
+            end,
+         })
+         local fields = { second = object, first = object }
+         log:info("текст", fields)
+         assert.are.same({ "[INFO] текст {first = предмет; second = предмет}" }, lines)
+         assert.are.equal(2, calls)
+         assert.are.same({ tag = "предмет" }, object)
+         assert.is_true(rawequal(object, fields.first))
+         assert.is_true(rawequal(object, fields.second))
+         local count = 0
+         for _ in pairs(fields) do
+            count = count + 1
+         end
+         assert.are.equal(2, count)
+      end
+   )
+
+   it(
+      "использует стандартное представление таблицы, функции и цикла",
+      function()
+         local log, lines = new_log("info", {})
+         local plain = {}
+         local callback = function() end
+         local cyclic = {}
+         cyclic.self = cyclic
+         local expected = "[INFO] текст {callback = "
+            .. tostring(callback)
+            .. "; cyclic = "
+            .. tostring(cyclic)
+            .. "; plain = "
+            .. tostring(plain)
+            .. "}"
+         log:info("текст", { plain = plain, callback = callback, cyclic = cyclic })
+         assert.are.same({ expected }, lines)
+         assert.is_true(rawequal(cyclic, cyclic.self))
+      end
+   )
+
+   it("не вызывает обычное поле tostring у значения", function()
+      local log, lines = new_log("info", {})
+      local object = {
+         tostring = function()
+            error("Метод вызываться не должен")
+         end,
+      }
+      local expected = "[INFO] текст {object = " .. tostring(object) .. "}"
+      log:info("текст", { object = object })
+      assert.are.same({ expected }, lines)
+   end)
+
+   it("передаёт сбой __tostring без частичного вывода", function()
+      local log, lines = new_log("info", {})
+      local broken = setmetatable({}, {
+         __tostring = function()
+            error("Сбой преобразования", 0)
+         end,
+      })
+      local ok, message = pcall(function()
+         log:info("текст", { a = "готово", b = broken })
+      end)
+      assert.is_false(ok)
+      assert.are.equal("Сбой преобразования", message)
+      assert.are.same({}, lines)
+   end)
+
+   it("передаёт сбой write без повторного вызова", function()
+      local calls = 0
+      local log = logger.new({
+         level = "info",
+         prefixes = {},
+         write = function(line)
+            calls = calls + 1
+            assert.are.equal("[INFO] текст {count = 42}", line)
+            error("Сбой вывода", 0)
+         end,
+      })
+      local ok, message = pcall(function()
+         log:info("текст", { count = 42 })
+      end)
+      assert.is_false(ok)
+      assert.are.equal("Сбой вывода", message)
+      assert.are.equal(1, calls)
+   end)
+
+   it("не возвращает результат функции вывода", function()
+      local log = logger.new({
+         level = "info",
+         prefixes = {},
+         write = function()
+            return 42, "результат"
+         end,
+      })
+      assert.is_nil(log:info("текст", { count = 1 }))
+   end)
+
+   it("экранирует CR и LF во всех текстовых компонентах", function()
+      local log, lines = new_log("info", { "a\r\nb" })
+      local object = setmetatable({}, {
+         __tostring = function()
+            return "a\r\nb"
+         end,
+      })
+      log:info("a\r\nb", { ["a\r\nb"] = object })
+      assert.are.same({ "[a\\r\\nb][INFO] a\\r\\nb {a\\r\\nb = a\\r\\nb}" }, lines)
+   end)
+
+   it(
+      "сохраняет прочие разделители без завершающего перевода строки",
+      function()
+         local text = "[]{};=\\"
+         local log, lines = new_log("info", { text })
+         log:info(text, { [text] = text })
+         assert.are.same({ "[[]{};=\\][INFO] []{};=\\ {[]{};=\\ = []{};=\\}" }, lines)
+      end
+   )
+end)

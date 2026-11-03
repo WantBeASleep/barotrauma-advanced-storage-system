@@ -36,41 +36,74 @@ local function copy_prefixes(prefixes)
    return copied
 end
 
+---Заменяет физические переносы строк видимыми последовательностями.
+---@param text string
+---@return string
+local function escape_text(text)
+   return (text:gsub("\r", "\\r"):gsub("\n", "\\n"))
+end
+
+---Формирует отсортированный блок полей без изменения исходной таблицы.
+---@param fields table<string, any>?
+---@return string
+local function format_fields(fields)
+   if fields == nil then
+      return ""
+   end
+   assert(type(fields) == "table", "Поля сообщения должны быть таблицей")
+   local keys = {}
+   for key in pairs(fields) do
+      assert(type(key) == "string", "Ключ поля должен быть строкой")
+      keys[#keys + 1] = key
+   end
+   if #keys == 0 then
+      return ""
+   end
+   table.sort(keys)
+   local parts = {}
+   for i, key in ipairs(keys) do
+      parts[i] = escape_text(key) .. " = " .. escape_text(tostring(fields[key]))
+   end
+   return " {" .. table.concat(parts, "; ") .. "}"
+end
+
 ---Отправляет разрешённое сообщение в функцию вывода экземпляра.
 ---@private
 ---@param level logger.Level
 ---@param message string
+---@param fields table<string, any>?
 ---@return nil
-function Logger:write_message(level, message)
+function Logger:write_message(level, message, fields)
    if levels[level] < self.threshold then
       return
    end
    assert(type(message) == "string", "Сообщение должно быть строкой")
-   local prefixes = ""
-   if #self.prefixes > 0 then
-      prefixes = "[" .. table.concat(self.prefixes, "][") .. "]"
+   local parts = {}
+   for i, prefix in ipairs(self.prefixes) do
+      parts[i] = "[" .. escape_text(prefix) .. "]"
    end
-   self.write(prefixes .. "[" .. string.upper(level) .. "] " .. message)
+   parts[#parts + 1] = "[" .. string.upper(level) .. "] " .. escape_text(message) .. format_fields(fields)
+   self.write(table.concat(parts))
 end
 
-function Logger:trace(message)
-   self:write_message("trace", message)
+function Logger:trace(message, fields)
+   self:write_message("trace", message, fields)
 end
 
-function Logger:debug(message)
-   self:write_message("debug", message)
+function Logger:debug(message, fields)
+   self:write_message("debug", message, fields)
 end
 
-function Logger:info(message)
-   self:write_message("info", message)
+function Logger:info(message, fields)
+   self:write_message("info", message, fields)
 end
 
-function Logger:warning(message)
-   self:write_message("warning", message)
+function Logger:warning(message, fields)
+   self:write_message("warning", message, fields)
 end
 
-function Logger:error(message)
-   self:write_message("error", message)
+function Logger:error(message, fields)
+   self:write_message("error", message, fields)
 end
 
 function logger.new(options)
