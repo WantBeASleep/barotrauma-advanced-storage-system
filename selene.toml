@@ -1,4 +1,5 @@
 std = "lua52+selene_std_luacs"
+exclude = ["Lua/limanchel/pkg/ui_schema/v0_1_0/vendor/lunajson_decoder.lua"]
 
 [lints]
 almost_swapped = "deny"
