@@ -205,6 +205,30 @@ describe("Сообщения logger", function()
 end)
 
 describe("Именованные поля logger", function()
+   it("сохраняет маскированное значение из __pairs", function()
+      local log, lines = new_log("info", {})
+      local fields = setmetatable({ token = "исходное значение" }, {
+         __pairs = function()
+            return next, { token = "[скрыто]" }, nil
+         end,
+      })
+      log:info("текст", fields)
+      assert.are.same({ "[INFO] текст {token = [скрыто]}" }, lines)
+      assert.are.equal("исходное значение", fields.token)
+   end)
+
+   it("сохраняет виртуальное поле false из __pairs", function()
+      local log, lines = new_log("info", {})
+      local fields = setmetatable({}, {
+         __pairs = function()
+            return next, { enabled = false }, nil
+         end,
+      })
+      log:info("текст", fields)
+      assert.are.same({ "[INFO] текст {enabled = false}" }, lines)
+      assert.is_nil(rawget(fields, "enabled"))
+   end)
+
    it("сортирует именованные поля", function()
       local log, lines = new_log("info", { "ASS", "storage", "filters" })
       log:info("Предмет отклонён", { reason = "blacklist", item_id = 42 })

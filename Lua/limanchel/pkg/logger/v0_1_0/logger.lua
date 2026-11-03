@@ -52,9 +52,11 @@ local function format_fields(fields)
    end
    assert(type(fields) == "table", "Поля сообщения должны быть таблицей")
    local keys = {}
-   for key in pairs(fields) do
+   local values = {}
+   for key, value in pairs(fields) do
       assert(type(key) == "string", "Ключ поля должен быть строкой")
       keys[#keys + 1] = key
+      values[key] = value
    end
    if #keys == 0 then
       return ""
@@ -62,7 +64,7 @@ local function format_fields(fields)
    table.sort(keys)
    local parts = {}
    for i, key in ipairs(keys) do
-      parts[i] = escape_text(key) .. " = " .. escape_text(tostring(fields[key]))
+      parts[i] = escape_text(key) .. " = " .. escape_text(tostring(values[key]))
    end
    return " {" .. table.concat(parts, "; ") .. "}"
 end
