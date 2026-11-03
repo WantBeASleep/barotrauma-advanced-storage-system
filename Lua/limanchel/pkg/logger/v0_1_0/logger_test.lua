@@ -1,6 +1,21 @@
 local busted = require("busted")
 local assert = require("luassert")
-local logger = require("limanchel.pkg.logger.v0_1_0.logger")
+local colors = { Beige = {}, LimeGreen = {}, SkyBlue = {}, Orange = {}, Red = {} }
+
+-- Подменяется только внешний тип LuaCs на время загрузки модуля.
+-- selene: allow(global_usage)
+local function load_logger(color_type)
+   local original_color = _G.Color
+   _G.Color = color_type
+   local ok, loaded = pcall(require, "limanchel.pkg.logger.v0_1_0.logger")
+   _G.Color = original_color
+   if not ok then
+      error(loaded, 0)
+   end
+   return loaded
+end
+
+local logger = load_logger(colors)
 
 local describe = busted.describe
 local it = busted.it
@@ -16,9 +31,10 @@ end)
 
 local function collect_lines(lines)
    return function(...)
-      assert.are.equal(1, select("#", ...))
-      local line = ...
+      assert.are.equal(2, select("#", ...))
+      local line, color = ...
       assert.are.equal("string", type(line))
+      assert.is_not_nil(color)
       lines[#lines + 1] = line
    end
 end
@@ -58,6 +74,7 @@ describe("Создание logger", function()
 
    local invalid_options = {
       { name = "неизвестную настройку", field = "typo", value = true },
+      { name = "настройку палитры", field = "colors", value = colors },
       { name = "неизвестный уровень", field = "level", value = "warn" },
       { name = "верхний регистр уровня", field = "level", value = "INFO" },
       { name = "число вместо уровня", field = "level", value = 1 },
@@ -96,7 +113,7 @@ describe("Создание logger", function()
       end
       _G.print = collect_lines(lines)
       package.loaded[module_name] = nil
-      local loaded = require("limanchel.pkg.logger.v0_1_0.logger")
+      local loaded = load_logger(colors)
       loaded.new({ level = "info", prefixes = {}, write = _G.print })
       assert.are.same({}, lines)
    end)
@@ -123,6 +140,64 @@ describe("Создание logger", function()
       assert.is_nil(log:info("скрыто"))
       assert.is_nil(log:warning("текст"))
       assert.are.same({ "[ASS][WARNING] текст" }, lines)
+   end)
+end)
+
+describe("Цвета уровней logger", function()
+   local cases = {
+      { level = "trace", label = "TRACE", color = colors.Beige },
+      { level = "debug", label = "DEBUG", color = colors.LimeGreen },
+      { level = "info", label = "INFO", color = colors.SkyBlue },
+      { level = "warning", label = "WARNING", color = colors.Orange },
+      { level = "error", label = "ERROR", color = colors.Red },
+   }
+   for _, case in ipairs(cases) do
+      it("передаёт цвет уровня " .. case.level, function()
+         local records = {}
+         local log = logger.new({
+            level = "trace",
+            prefixes = { "ASS" },
+            write = function(...)
+               assert.are.equal(2, select("#", ...))
+               local line, color = ...
+               records[#records + 1] = { line = line, color = color }
+            end,
+         })
+         assert.is_nil(log[case.level](log, "текст", { count = 42 }))
+         assert.are.equal(1, #records)
+         assert.are.equal("[ASS][" .. case.label .. "] текст {count = 42}", records[1].line)
+         assert.is_true(rawequal(case.color, records[1].color))
+      end)
+   end
+
+   it(
+      "не вызывает цветную функцию вывода для подавленного уровня",
+      function()
+         local log, lines = new_log("error", { "ASS" })
+         log:warning("скрыто", { count = 42 })
+         assert.are.same({}, lines)
+      end
+   )
+
+   -- Проверяется восстановление окружения помощником при ошибке require.
+   -- selene: allow(global_usage)
+   it("восстанавливает Color после сбоя загрузки", function()
+      local module_name = "limanchel.pkg.logger.v0_1_0.logger"
+      local original_module = package.loaded[module_name]
+      local original_color = _G.Color
+      restore_globals = function()
+         package.loaded[module_name] = original_module
+      end
+      package.loaded[module_name] = nil
+      local broken_colors = setmetatable({}, {
+         __index = function()
+            error("Сбой доступа к цвету", 0)
+         end,
+      })
+      local ok, message = pcall(load_logger, broken_colors)
+      assert.is_false(ok)
+      assert.are.equal("Сбой доступа к цвету", message)
+      assert.is_true(rawequal(original_color, _G.Color))
    end)
 end)
 
@@ -503,22 +578,26 @@ describe("Производные логгеры", function()
       end)
    end
 
-   -- Подмена глобальной функции проверяет захват явно переданного print.
-   -- selene: allow(global_usage)
-   it("сохраняет явно переданный print у всей семьи", function()
-      local original_print = _G.print
-      local lines = {}
-      local replacement_lines = {}
-      restore_globals = function()
-         _G.print = original_print
+   it("сохраняет цветную функцию вывода у всей семьи", function()
+      local records = {}
+      local options = {
+         level = "warning",
+         prefixes = {},
+         write = function(line, color)
+            records[#records + 1] = { line = line, color = color }
+         end,
+      }
+      local log = logger.new(options)
+      options.write = function()
+         error("Функция вывода была заменена")
       end
-      _G.print = collect_lines(lines)
-      local log = logger.new({ level = "info", prefixes = {}, write = _G.print })
-      _G.print = collect_lines(replacement_lines)
       local child = log:with_prefix("storage")
-      log:info("текст")
-      child:info("текст")
-      assert.are.same({ "[INFO] текст", "[storage][INFO] текст" }, lines)
-      assert.are.same({}, replacement_lines)
+      log:warning("текст")
+      child:error("сбой", { count = 42 })
+      assert.are.equal(2, #records)
+      assert.are.equal("[WARNING] текст", records[1].line)
+      assert.is_true(rawequal(colors.Orange, records[1].color))
+      assert.are.equal("[storage][ERROR] сбой {count = 42}", records[2].line)
+      assert.is_true(rawequal(colors.Red, records[2].color))
    end)
 end)

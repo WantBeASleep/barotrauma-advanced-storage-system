@@ -4,10 +4,19 @@ local logger = {}
 local levels = { trace = 1, debug = 2, info = 3, warning = 4, error = 5 }
 local option_names = { level = true, prefixes = true, write = true }
 
+---@type table<logger.Level, Microsoft.Xna.Framework.Color>
+local colors = {
+   trace = Color.Beige,
+   debug = Color.LimeGreen,
+   info = Color.SkyBlue,
+   warning = Color.Orange,
+   error = Color.Red,
+}
+
 ---@class logger.Instance: logger.Logger
 ---@field private threshold integer
 ---@field private prefixes string[]
----@field private write fun(line: string)
+---@field private write fun(line: string, color: Microsoft.Xna.Framework.Color)
 local Logger = {}
 local Logger_mt = { __index = Logger }
 
@@ -85,7 +94,7 @@ function Logger:write_message(level, message, fields)
       parts[i] = "[" .. escape_text(prefix) .. "]"
    end
    parts[#parts + 1] = "[" .. string.upper(level) .. "] " .. escape_text(message) .. format_fields(fields)
-   self.write(table.concat(parts))
+   self.write(table.concat(parts), colors[level])
 end
 
 function Logger:trace(message, fields)
