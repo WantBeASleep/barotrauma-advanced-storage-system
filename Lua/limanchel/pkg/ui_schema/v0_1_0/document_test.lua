@@ -26,7 +26,10 @@ describe("Документы схем UI", function()
       { "{\"schema_version\":1,\"components\":{\"x\":{\"type\":\"Frame\",\"id\":\"\"}}}", "id" },
       { "{\"schema_version\":1,\"components\":{\"x\":{\"type\":\"Frame\",\"rect\":{\"wrong\":1}}}}", "wrong" },
       { "{\"schema_version\":1,\"components\":{\"x\":{\"type\":\"Frame\",\"props\":{\"Parent\":1}}}}", "Parent" },
-      { "{\"schema_version\":1,\"components\":{\"x\":{\"type\":\"Frame\",\"props\":[{\"member\":\"Text\"}]}}}", "value" },
+      {
+         "{\"schema_version\":1,\"components\":{\"x\":{\"type\":\"Frame\",\"props\":[{\"member\":\"Text\"}]}}}",
+         "value",
+      },
    }
    for _, case in ipairs(invalid) do
       it("объясняет неверное поле " .. case[2], function()
