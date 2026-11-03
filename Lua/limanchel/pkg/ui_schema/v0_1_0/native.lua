@@ -1,4 +1,5 @@
 local native = {}
+local goerrors = require("limanchel.pkg.goerrors.v0_1_0.goerrors")
 local Backend = {}
 local Backend_mt = { __index = Backend }
 
@@ -173,6 +174,49 @@ function Backend:write_member(object, path, value)
       if is_struct(self, owners[i + 1]) then
          owners[i][parts[i]] = owners[i + 1]
       end
+   end
+end
+
+-- Снимок делается до входа в конструктор, который сам прикрепляет корень.
+function Backend:creation_cleanup(name, parent, destroy)
+   if name ~= "SerializableEntityEditor" then
+      parent = environment(self).GUI.Canvas.Instance
+   end
+   local before = {}
+   for _, child in ipairs(parent.Children) do
+      before[#before + 1] = child
+   end
+   local expected = "Barotrauma." .. (name == "SerializableEntityEditor" and name or "GUI" .. name)
+   return function()
+      local created = {}
+      for _, child in ipairs(parent.Children) do
+         local existed = false
+         for _, original in ipairs(before) do
+            if child == original then
+               existed = true
+               break
+            end
+         end
+         local object = child.GUIComponent
+         if not existed and object and environment(self).LuaUserData.TypeOf(object) == expected then
+            created[#created + 1] = object
+         end
+      end
+      local errors = {}
+      for _, object in ipairs(created) do
+         local ok, result, err = pcall(destroy, object)
+         if not ok or err then
+            errors[#errors + 1] = goerrors.new(tostring(ok and err or result))
+            local detached, detail, detach_err = pcall(self.detach, self, object)
+            if not detached or detach_err then
+               errors[#errors + 1] = goerrors.new(tostring(detached and detach_err or detail))
+            end
+         end
+      end
+      if #errors > 0 then
+         return nil, goerrors.wrap("Откат частичного " .. name, table.unpack(errors))
+      end
+      return true
    end
 end
 

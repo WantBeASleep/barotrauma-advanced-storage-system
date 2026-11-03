@@ -7,6 +7,10 @@ function test_support.new_backend()
    return setmetatable({ created = {}, writes = {}, destroyed = {}, client = true }, Backend_mt)
 end
 
+function Backend:creation_cleanup()
+   return function() end
+end
+
 function Backend:is_client()
    return self.client
 end

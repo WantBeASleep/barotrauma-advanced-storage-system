@@ -155,17 +155,37 @@ local function check_refs(spec, path, entry, ids, context, early)
       if spec.member ~= nil and (type(spec.member) ~= "string" or spec.member == "") then
          abort(path, "member должен быть строкой")
       end
-      return
+      return true
    end
    for key in pairs(spec) do
       if type(key) == "string" and key:sub(1, 1) == "$" then
+         if key == "$type" then
+            if type(spec[key]) ~= "string" or not context.registry:get_value_type(spec[key]) or spec.value == nil then
+               abort(path, "неизвестный тип значения или отсутствует value")
+            end
+            for field in pairs(spec) do
+               if field ~= "$type" and field ~= "value" then
+                  abort(
+                     path,
+                     "лишнее поле типизированного значения " .. tostring(field)
+                  )
+               end
+            end
+            if check_refs(spec.value, path .. ".value", entry, ids, context, early) then
+               return true
+            end
+         end
          checked(path, values.resolve, spec, context, path)
          return
       end
    end
+   local has_refs = false
    for key, child in pairs(spec) do
-      check_refs(child, path .. "." .. tostring(key), entry, ids, context, early)
+      if check_refs(child, path .. "." .. tostring(key), entry, ids, context, early) then
+         has_refs = true
+      end
    end
+   return has_refs
 end
 
 local function preflight(node, path, context, reg)
@@ -218,15 +238,17 @@ local function make_entry(entry, external_parent, context, view)
    record.clean = function()
       local errors = {}
       for i = #pending, 1, -1 do
-         local ok, err = pcall(pending[i])
-         if not ok then
-            errors[#errors + 1] = as_error(err)
+         local ok, result, err = pcall(pending[i])
+         if not ok or err then
+            errors[#errors + 1] = as_error(ok and err or result)
+         else
+            table.remove(pending, i)
          end
       end
       if entry.descriptor.rect_mode == "new" and rect ~= parent then
-         local ok, err = pcall(context.backend.detach, context.backend, rect)
-         if not ok then
-            errors[#errors + 1] = as_error(err)
+         local ok, result, err = pcall(context.backend.detach, context.backend, rect)
+         if not ok or err then
+            errors[#errors + 1] = as_error(ok and err or result)
          end
       end
       if #errors > 0 then

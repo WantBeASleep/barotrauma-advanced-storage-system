@@ -42,16 +42,19 @@ end
 
 function Session:close()
    local example = self.example
-   self.example = nil
    self.ready = false
    if example then
-      return example:close()
+      local ok, err = example:close()
+      if not ok then
+         return nil, err
+      end
    end
+   self.example = nil
    return true
 end
 
 function Session:open(name)
-   assert(not self.stopped, "тестовая сессия остановлена")
+   assert(not self.stopped and not self.stopping, "тестовая сессия остановлена")
    local ok, err = self:close()
    if not ok then
       return nil, err
@@ -75,7 +78,7 @@ function Session:open(name)
 end
 
 function Session:step(name)
-   assert(not self.stopped, "тестовая сессия остановлена")
+   assert(not self.stopped and not self.stopping, "тестовая сессия остановлена")
    if not self.example or not self.example.actions[name] then
       return nil, goerrors.new("Действие недоступно: " .. tostring(name))
    end
@@ -92,16 +95,43 @@ function Session:stop()
    if self.stopped then
       return true
    end
-   self.stopped = true
-   local ok, err = self:close()
+   self.stopping = true
+   local errors = {}
+   local function attempt(callback)
+      local ok, result, err = pcall(callback)
+      if not ok or err then
+         errors[#errors + 1] = goerrors.new(tostring(ok and err or result))
+         return false
+      end
+      return true
+   end
+   attempt(function()
+      return self:close()
+   end)
+   local remaining = {}
    for _, token in ipairs(self.tokens) do
-      self.host:unsubscribe(token)
+      if not attempt(function()
+         return self.host:unsubscribe(token)
+      end) then
+         remaining[#remaining + 1] = token
+      end
    end
-   self.host:remove_command("ui_schema_test")
-   if self.host.shutdown then
-      self.host:shutdown()
+   self.tokens = remaining
+   if not self.command_removed then
+      self.command_removed = attempt(function()
+         return self.host:remove_command("ui_schema_test")
+      end)
    end
-   return ok, err
+   if not self.shutdown_done then
+      self.shutdown_done = not self.host.shutdown or attempt(function()
+         return self.host:shutdown()
+      end)
+   end
+   self.stopped = #errors == 0
+   if #errors > 0 then
+      return nil, goerrors.wrap("Остановка примеров", table.unpack(errors))
+   end
+   return true
 end
 
 local function update(session)

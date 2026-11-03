@@ -40,7 +40,10 @@ function types_basic.describe(backend, name, recipe)
    function descriptor.create(params, rect, context)
       local selector = { variant = params.variant }
       for field in pairs(params.present) do
-         selector[field] = true
+         selector[field] = params.values[field]
+         if selector[field] == nil then
+            selector[field] = {}
+         end
       end
       local variant = select_variant(selector)
       local args, offset = {}, 0
@@ -60,6 +63,9 @@ function types_basic.describe(backend, name, recipe)
          end
       end
       local constructor = backend:get_type(name)
+      if recipe.track_creation then
+         context.defer_cleanup(backend:creation_cleanup(name, rect, descriptor.destroy))
+      end
       local object = constructor(table.unpack(args, 1, #variant.parameters + offset))
       context.defer_cleanup(function()
          descriptor.destroy(object)

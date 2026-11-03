@@ -42,6 +42,7 @@ function types_special.register(reg, backend)
    local top_left = types_basic.enum_default(backend, "Alignment", "TopLeft")
    local recipes = {
       MessageBox = {
+         track_creation = true,
          rect_mode = "none",
          pass_rect = false,
          slots = {
@@ -99,6 +100,7 @@ function types_special.register(reg, backend)
          end,
       },
       ContextMenu = {
+         track_creation = true,
          rect_mode = "none",
          pass_rect = false,
          variants = {
@@ -128,6 +130,7 @@ function types_special.register(reg, backend)
          variants = { default = { parameters = { "arraySize" }, defaults = { arraySize = 100 } } },
       },
       SerializableEntityEditor = {
+         track_creation = true,
          rect_mode = "parent",
          choose = function(constructor)
             return constructor.properties ~= nil and "properties" or "in_game"

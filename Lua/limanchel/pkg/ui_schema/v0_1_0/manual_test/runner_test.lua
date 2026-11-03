@@ -75,3 +75,58 @@ describe("Готовность к визуальной проверке", functi
       second:stop()
    end)
 end)
+
+describe("Остановка после отказа очистки", function()
+   it(
+      "снимает независимые регистрации и повторяет только неудавшуюся",
+      function()
+         local session, host = setup()
+         local unsubscribe = host.unsubscribe
+         local fail = true
+         function host:unsubscribe(token)
+            if fail then
+               fail = false
+               error("unsubscribe-failed", 0)
+            end
+            return unsubscribe(self, token)
+         end
+         local ok, err = session:stop()
+         assert.is_nil(ok)
+         assert.matches("unsubscribe-failed", err:error(), 1, true)
+         assert.is_nil(next(host.commands))
+         local count = 0
+         for _ in pairs(host.callbacks) do
+            count = count + 1
+         end
+         assert.are.equal(1, count)
+         assert(session:stop())
+         assert.is_nil(next(host.callbacks))
+      end
+   )
+end)
+
+describe("Повторная очистка открытого примера", function()
+   it(
+      "сохраняет пример для повторной попытки после отказа close",
+      function()
+         local session = setup()
+         assert(session:open("layout"))
+         local example = session.example
+         local close = example.close
+         local fail = true
+         function example:close()
+            if fail then
+               fail = false
+               return nil, require("limanchel.pkg.goerrors.v0_1_0.goerrors").new("close-failed")
+            end
+            return close(self)
+         end
+         local ok, err = session:stop()
+         assert.is_nil(ok)
+         assert.matches("close-failed", err:error(), 1, true)
+         assert.is_true(rawequal(example, session.example))
+         assert(session:stop())
+         assert.is_nil(session.example)
+      end
+   )
+end)
