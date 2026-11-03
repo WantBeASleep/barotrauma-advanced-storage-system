@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "components": {
+    "menu": {
+      "type": "Frame",
+      "id": "window",
+      "rect": {
+        "size": {
+          "$type": "Point",
+          "value": [
+            620,
+            620
+          ]
+        },
+        "anchor": {
+          "$enum": "Anchor",
+          "value": "Center"
+        },
+        "pivot": {
+          "$enum": "Pivot",
+          "value": "Center"
+        }
+      },
+      "children": [
+        {
+          "type": "LayoutGroup",
+          "rect": {
+            "size": {
+              "$type": "Vector2",
+              "value": [
+                0.9,
+                0.9
+              ]
+            },
+            "anchor": {
+              "$enum": "Anchor",
+              "value": "Center"
+            },
+            "pivot": {
+              "$enum": "Pivot",
+              "value": "Center"
+            }
+          },
+          "props": {
+            "AbsoluteSpacing": 8,
+            "Stretch": false
+          },
+          "children": [
+            {
+              "type": "TextBlock",
+              "rect": {
+                "size": {
+                  "$type": "Point",
+                  "value": [
+                    540,
+                    36
+                  ]
+                }
+              },
+              "id": "title",
+              "constructor": {
+                "text": "Очистка и ожидаемые ошибки"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "rect": {
+                "size": {
+                  "$type": "Point",
+                  "value": [
+                    540,
+                    36
+                  ]
+                }
+              },
+              "id": "message",
+              "constructor": {
+                "text": "Готово"
+              }
+            },
+            {
+              "type": "Button",
+              "rect": {
+                "size": {
+                  "$type": "Point",
+                  "value": [
+                    540,
+                    36
+                  ]
+                }
+              },
+              "id": "fail",
+              "constructor": {
+                "text": "Проверить ошибочную схему"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "broken": {
+      "type": "UnknownDemonstration",
+      "rect": {
+        "size": {
+          "$type": "Point",
+          "value": [
+            100,
+            40
+          ]
+        }
+      }
+    }
+  }
+}

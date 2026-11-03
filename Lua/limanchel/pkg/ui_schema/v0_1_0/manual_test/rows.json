@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "components": {
+    "menu": {
+      "type": "Frame",
+      "id": "window",
+      "rect": {
+        "size": {
+          "$type": "Point",
+          "value": [
+            620,
+            620
+          ]
+        },
+        "anchor": {
+          "$enum": "Anchor",
+          "value": "Center"
+        },
+        "pivot": {
+          "$enum": "Pivot",
+          "value": "Center"
+        }
+      },
+      "children": [
+        {
+          "type": "LayoutGroup",
+          "rect": {
+            "size": {
+              "$type": "Vector2",
+              "value": [
+                0.9,
+                0.9
+              ]
+            },
+            "anchor": {
+              "$enum": "Anchor",
+              "value": "Center"
+            },
+            "pivot": {
+              "$enum": "Pivot",
+              "value": "Center"
+            }
+          },
+          "props": {
+            "AbsoluteSpacing": 8,
+            "Stretch": false
+          },
+          "children": [
+            {
+              "type": "TextBlock",
+              "rect": {
+                "size": {
+                  "$type": "Point",
+                  "value": [
+                    540,
+                    36
+                  ]
+                }
+              },
+              "id": "title",
+              "constructor": {
+                "text": "Динамические строки"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "rect": {
+                "size": {
+                  "$type": "Point",
+                  "value": [
+                    540,
+                    36
+                  ]
+                }
+              },
+              "id": "message",
+              "constructor": {
+                "text": "Готово"
+              }
+            },
+            {
+              "type": "Button",
+              "rect": {
+                "size": {
+                  "$type": "Point",
+                  "value": [
+                    540,
+                    36
+                  ]
+                }
+              },
+              "id": "add_row",
+              "constructor": {
+                "text": "Добавить строку"
+              }
+            },
+            {
+              "type": "ListBox",
+              "rect": {
+                "size": {
+                  "$type": "Point",
+                  "value": [
+                    540,
+                    330
+                  ]
+                }
+              },
+              "id": "rows"
+            }
+          ]
+        }
+      ]
+    },
+    "item_row": {
+      "type": "Frame",
+      "id": "row",
+      "rect": {
+        "size": {
+          "$type": "Point",
+          "value": [
+            520,
+            50
+          ]
+        }
+      },
+      "children": [
+        {
+          "type": "TextBlock",
+          "id": "name",
+          "rect": {
+            "size": {
+              "$type": "Vector2",
+              "value": [
+                0.7,
+                1
+              ]
+            },
+            "anchor": {
+              "$enum": "Anchor",
+              "value": "CenterLeft"
+            },
+            "pivot": {
+              "$enum": "Pivot",
+              "value": "CenterLeft"
+            }
+          },
+          "constructor": {
+            "text": ""
+          }
+        },
+        {
+          "type": "Button",
+          "id": "remove",
+          "rect": {
+            "size": {
+              "$type": "Point",
+              "value": [
+                100,
+                32
+              ]
+            },
+            "anchor": {
+              "$enum": "Anchor",
+              "value": "CenterRight"
+            },
+            "pivot": {
+              "$enum": "Pivot",
+              "value": "CenterRight"
+            }
+          },
+          "constructor": {
+            "text": "Удалить"
+          }
+        }
+      ]
+    }
+  }
+}
