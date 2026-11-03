@@ -85,6 +85,13 @@ end
 
 function View:dispose()
    local ok, err = cleanup(self.records)
+   local remaining = {}
+   for _, record in ipairs(self.records) do
+      if record.active then
+         remaining[#remaining + 1] = record
+      end
+   end
+   self.records = remaining
    self.root = nil
    for id in pairs(self.by_id) do
       self.by_id[id] = nil

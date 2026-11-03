@@ -23,6 +23,21 @@ local function setup()
 end
 
 describe("Построение и владение UI", function()
+   it(
+      "не удерживает освобождённые объекты через результат построения",
+      function()
+         local backend, reg, parent = setup()
+         local view = assert(build.run(doc(panel()), "row", parent, nil, reg, backend))
+         local weak = setmetatable({ view.root }, { __mode = "v" })
+         view:dispose()
+         backend.created = {}
+         backend.destroyed = {}
+         backend.writes = {}
+         collectgarbage("collect")
+         assert.is_nil(weak[1])
+         assert.is_nil(view.root)
+      end
+   )
    it("создаёт независимые строки и исходные ссылки", function()
       local backend, reg, parent = setup()
       local source = doc(panel("\"id\":\"label\",\"props\":{\"Text\":\"текст\"}"))

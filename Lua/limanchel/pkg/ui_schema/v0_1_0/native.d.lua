@@ -3,6 +3,9 @@
 ---@field is_client fun(self: ui_schema.Native): boolean
 ---@field get_type fun(self: ui_schema.Native, name: string): any
 ---@field get_enum fun(self: ui_schema.Native, name: string): table
+---@field new_array fun(self: ui_schema.Native, type_name: string, entries: any[]): any Локальная userdata массива для params.
+---@field remove_message_box fun(self: ui_schema.Native, object: any) Удалить только своё окно из нативного списка.
+---@field clear_context_menu fun(self: ui_schema.Native, object: any) Убрать активную ссылку только при совпадении.
 ---@field new_value fun(self: ui_schema.Native, name: string, args: any[]): any
 ---@field new_rect fun(self: ui_schema.Native, spec: table, parent: any): any
 ---@field read_member fun(self: ui_schema.Native, object: any, path: string): any

@@ -4,6 +4,40 @@ local native = require("limanchel.pkg.ui_schema.v0_1_0.native")
 local describe, it = busted.describe, busted.it
 
 describe("Нативный доступ", function()
+   it(
+      "восстанавливает регистрацию списка после локального доступа к окнам",
+      function()
+         local registered = false
+         local removed
+         local managed = {
+            Remove = function(object)
+               removed = object
+            end,
+         }
+         local api = { LuaUserData = {}, GUI = { MessageBox = {} } }
+         function api.LuaUserData.IsRegistered()
+            return registered
+         end
+         function api.LuaUserData.RegisterType()
+            registered = true
+         end
+         function api.LuaUserData.UnregisterType()
+            registered = false
+         end
+         setmetatable(api.GUI.MessageBox, {
+            __index = function(_, field)
+               if field == "MessageBoxes" then
+                  assert.is_true(registered)
+                  return managed
+               end
+            end,
+         })
+         local object = {}
+         native.new(api):remove_message_box(object)
+         assert.is_false(registered)
+         assert.is_true(rawequal(object, removed))
+      end
+   )
    it("не обращается к GUI при создании backend", function()
       assert.is_not_nil(native.new())
    end)

@@ -72,6 +72,39 @@ function Backend:get_enum(name)
    return self.enums[name]
 end
 
+function Backend:new_array(type_name, entries)
+   local api = environment(self).LuaUserData
+   local descriptor = api.RegisterType(type_name)
+   return api.CreateUserDataFromType(entries, descriptor.Type:MakeArrayType())
+end
+
+function Backend:remove_message_box(object)
+   local env = environment(self)
+   local api = env.LuaUserData
+   local type_name = "System.Collections.Generic.List`1[[Barotrauma.GUIComponent, Barotrauma]]"
+   local existed = api.IsRegistered(type_name)
+   if not existed then
+      api.RegisterType(type_name)
+   end
+   local ok, list = pcall(function()
+      return env.GUI.MessageBox.MessageBoxes
+   end)
+   if not existed then
+      api.UnregisterType(type_name)
+   end
+   if not ok then
+      error(list, 0)
+   end
+   list.Remove(object)
+end
+
+function Backend:clear_context_menu(object)
+   local menu = self:get_type("ContextMenu")
+   if menu.CurrentContextMenu == object then
+      menu.CurrentContextMenu = nil
+   end
+end
+
 function Backend:new_value(name, args)
    local constructor = environment(self)[name]
    assert(constructor ~= nil, "тип значения недоступен: " .. name)

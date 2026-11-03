@@ -6,6 +6,7 @@ local build = require("limanchel.pkg.ui_schema.v0_1_0.build")
 local native = require("limanchel.pkg.ui_schema.v0_1_0.native")
 local types_basic = require("limanchel.pkg.ui_schema.v0_1_0.types_basic")
 local types_controls = require("limanchel.pkg.ui_schema.v0_1_0.types_controls")
+local types_special = require("limanchel.pkg.ui_schema.v0_1_0.types_special")
 
 local Builder = {}
 local Builder_mt = { __index = Builder }
@@ -36,6 +37,7 @@ function ui_schema.new()
    end
    types_basic.register(reg, backend)
    types_controls.register(reg, backend)
+   types_special.register(reg, backend)
    return setmetatable({ registry = reg, backend = backend }, Builder_mt)
 end
 
