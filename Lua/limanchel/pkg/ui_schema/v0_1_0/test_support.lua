@@ -29,6 +29,29 @@ function Backend:new_object(name, rect)
    return object
 end
 
+function Backend:get_enum()
+   return { TopLeft = 0, Center = 5, Left = 1, CenterLeft = 3, Int = 0, Automatic = 0, None = 0, Default = 0 }
+end
+
+function Backend:get_type(name)
+   return function(...)
+      local args = table.pack(...)
+      local object = self:new_object(name, args[1])
+      object.args = args
+      object.Content = { RectTransform = { Children = {} } }
+      object.InnerFrame = { RectTransform = { Children = {} } }
+      object.ListBox = { Content = object.Content, RectTransform = { Children = {} } }
+      object.TextBlock = {}
+      function object.Dispose()
+         object.disposed = true
+      end
+      function object.Remove()
+         object.removed = true
+      end
+      return object
+   end
+end
+
 function Backend:read_member(object, path)
    local current = object
    for part in path:gmatch("[^%.]+") do
