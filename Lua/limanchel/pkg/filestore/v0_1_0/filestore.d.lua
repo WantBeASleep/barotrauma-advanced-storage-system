@@ -10,6 +10,7 @@
 ---@class filestore.Lib
 ---@field errors filestore.Errors Стабильные причины ожидаемых сбоев.
 ---@field load fun(key: string): string?, goerrors.Error? Читает файл без кеша; пустая строка допустима. При сбое возвращает nil, err.
+---@field save fun(key: string, text: string): true?, goerrors.Error? Создаёт каталоги и заменяет файл через соседний временный; при сбое возвращает nil, err.
 local filestore = {}
 
 return filestore

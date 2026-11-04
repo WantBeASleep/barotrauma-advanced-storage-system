@@ -90,4 +90,40 @@ function filestore.load(key)
    return result
 end
 
+function filestore.save(key, text)
+   validate_key(key)
+   assert(type(text) == "string", "Текст должен быть строкой")
+   local stage = "Определение каталога"
+   local temporary
+   local ok, reason = pcall(function()
+      local target = get_path(key)
+      temporary = target .. temporary_suffix
+      stage = "Создание родительских каталогов"
+      if not File.CreateDirectory(target:match("^(.*)/")) then
+         error("Платформа не создала каталог", 0)
+      end
+      stage = "Запись временного файла"
+      File.Write(temporary, text)
+      stage = "Замена целевого файла"
+      File.Move(temporary, target)
+   end)
+   if ok then
+      return true
+   end
+   local err = operation_error(filestore.errors.write_failed, stage, key, reason)
+   if temporary then
+      local cleaned, cleanup_reason = pcall(function()
+         File.Delete(temporary)
+      end)
+      if not cleaned then
+         err = goerrors.wrap(
+            string.format("Удаление временного файла [%s]", key),
+            err,
+            goerrors.new(tostring(cleanup_reason))
+         )
+      end
+   end
+   return nil, err
+end
+
 return filestore

@@ -89,6 +89,50 @@ busted.describe("filestore", function()
             end
             return files[path]
          end,
+         CreateDirectory = function(path)
+            calls[#calls + 1] = { "CreateDirectory", path }
+            if failures.CreateDirectory == false then
+               return false
+            end
+            if failures.CreateDirectory then
+               error(failures.CreateDirectory, 0)
+            end
+            for file_path in pairs(files) do
+               if path == file_path or path:sub(1, #file_path + 1) == file_path .. "/" then
+                  error("родитель является файлом", 0)
+               end
+            end
+            directories[path] = true
+            return true
+         end,
+         Write = function(path, text)
+            calls[#calls + 1] = { "Write", path, text }
+            if not directories[path:match("^(.*)/")] then
+               error("родительский каталог отсутствует", 0)
+            end
+            if failures.Write then
+               files[path] = text:sub(1, 2)
+               error(failures.Write, 0)
+            end
+            files[path] = text
+         end,
+         Move = function(path, target)
+            calls[#calls + 1] = { "Move", path, target }
+            if failures.Move then
+               error(failures.Move, 0)
+            end
+            if files[path] == nil or directories[target] then
+               error("замена недоступна", 0)
+            end
+            files[target], files[path] = files[path], nil
+         end,
+         Delete = function(path)
+            calls[#calls + 1] = { "Delete", path }
+            if failures.Delete then
+               error(failures.Delete, 0)
+            end
+            files[path] = nil
+         end,
       }
    end)
 
@@ -214,6 +258,157 @@ busted.describe("filestore", function()
       for _, case in ipairs(invalid_keys) do
          busted.it("отклоняет ключ до обращения к диску: " .. case.name, function()
             local ok, err = pcall(filestore.load, case.value)
+            assert.is_false(ok)
+            assert.are.equal("string", type(err))
+            assert.are.same({}, calls)
+         end)
+      end
+   end)
+
+   busted.describe("сохранение", function()
+      busted.before_each(function()
+         filestore = require(module_name)
+         assert.are.equal("function", type(filestore.save))
+      end)
+
+      busted.it("сохраняет текст с созданием вложенных каталогов", function()
+         local ok, err = filestore.save("ass/storagecfgs/cfg1.json", "Привет\r\nмир\n")
+         assert.is_true(ok)
+         assert.is_nil(err)
+         assert.are.equal("Привет\r\nмир\n", files["saves/ModFiles/ass/storagecfgs/cfg1.json"])
+         assert.is_true(directories["saves/ModFiles/ass/storagecfgs"])
+         assert.is_nil(files["saves/ModFiles/ass/storagecfgs/cfg1.json.filestore-tmp"])
+         assert.are.same({
+            { "CreateDirectory", "saves/ModFiles/ass/storagecfgs" },
+            { "Write", "saves/ModFiles/ass/storagecfgs/cfg1.json.filestore-tmp", "Привет\r\nмир\n" },
+            {
+               "Move",
+               "saves/ModFiles/ass/storagecfgs/cfg1.json.filestore-tmp",
+               "saves/ModFiles/ass/storagecfgs/cfg1.json",
+            },
+         }, calls)
+         assert.are.equal("Привет\r\nмир\n", filestore.load("ass/storagecfgs/cfg1.json"))
+      end)
+
+      busted.it("полностью заменяет прежний файл пустой строкой", function()
+         files["saves/ModFiles/a"] = "старое содержимое"
+         assert.is_true(filestore.save("a", ""))
+         assert.are.equal("", filestore.load("a"))
+      end)
+
+      busted.it("не усекает длинный текст", function()
+         local text = ("длинная строка\n"):rep(10000)
+         assert.is_true(filestore.save("long.txt", text))
+         assert.are.equal(text, filestore.load("long.txt"))
+      end)
+
+      busted.it("учитывает смену корня между сохранениями", function()
+         assert.is_true(filestore.save("a", "первый"))
+         _G.Game.SaveFolder = "other"
+         assert.is_true(filestore.save("a", "второй"))
+         assert.are.equal("первый", files["saves/ModFiles/a"])
+         assert.are.equal("второй", files["other/ModFiles/a"])
+      end)
+
+      busted.it(
+         "перезаписывает аварийный остаток только своего ключа",
+         function()
+            files["saves/ModFiles/a"] = "старое"
+            files["saves/ModFiles/a.filestore-tmp"] = "аварийный остаток"
+            files["saves/ModFiles/b"] = "соседний файл"
+            files["saves/ModFiles/b.filestore-tmp"] = "чужой временный"
+            assert.are.equal("старое", filestore.load("a"))
+            assert.is_true(filestore.save("a", "новое"))
+            assert.are.equal("новое", filestore.load("a"))
+            assert.is_nil(files["saves/ModFiles/a.filestore-tmp"])
+            assert.are.equal("соседний файл", files["saves/ModFiles/b"])
+            assert.are.equal("чужой временный", files["saves/ModFiles/b.filestore-tmp"])
+         end
+      )
+
+      for _, operation in ipairs({ "CreateDirectory", "Write", "Move" }) do
+         busted.it("сохраняет прежний файл при отказе " .. operation, function()
+            files["saves/ModFiles/settings.json"] = "старое"
+            failures[operation] = "отказ " .. operation
+            local ok, err = filestore.save("settings.json", "новое")
+            assert.is_nil(ok)
+            assert.is_true(goerrors.is(err, filestore.errors.write_failed))
+            assert.is_truthy(err:error():find("settings.json", 1, true))
+            assert.is_truthy(err:error():find("отказ " .. operation, 1, true))
+            assert.are.equal("старое", files["saves/ModFiles/settings.json"])
+            assert.is_nil(files["saves/ModFiles/settings.json.filestore-tmp"])
+            for _, call in ipairs(calls) do
+               assert.is_false(call[1] == "Delete" and call[2] == "saves/ModFiles/settings.json")
+            end
+         end)
+      end
+
+      busted.it("обрабатывает false от создания каталога как отказ", function()
+         failures.CreateDirectory = false
+         local ok, err = filestore.save("a", "новое")
+         assert.is_nil(ok)
+         assert.is_true(goerrors.is(err, filestore.errors.write_failed))
+         assert.is_nil(files["saves/ModFiles/a"])
+      end)
+
+      busted.it(
+         "возвращает ошибку, если родительский путь занят файлом",
+         function()
+            files["saves/ModFiles/folder"] = "обычный файл"
+            local ok, err = filestore.save("folder/child/a", "новое")
+            assert.is_nil(ok)
+            assert.is_true(goerrors.is(err, filestore.errors.write_failed))
+            assert.are.equal("обычный файл", files["saves/ModFiles/folder"])
+         end
+      )
+
+      busted.it("возвращает ошибку замены каталога файлом", function()
+         directories["saves/ModFiles/a"] = true
+         local ok, err = filestore.save("a", "новое")
+         assert.is_nil(ok)
+         assert.is_true(goerrors.is(err, filestore.errors.write_failed))
+         assert.is_true(directories["saves/ModFiles/a"])
+         assert.is_nil(files["saves/ModFiles/a.filestore-tmp"])
+      end)
+
+      for _, operation in ipairs({ "Write", "Move" }) do
+         busted.it(
+            "сохраняет обе причины при сбое очистки после " .. operation,
+            function()
+               files["saves/ModFiles/a"] = "старое"
+               failures[operation] = "основной отказ"
+               failures.Delete = "отказ очистки"
+               local ok, err = filestore.save("a", "новое")
+               assert.is_nil(ok)
+               assert.is_true(goerrors.is(err, filestore.errors.write_failed))
+               assert.is_truthy(err:error():find("основной отказ", 1, true))
+               assert.is_truthy(err:error():find("отказ очистки", 1, true))
+               assert.are.equal("старое", files["saves/ModFiles/a"])
+               assert.is_not_nil(files["saves/ModFiles/a.filestore-tmp"])
+               local causes = err:unwrap()
+               assert.is_true(goerrors.is(causes[1], filestore.errors.write_failed))
+               assert.is_truthy(causes[2]:error():find("отказ очистки", 1, true))
+            end
+         )
+      end
+
+      for _, case in ipairs(invalid_keys) do
+         busted.it("отклоняет ключ до записи: " .. case.name, function()
+            local ok, err = pcall(filestore.save, case.value, "текст")
+            assert.is_false(ok)
+            assert.are.equal("string", type(err))
+            assert.are.same({}, calls)
+         end)
+      end
+
+      for _, case in ipairs({
+         { name = "nil" },
+         { name = "число", value = 42 },
+         { name = "таблица", value = {} },
+         { name = "boolean", value = false },
+      }) do
+         busted.it("не преобразует в текст: " .. case.name, function()
+            local ok, err = pcall(filestore.save, "a", case.value)
             assert.is_false(ok)
             assert.are.equal("string", type(err))
             assert.are.same({}, calls)
