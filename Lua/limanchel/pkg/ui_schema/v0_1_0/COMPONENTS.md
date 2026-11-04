@@ -1,6 +1,6 @@
 # Карта игровых типов UI
 
-Целевая ревизия: `c6e8829143c98162ed376aee33eb9799602365ac`, Barotrauma `1.13.5.0`. Сигнатуры ниже прочитаны в исходниках (S). В клиенте LuaCs 1.0.117 выполнено создание и очистка 22 типов ниже, кроме CreditsPlayer; проверен основной вариант каждого типа, а не все перегрузки. ContextMenuOption проверен как значение.
+Целевая ревизия: `c6e8829143c98162ed376aee33eb9799602365ac`, Barotrauma `1.13.5.0`. Сигнатуры ниже прочитаны в исходниках (S). В клиенте LuaCs 1.0.117 выполнено создание и очистка 22 типов ниже, кроме CreditsPlayer; проверен основной вариант каждого типа. Дополнительный прогон подтвердил оба варианта Button, четыре Image, три MessageBox, оба SerializableEntityEditor и вложенные ContextMenuOption. Это проверка описанных вариантов создания, а не всех сочетаний необязательных параметров.
 
 Режим `new` создаёт описанный `rect`, `parent` передаёт существующего родителя, `none` использует собственный способ размещения типа. Для обычного компонента очистка означает снятие его дерева с обновления и отсоединение; дополнительные действия указаны отдельно.
 
@@ -119,6 +119,8 @@
 - `public Graph(int arraySize = 100)`.
 
 ### SerializableEntityEditor
+
+Вариант `properties` принимает подготовленный список редактируемых `SerializableProperty` (с атрибутом `Editable`). Общий список сериализуемых свойств без такого отбора штатный редактор не принимает.
 
 - `public SerializableEntityEditor(RectTransform parent, ISerializableEntity entity, bool inGame, bool showName, string style = "", int elementHeight = 24, GUIFont titleFont = null, bool dimOutDefaultValues = true)`.
 - `public SerializableEntityEditor(RectTransform parent, ISerializableEntity entity, IEnumerable<SerializableProperty> properties, bool showName, string style = "", int elementHeight = 24, GUIFont titleFont = null, bool dimOutDefaultValues = true)`.
