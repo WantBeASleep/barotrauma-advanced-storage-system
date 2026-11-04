@@ -4,7 +4,14 @@ local filestore = {}
 local goerrors = require("limanchel.pkg.goerrors.v0_1_0.goerrors")
 
 local temporary_suffix = ".filestore-tmp"
-local device_names = { CON = true, PRN = true, AUX = true, NUL = true }
+local device_names = {
+   CON = true,
+   PRN = true,
+   AUX = true,
+   NUL = true,
+   ["CONIN$"] = true,
+   ["CONOUT$"] = true,
+}
 for _, prefix in ipairs({ "COM", "LPT" }) do
    for i = 1, 9 do
       device_names[prefix .. i] = true
@@ -24,7 +31,8 @@ filestore.errors = {
 ---@param key string
 local function validate_key(key)
    assert(type(key) == "string" and key ~= "", "Ключ должен быть непустой строкой")
-   assert(not key:find("[\\%z\1-\31\127<>:\"|?*]"), "Ключ содержит запрещённый символ")
+   assert(not key:find("[\\%c<>:\"|?*]"), "Ключ содержит запрещённый символ")
+   assert(not key:find("\194[\128-\159]"), "Ключ содержит управляющий символ UTF-8")
    for segment in (key .. "/"):gmatch("(.-)/") do
       assert(segment ~= "", "Ключ содержит пустой сегмент")
       assert(
@@ -41,6 +49,10 @@ local function validate_key(key)
       )
       local base_name = segment:match("^[^.]*"):upper()
       assert(
+         not base_name:find("~%d+$"),
+         "Короткие псевдонимы файлов зарезервированы"
+      )
+      assert(
          not device_names[base_name],
          "Ключ содержит зарезервированное имя устройства"
       )
@@ -53,8 +65,8 @@ end
 local function get_path(key)
    local root = Game.SaveFolder
    assert(type(root) == "string" and root ~= "", "Недоступен каталог сохранений игры")
-   root = root:gsub("\\", "/"):gsub("/+$", "")
-   return root .. "/ModFiles/" .. key
+   local separator = root:sub(-1) == "/" and "" or "/"
+   return root .. separator .. "ModFiles/" .. key
 end
 
 ---Добавляет к платформенному сбою стадию, ключ и стабильную причину.

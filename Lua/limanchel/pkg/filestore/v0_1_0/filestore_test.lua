@@ -20,6 +20,8 @@ local invalid_keys = {
    { name = "перенос строки", value = "a\nb" },
    { name = "управляющий символ", value = "a" .. string.char(31) .. "b" },
    { name = "DEL", value = "a\127b" },
+   { name = "управляющий U+0085", value = "a" .. string.char(194, 133) .. "b" },
+   { name = "управляющий U+009F", value = "a" .. string.char(194, 159) .. "b" },
    { name = "меньше", value = "a<b" },
    { name = "больше", value = "a>b" },
    { name = "двоеточие", value = "a:b" },
@@ -37,11 +39,13 @@ local invalid_keys = {
       value = "x.FILESTORE-TMP/file.txt",
    },
    { name = "nil" },
+   { name = "короткий псевдоним NTFS", value = "SETTIN~1.FI~" },
+   { name = "короткий псевдоним в каталоге", value = "folder~2/file.txt" },
    { name = "число", value = 42 },
    { name = "таблица", value = {} },
 }
 
-local device_names = { "CON", "PRN", "AUX", "NUL" }
+local device_names = { "CON", "PRN", "AUX", "NUL", "CONIN$", "CONOUT$" }
 for _, prefix in ipairs({ "COM", "LPT" }) do
    for i = 1, 9 do
       device_names[#device_names + 1] = prefix .. i
@@ -185,18 +189,32 @@ busted.describe("filestore", function()
          end
       )
 
-      for _, root in ipairs({ "saves/", "saves//", "saves\\" }) do
-         busted.it("принимает завершающий разделитель корня " .. root, function()
-            _G.Game.SaveFolder = root
-            files["saves/ModFiles/a"] = "текст"
-            assert.are.equal("текст", filestore.load("a"))
-         end)
+      for _, case in ipairs({
+         { root = "saves/", path = "saves/ModFiles/a" },
+         { root = "saves//", path = "saves//ModFiles/a" },
+         { root = "saves\\", path = "saves\\/ModFiles/a" },
+      }) do
+         busted.it(
+            "принимает завершающий разделитель корня " .. case.root,
+            function()
+               _G.Game.SaveFolder = case.root
+               files[case.path] = "текст"
+               assert.are.equal("текст", filestore.load("a"))
+            end
+         )
       end
 
       busted.it("сохраняет диск и вложенность Windows-корня", function()
          _G.Game.SaveFolder = "C:\\Data\\Saves\\"
-         files["C:/Data/Saves/ModFiles/a"] = "текст"
+         files["C:\\Data\\Saves\\/ModFiles/a"] = "текст"
          assert.are.equal("текст", filestore.load("a"))
+      end)
+
+      busted.it("не меняет обратный слеш в имени Linux-каталога", function()
+         _G.Game.SaveFolder = "/srv/saves\\blue"
+         files["/srv/saves\\blue/ModFiles/a"] = "верный каталог"
+         files["/srv/saves/blue/ModFiles/a"] = "другой каталог"
+         assert.are.equal("верный каталог", filestore.load("a"))
       end)
 
       busted.it("сохраняет абсолютный Unix-корень", function()
@@ -206,8 +224,8 @@ busted.describe("filestore", function()
       end)
 
       busted.it("сохраняет регистр, кириллицу и допустимые имена", function()
-         files["saves/ModFiles/Мод/.hidden/COM10.Auxiliary.txt"] = "данные"
-         assert.are.equal("данные", filestore.load("Мод/.hidden/COM10.Auxiliary.txt"))
+         files["saves/ModFiles/Мод ©/.hidden/COM10.Auxiliary~draft.txt"] = "данные"
+         assert.are.equal("данные", filestore.load("Мод ©/.hidden/COM10.Auxiliary~draft.txt"))
       end)
 
       busted.it(
@@ -308,6 +326,13 @@ busted.describe("filestore", function()
          assert.is_true(filestore.save("a", "второй"))
          assert.are.equal("первый", files["saves/ModFiles/a"])
          assert.are.equal("второй", files["other/ModFiles/a"])
+      end)
+
+      busted.it("сохраняет в Linux-корень с обратным слешем в имени", function()
+         _G.Game.SaveFolder = "/srv/saves\\blue"
+         assert.is_true(filestore.save("a", "новое"))
+         assert.are.equal("новое", files["/srv/saves\\blue/ModFiles/a"])
+         assert.is_nil(files["/srv/saves/blue/ModFiles/a"])
       end)
 
       busted.it(
